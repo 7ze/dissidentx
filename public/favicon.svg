@@ -1,9 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 128 128">
-    <path d="M50.4 78.5a75.1 75.1 0 0 0-28.5 6.9l24.2-65.7c.7-2 1.9-3.2 3.4-3.2h29c1.5 0 2.7 1.2 3.4 3.2l24.2 65.7s-11.6-7-28.5-7L67 45.5c-.4-1.7-1.6-2.8-2.9-2.8-1.3 0-2.5 1.1-2.9 2.7L50.4 78.5Zm-1.1 28.2Zm-4.2-20.2c-2 6.6-.6 15.8 4.2 20.2a17.5 17.5 0 0 1 .2-.7 5.5 5.5 0 0 1 5.7-4.5c2.8.1 4.3 1.5 4.7 4.7.2 1.1.2 2.3.2 3.5v.4c0 2.7.7 5.2 2.2 7.4a13 13 0 0 0 5.7 4.9v-.3l-.2-.3c-1.8-5.6-.5-9.5 4.4-12.8l1.5-1a73 73 0 0 0 3.2-2.2 16 16 0 0 0 6.8-11.4c.3-2 .1-4-.6-6l-.8.6-1.6 1a37 37 0 0 1-22.4 2.7c-5-.7-9.7-2-13.2-6.2Z" />
-    <style>
-        path { fill: #000; }
-        @media (prefers-color-scheme: dark) {
-            path { fill: #FFF; }
-        }
-    </style>
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="740.075 222.575 220.046 217.954" width="205.0499px" height="205.05px" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <style type="text/css">
+	.st0{fill:#FFFFFF;}
+</style>
+    <radialGradient gradientUnits="userSpaceOnUse" cx="842.6" cy="325.1" r="102.525" id="gradient-1" gradientTransform="matrix(2.771945, -0.021575, 0.015841, 2.035178, -1490.692894, -311.904365)">
+      <stop offset="0" style="stop-color: rgb(255, 0, 0);"/>
+      <stop offset="1" style=""/>
+    </radialGradient>
+    <filter id="outline-filter-0" bx:preset="outline 1 4 #fff" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+      <feMorphology in="SourceAlpha" result="dilated" operator="dilate" radius="4"/>
+      <feFlood flood-color="#fff" result="flood"/>
+      <feComposite in="flood" in2="dilated" operator="in" result="outline"/>
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect x="740.075" y="222.575" width="220.046" height="217.954" style="stroke: rgb(0, 0, 0); stroke-width: 0px;"/>
+  <path d="M 905.998 412.752 C 878.998 385.752 862.798 358.252 869.798 351.252 C 876.798 344.252 904.298 360.552 931.298 387.452 C 932.298 388.452 933.198 389.352 934.098 390.352 C 958.798 355.152 958.798 307.952 934.098 272.752 C 933.198 273.752 932.198 274.652 931.298 275.652 C 904.298 302.652 876.798 318.852 869.798 311.852 C 862.798 304.852 879.098 277.352 905.998 250.352 C 906.998 249.352 907.898 248.452 908.898 247.552 C 873.698 222.852 826.498 222.852 791.298 247.552 C 792.298 248.452 793.198 249.452 794.198 250.352 C 821.198 277.352 837.398 304.852 830.398 311.852 C 823.398 318.852 795.898 302.552 768.898 275.652 C 767.898 274.652 766.998 273.752 766.098 272.752 C 741.398 307.952 741.398 355.152 766.098 390.352 C 766.998 389.352 767.998 388.452 768.898 387.452 C 795.898 360.452 823.398 344.252 830.398 351.252 C 837.398 358.252 821.098 385.752 794.198 412.752 C 793.198 413.752 792.298 414.652 791.298 415.552 C 826.498 440.252 873.698 440.252 908.898 415.552 C 907.898 414.752 906.898 413.752 905.998 412.752 Z" style="paint-order: fill; fill: url(&quot;#gradient-1&quot;); fill-rule: nonzero; filter: url(&quot;#outline-filter-0&quot;);"/>
 </svg>

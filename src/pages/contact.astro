@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+const pageTitle = "Contact";
+---
+
+<Layout title={pageTitle}>
+	<div class="grid place-items-center min-h-[80vh]">
+		<div class="flex flex-col space-y-4 items-center">
+			<div class="mx-auto px-4 prose text-white/60 text-center">
+				<h1 class="font-[Playfair_Display]">Get in touch!</h1>
+				<p class="text-justify">
+					If you are interested to collaborate or would like to get in
+					touch, just send me a quick mail. I'd be happy to get back
+					to you. If you like the work I do, consider supporting me.
+					To all those who believe and support this mission, my
+					heartfelt gratitude.
+				</p>
+			</div>
+			<a href="mailto:dissidentx@gmail.com" class="btn btn-outline"
+				>Send a mail</a
+			>
+		</div>
+	</div>
+</Layout>

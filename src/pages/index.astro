@@ -1,16 +1,25 @@
 ---
+import Layout from "../layouts/Layout.astro";
 
+const pageTitle = "Home";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title={pageTitle}>
+	<div class="grid place-items-center min-h-[80vh]">
+		<div class="prose mx-auto text-center text-white/50">
+			<div
+				class="font-[Playfair_Display] font-black text-3xl text-white/60"
+			>
+				<p>
+					Uncensored. Unafraid. Unstoppable.
+					<br />
+					Join the <span class="italic text-cyan-700">Resistance</span
+					> today.
+				</p>
+			</div>
+			<p class="font-[Playfair_Display] font-light italic text-xl mt-10">
+				"The Price of Liberty is Eternal Vigilance."
+			</p>
+		</div>
+	</div>
+</Layout>

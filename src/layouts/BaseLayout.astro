@@ -1,0 +1,57 @@
+---
+import "./src/styles/global.css";
+import Navigation from "../components/Navigation.astro";
+import ScrollToTop from "../components/ScrollToTop.astro";
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const siteTitle = "DissidentX";
+---
+
+<html data-theme="black" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>{siteTitle} | {title}</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+
+  <body
+    class="font-[Inter] relative bg-[url('/images/washington.jpg')] bg-fixed bg-no-repeat bg-center min-h-screen before:absolute before:inset-0 before:bg-black/80 before:z-10"
+  >
+    <header class="relative z-30">
+      <Navigation />
+    </header>
+
+    <main class="relative z-20">
+      <slot />
+    </main>
+
+    <footer
+      class="relative z-10 mt-8 footer sm:footer-horizontal footer-center p-2 text-white/20"
+    >
+      <aside>
+        <p>
+          Copyright © {new Date().getFullYear()} - All right reserved by DissidentX.
+        </p>
+      </aside>
+    </footer>
+
+    <ScrollToTop />
+  </body>
+</html>
