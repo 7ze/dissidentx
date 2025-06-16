@@ -14,12 +14,11 @@ Published on: 2025-06-16
 
 > There was once a dream, that was Rome.
 
-Rome was once the seat of the Civilized World as we know it. But like all great
+Rome was once the seat of the Civilized World as we know it. But like all Great
 things that rise and fall, Rome too fell - A sad tale of a civilization that
 dared to stand tall as it did; From a Republic to an Empire that stretched
-across the face of Earth, a shining light for others to reach. The Western
-World today, sits precariously tied with a similar fate, unless something
-changes.
+across the face of Earth. The Western World today, sits tied with a similar
+fate, unless something changes.
 
 In a culture of conformity and political correctness, I built this space for
 those who still care about the Truth; For minds drawn to history, civilization,
@@ -37,11 +36,11 @@ carry the torch of the Civilization forward.
 
 ## What's next
 
-Like stated earlier, My mission is to encourage young Men, and in doing so
-build this platform for the free minds to publish their works and writings. I
-see far too many young Men - Men with potential, vigor, passion - starved for
-purpose, distressed, afraid to call out bullshit as they see it, who conform to
-what is set as the norm without a question.
+My mission is to encourage young Men, and in doing so build this platform for
+the free minds to publish their works and writings. I see far too many young
+Men - Men with potential, vigor, passion - starved for purpose, distressed,
+afraid to call out bullshit as they see it, who conform to what is set as the
+norm without a question.
 
 Many of you will remember this quote quite fondly; It fits quite nicely here
 albeit being a bit dramatic -
