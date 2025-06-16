@@ -1,4 +1,7 @@
 ---
+import "@fontsource-variable/inter";
+import "@fontsource-variable/playfair-display";
+import "@fontsource-variable/playfair-display/wght-italic.css";
 import "../styles/global.css";
 import Navigation from "../components/Navigation.astro";
 import ScrollToTop from "../components/ScrollToTop.astro";
@@ -21,18 +24,12 @@ const siteTitle = "DissidentX";
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
-      rel="stylesheet"
-    />
     <title>{siteTitle} | {title}</title>
     {description && <meta name="description" content={description} />}
   </head>
 
   <body
-    class="font-[Inter] relative bg-[url('/images/washington.jpg')] bg-fixed bg-no-repeat bg-center min-h-screen before:absolute before:inset-0 before:bg-black/80 before:z-10"
+    class="font-sans relative bg-[url('/images/washington.webp')] bg-fixed bg-no-repeat bg-center min-h-screen before:absolute before:inset-0 before:bg-black/80 before:z-10"
   >
     <header class="relative z-30">
       <Navigation />

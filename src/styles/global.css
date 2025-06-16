@@ -3,5 +3,10 @@
 @plugin "@tailwindcss/typography";
 
 @plugin "daisyui" {
-    themes: corporate --default, black --prefersdark, cupcake;
+    themes: corporate --default, black --prefersdark;
+}
+
+@theme {
+    --font-sans: "Inter", "sans-serif";
+    --font-display: "Playfair Display Variable", "serif";
 }
