@@ -3,7 +3,7 @@
 @plugin "@tailwindcss/typography";
 
 @plugin "daisyui" {
-    themes: corporate --default, black --prefersdark;
+    themes: black --default;
 }
 
 @theme {
