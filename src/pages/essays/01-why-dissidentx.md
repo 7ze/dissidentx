@@ -36,9 +36,9 @@ carry the torch of the Civilization forward.
 
 ## What's next
 
-My mission is to encourage young Men, and in doing so build this platform for
+My mission is to embolden other young men, and in doing so build this platform for
 the free minds to publish their works and writings. I see far too many young
-Men - Men with potential, vigor, passion - starved for purpose, distressed,
+men - Men with potential, vigor, passion - starved for purpose, distressed,
 afraid to call out bullshit as they see it, who conform to what is set as the
 norm without a question.
 
