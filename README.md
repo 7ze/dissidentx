@@ -1,5 +1,7 @@
 # DissidentX
 
+![dissidentx_logo](https://dissidentx.com/images/dissidentx_logo.webp)
+
 [DissidentX](https://dissidentx.com) is a publishing platform for essays and ideas, built with AstroJS for fast, modern web performance, styled with Tailwind CSS for clean, responsive design, and enhanced with DaisyUI for streamlined UI components. It’s a space to share thought-provoking content with a focus on clarity and accessibility.
 
 ## Preview

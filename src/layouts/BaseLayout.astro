@@ -18,6 +18,9 @@ export interface Props {
 
 const { title, description } = Astro.props;
 const siteTitle = "DissidentX";
+const siteDescription =
+  "DissidentX: A platform for bold minds, defying conformity, and uncovering uncensored truths in history, culture, and liberty. Join the vigil at dissidentx.com.";
+const socialMediaTitle = "DissidentX – Uncensored. Unafraid. Unstoppable.";
 ---
 
 <html data-theme="black" lang="en">
@@ -35,6 +38,26 @@ const siteTitle = "DissidentX";
 
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph tags -->
+    <meta property="og:title" content={socialMediaTitle} />
+    <meta property="og:description" content={siteDescription} />
+    <meta
+      property="og:image"
+      content="https://dissidentx.com/images/dissidentx_logo.webp"
+    />
+    <meta property="og:url" content="https://dissidentx.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DissidentX" />
+
+    <!-- Twitter card (optional, but good) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={socialMediaTitle} />
+    <meta name="twitter:description" content={siteDescription} />
+    <meta
+      name="twitter:image"
+      content="https://dissidentx.com/images/dissidentx_logo.webp"
+    />
 
     <!-- title & description -->
     <title>{siteTitle} | {title}</title>
