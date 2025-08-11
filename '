@@ -2,9 +2,9 @@
 layout: "../../layouts/Essay.astro"
 title: "Why DissidentX?"
 pubDate: 2025-06-15
-description: "Why this site exists, an examination"
+description: "Why this site exists, a mission statement"
 author: "Shinu Donney"
-tags: ["Truth", "Philosophy", "Self-Study"]
+tags: ["Truth", "Philosophy"]
 ---
 
 

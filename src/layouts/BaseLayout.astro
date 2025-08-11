@@ -19,8 +19,8 @@ export interface Props {
 const { title, description } = Astro.props;
 const siteTitle = "DissidentX";
 const siteDescription =
-  "DissidentX: A platform for bold minds, defying conformity, and uncovering uncensored truths in history, culture, and liberty. Join the vigil at dissidentx.com.";
-const socialMediaTitle = "DissidentX – Uncensored. Unafraid. Unstoppable.";
+  "DissidentX: A space for independent thought, exploring philosophy, literature and theology among other things.";
+const socialMediaTitle = "DissidentX – Pursuit of Truth.";
 ---
 
 <html data-theme="black" lang="en">
@@ -66,9 +66,7 @@ const socialMediaTitle = "DissidentX – Uncensored. Unafraid. Unstoppable.";
     {description && <meta name="description" content={description} />}
   </head>
 
-  <body
-    class="font-sans relative bg-[url('/images/washington.webp')] bg-fixed bg-no-repeat bg-center min-h-screen before:absolute before:inset-0 before:bg-black/80 before:z-10 prose-invert"
-  >
+  <body class="font-sans bg-base-100">
     <header class="relative z-30">
       <Navigation />
     </header>
