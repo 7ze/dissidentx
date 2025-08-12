@@ -23,9 +23,10 @@ us faster than we can absorb them. But information is not the same as
 understanding. Without the ability to examine and question what we take in, we
 become easy prey for propaganda, marketing, and manipulation.
 
-Consider science—or rather, scientism—which has taken on a quasi-religious role
-in society. Too often it is treated as unquestionable dogma, with consensus and
-agenda-driven research accepted without serious scrutiny.
+Consider modern science—or rather, scientism—which has taken on a
+quasi-religious role in society. Too often it is treated as unquestionable
+dogma, with consensus and agenda-driven research accepted without serious
+scrutiny.
 
 Education, too, has shifted. In its modern, progressive form, it often serves
 less to cultivate independent thought than to produce obedient functionaries.
@@ -37,10 +38,10 @@ promised by the State, all the while unaware of the cost.
 For the free man, the first step toward true liberty is to question the ideas
 that shape his vision of the world. We must learn to think with care, to push
 beyond the surface, to resist the lure of easy answers. This space exists for
-that work—to study philosophy, classical literature, and theology, and to
-approach the enduring questions with honesty. The path is not easy. It demands
-discipline and humility. But it is the only way to recover genuine
-understanding and the freedom to think for ourselves.
+that work—to study philosophy, classical literature, theology among other
+things, and to approach the enduring questions with honesty. The path is not
+easy. It demands discipline and humility. But it is the only way to recover
+genuine understanding and the freedom to think for ourselves.
 
 I pursue this path through self-study, prepared for its demands, because the
 understanding it yields is worth it. My hope is that others who share this
