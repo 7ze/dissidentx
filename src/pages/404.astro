@@ -1,0 +1,19 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const pageTitle = "404";
+const pageDescription = "404 Resource not found";
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+	<div class="grid place-items-center min-h-[80vh]">
+		<div class="mx-auto px-4 prose text-white/60 text-center">
+			<h1 class="font-display">404</h1>
+			<p>
+				Ooops! Got Lost?
+				<br />
+				Please go back to the <a href="/">homepage</a>.
+			</p>
+		</div>
+	</div>
+</Layout>
