@@ -1,0 +1,145 @@
+---
+---
+
+<canvas id="vhs-particles" class="fixed inset-0 w-full h-full pointer-events-none z-0" transition:persist></canvas>
+
+<script>
+  function initParticles() {
+    const canvas = document.getElementById("vhs-particles") as HTMLCanvasElement | null;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d", { alpha: true });
+    if (!ctx) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    // Doubled density: ~1,400 particles across the screen
+    const PARTICLE_COUNT = 1400;
+
+    interface Particle {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      r: number;
+      baseAlpha: number;
+      alpha: number;
+      pulseSpeed: number;
+      phase: number;
+      isCrimson: boolean;
+    }
+
+    const particles: Particle[] = [];
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const isCrimson = Math.random() < 0.10;
+      const speedTier = Math.random();
+      // Gentle, calm drift speeds across varied depth tiers
+      const speedMultiplier = speedTier < 0.75 ? 0.16 : 0.26;
+
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        // Independent random 360-degree drift vectors
+        vx: (Math.random() - 0.5) * speedMultiplier,
+        vy: (Math.random() - 0.5) * speedMultiplier,
+        // Mostly micro-dust specks (0.3px - 0.65px) with occasional distinct flecks (0.7px - 1.1px)
+        r: Math.random() < 0.80 ? Math.random() * 0.35 + 0.3 : Math.random() * 0.4 + 0.7,
+        baseAlpha: Math.random() * 0.16 + 0.06,
+        alpha: 0.10,
+        pulseSpeed: Math.random() * 0.0016 + 0.0008,
+        phase: Math.random() * Math.PI * 2,
+        isCrimson,
+      });
+    }
+
+    function render(time: number) {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, width, height);
+
+      // Batched paths for extreme performance (only 4 draw calls total)
+      const whitePathFaint = new Path2D();
+      const whitePathMid = new Path2D();
+      const whitePathBright = new Path2D();
+      const crimsonPath = new Path2D();
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        if (!prefersReducedMotion) {
+          p.x += p.vx;
+          p.y += p.vy;
+
+          // Wrap smoothly across screen bounds
+          if (p.x < -10) p.x = width + 10;
+          else if (p.x > width + 10) p.x = -10;
+          if (p.y < -10) p.y = height + 10;
+          else if (p.y > height + 10) p.y = -10;
+
+          // Subtle organic breathing & twinkling
+          p.alpha = p.baseAlpha + Math.sin(time * p.pulseSpeed + p.phase) * 0.04;
+        }
+
+        const targetPath = p.isCrimson
+          ? crimsonPath
+          : p.alpha < 0.11
+          ? whitePathFaint
+          : p.alpha < 0.17
+          ? whitePathMid
+          : whitePathBright;
+
+        targetPath.moveTo(p.x + p.r, p.y);
+        targetPath.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      }
+
+      // Draw batched tiers with refined soft opacities
+      ctx.fillStyle = "rgba(230, 226, 218, 0.08)";
+      ctx.fill(whitePathFaint);
+
+      ctx.fillStyle = "rgba(230, 226, 218, 0.15)";
+      ctx.fill(whitePathMid);
+
+      ctx.fillStyle = "rgba(230, 226, 218, 0.24)";
+      ctx.fill(whitePathBright);
+
+      ctx.fillStyle = "rgba(200, 16, 46, 0.22)";
+      ctx.fill(crimsonPath);
+
+      if (!prefersReducedMotion) {
+        requestAnimationFrame(render);
+      }
+    }
+
+    if (prefersReducedMotion) {
+      render(0);
+    } else {
+      requestAnimationFrame(render);
+    }
+
+    let resizeTimer: number;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        if (prefersReducedMotion) render(0);
+      }, 150);
+    };
+
+    window.addEventListener("resize", handleResize, { passive: true });
+  }
+
+  let initialized = false;
+  function startParticles() {
+    if (initialized) return;
+    initParticles();
+    initialized = true;
+  }
+
+  // Initialize on page load
+  startParticles();
+  document.addEventListener("astro:page-load", startParticles);
+</script>

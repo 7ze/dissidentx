@@ -1,0 +1,512 @@
+---
+// Global Search Modal Component (Themed: Monastic / VHS OSD Terminal)
+---
+
+<dialog
+  id="search-modal"
+  class="fixed top-12 sm:top-20 inset-x-0 bottom-auto mx-auto w-[92vw] max-w-2xl h-[520px] max-h-[82vh] bg-[var(--color-surface)] border border-[var(--color-rule-light)] text-[var(--color-ink)] p-0 z-50 shadow-2xl rounded-none outline-none"
+  aria-label="Search DissidentX Essays"
+  transition:persist
+>
+  <!-- VCR OSD / Monastic Terminal Top Bar -->
+  <div class="flex-shrink-0 px-4 sm:px-5 py-2.5 bg-black border-b border-[var(--color-rule)] flex items-center justify-between text-[10px] font-mono tracking-widest uppercase text-[var(--color-ink-faint)] select-none">
+    <div class="flex items-center gap-2 text-[var(--color-ink-muted)]">
+      <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-vhs-green)] opacity-80 animate-pulse"></span>
+      <span class="font-semibold text-white/90">SEARCH</span>
+      <span class="text-[var(--color-ink-faint)]">·</span>
+      <span>ARCHIVE DISPATCHES</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <span id="search-match-count" class="text-[var(--color-crimson)] font-medium" aria-live="polite" aria-atomic="true">READY</span>
+      <span>·</span>
+      <button
+        id="search-close-btn"
+        type="button"
+        class="cursor-pointer text-[var(--color-ink-muted)] hover:text-white transition-colors py-1 px-1 min-h-[32px] inline-flex items-center"
+        title="Press Escape to close"
+        aria-label="Close search dialog"
+      >
+        [ ESC ]
+      </button>
+    </div>
+  </div>
+
+  <!-- Search Input Bar -->
+  <div class="flex-shrink-0 px-4 sm:px-5 py-3.5 bg-[var(--color-surface)] border-b border-[var(--color-rule)] flex items-center gap-3">
+    <span class="font-mono text-[var(--color-crimson)] text-xs font-bold select-none" aria-hidden="true">[ ? ]</span>
+    <label for="search-input" class="sr-only">Search essays and dispatches</label>
+    <input
+      type="text"
+      id="search-input"
+      placeholder="Query by keyword, scriptural theme, tag, or text..."
+      class="flex-1 bg-transparent border-none outline-none text-xs sm:text-sm font-mono text-[var(--color-ink)] placeholder-[var(--color-ink-faint)] tracking-wide focus:ring-0"
+      autocomplete="off"
+      spellcheck="false"
+      aria-controls="search-results"
+    />
+  </div>
+
+  <!-- Tag Filter Strip (Zine Typewriter Brackets) -->
+  <div class="flex-shrink-0 px-4 sm:px-5 py-2 bg-[var(--color-void)] border-b border-[var(--color-rule)] flex items-center gap-x-2 gap-y-1 overflow-x-auto text-[11px] font-mono scrollbar-none" role="toolbar" aria-label="Popular topics">
+    <span class="text-[var(--color-ink-faint)] uppercase text-[10px] tracking-widest select-none flex-shrink-0 mr-1" aria-hidden="true">
+      TOPICS:
+    </span>
+    <div id="search-tag-chips" class="flex items-center gap-x-2 gap-y-1 flex-wrap">
+      <!-- Tag buttons dynamically populated as [ #TAG ] -->
+    </div>
+  </div>
+
+  <!-- Search Results Viewbox (Takes remaining height, zero jump) -->
+  <div
+    id="search-results"
+    class="flex-1 min-h-0 overflow-y-auto px-4 sm:px-5 py-2 [scrollbar-gutter:stable]"
+    role="listbox"
+  >
+    <!-- Default initial state: centered vertically and horizontally -->
+    <div id="search-placeholder" class="h-full flex flex-col items-center justify-center py-12 text-center select-none">
+      <span class="text-[var(--color-crimson)] text-xs mb-2 font-mono select-none">· · ·</span>
+      <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink-muted)] mb-1">
+        Search DissidentX
+      </p>
+      <p class="font-serif italic text-xs text-[var(--color-ink-faint)] max-w-xs leading-relaxed">
+        Query across all essays, monastic reflections, and full body texts.
+      </p>
+    </div>
+
+    <!-- Live results rendered here -->
+    <div id="search-items-list" class="divide-y divide-[var(--color-rule)]"></div>
+  </div>
+
+  <!-- Search Footer Bar (Matching Site Colophon) -->
+  <div class="flex-shrink-0 px-4 sm:px-5 py-2.5 border-t border-[var(--color-rule)] bg-black flex items-center justify-between text-[10px] font-mono text-[var(--color-ink-faint)] select-none tracking-wider uppercase">
+    <div class="flex items-center gap-2.5 sm:gap-3">
+      <span class="hidden sm:inline">[ ↑↓ ] NAVIGATE</span>
+      <span class="hidden sm:inline">[ ↵ ] READ</span>
+      <span>[ ESC ] CLOSE</span>
+      <span class="sm:hidden text-[var(--color-ink-muted)]">· TAP TO READ</span>
+    </div>
+    <span class="hidden sm:inline text-[var(--color-ink-faint)]">A WITNESS IN THE RUINS</span>
+  </div>
+</dialog>
+
+<style>
+  #search-modal {
+    top: 2.5rem;
+    bottom: auto;
+    margin-inline: auto;
+    margin-block: 0;
+    opacity: 0;
+    transform: translateY(-8px) scale(0.985);
+    display: none;
+    flex-direction: column;
+
+    /* Discrete transition for top-layer display and overlay */
+    transition-property: opacity, transform, display, overlay;
+    transition-duration: 0.22s;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    transition-behavior: allow-discrete;
+  }
+
+  /* Open state */
+  #search-modal[open] {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+
+    /* Entry transition from starting style */
+    @starting-style {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.985);
+    }
+  }
+
+  /* Backdrop base / closed state */
+  #search-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    transition-property: opacity, background-color, backdrop-filter, -webkit-backdrop-filter, display, overlay;
+    transition-duration: 0.22s;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    transition-behavior: allow-discrete;
+  }
+
+  /* Backdrop open state */
+  #search-modal[open]::backdrop {
+    background-color: rgba(2, 2, 2, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    @starting-style {
+      background-color: rgba(0, 0, 0, 0);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+    }
+  }
+
+  /* Explicit closing state for seamless exit */
+  #search-modal.is-closing {
+    opacity: 0 !important;
+    transform: translateY(-6px) scale(0.985) !important;
+    transition: opacity 0.16s ease-in, transform 0.16s ease-in !important;
+  }
+
+  #search-modal.is-closing::backdrop {
+    background-color: rgba(0, 0, 0, 0) !important;
+    backdrop-filter: blur(0px) !important;
+    -webkit-backdrop-filter: blur(0px) !important;
+    transition: background-color 0.16s ease-in, backdrop-filter 0.16s ease-in, -webkit-backdrop-filter 0.16s ease-in !important;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    #search-modal,
+    #search-modal[open],
+    #search-modal::backdrop,
+    #search-modal[open]::backdrop {
+      transform: none !important;
+      transition-duration: 0.05s !important;
+    }
+    @starting-style {
+      #search-modal[open] {
+        transform: none !important;
+      }
+    }
+  }
+
+  @media (min-width: 640px) {
+    #search-modal {
+      top: 5rem;
+    }
+  }
+</style>
+
+<script>
+  import Fuse from "fuse.js";
+
+  interface SearchItem {
+    id: string;
+    title: string;
+    description: string;
+    tags: string[];
+    categoryTag: string;
+    date: string;
+    timestamp: number;
+    content: string;
+  }
+
+  let searchData: SearchItem[] | null = null;
+  let fuseInstance: Fuse<SearchItem> | null = null;
+  let activeIndex = -1;
+
+  const modal = document.getElementById("search-modal") as HTMLDialogElement | null;
+  const input = document.getElementById("search-input") as HTMLInputElement | null;
+  const closeBtn = document.getElementById("search-close-btn");
+  const placeholder = document.getElementById("search-placeholder");
+  const resultsContainer = document.getElementById("search-items-list");
+  const tagChipsContainer = document.getElementById("search-tag-chips");
+  const matchCountSpan = document.getElementById("search-match-count");
+
+  // Load index data lazily
+  async function loadSearchIndex() {
+    if (searchData && fuseInstance) return;
+    try {
+      const res = await fetch("/search-index.json");
+      if (!res.ok) throw new Error("Failed to load search index");
+      searchData = await res.json();
+
+      if (searchData) {
+        fuseInstance = new Fuse(searchData, {
+          keys: [
+            { name: "title", weight: 0.35 },
+            { name: "tags", weight: 0.30 },
+            { name: "description", weight: 0.20 },
+            { name: "content", weight: 0.15 },
+          ],
+          threshold: 0.38,
+          ignoreLocation: true,
+          includeMatches: true,
+          minMatchCharLength: 2,
+        });
+
+        populateTagChips(searchData);
+      }
+    } catch (err) {
+      console.error("Search index error:", err);
+    }
+  }
+
+  function populateTagChips(items: SearchItem[]) {
+    if (!tagChipsContainer) return;
+    const allTags = Array.from(new Set(items.flatMap((item) => item.tags || []))).slice(0, 8);
+    tagChipsContainer.innerHTML = "";
+
+    allTags.forEach((tag) => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className =
+        "text-[10px] font-mono uppercase text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors cursor-pointer select-none py-0.5 px-1 leading-tight inline-flex items-center";
+      chip.textContent = `[ #${tag} ]`;
+      chip.setAttribute("aria-label", `Filter by tag ${tag}`);
+      chip.addEventListener("click", () => {
+        if (!input) return;
+        input.value = tag;
+        performSearch(tag);
+        input.focus();
+      });
+      tagChipsContainer.appendChild(chip);
+    });
+  }
+
+  let isClosing = false;
+  let closeTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  function openSearch(initialQuery = "") {
+    if (!modal) return;
+    if (modal.open && !isClosing) return;
+
+    if (isClosing) {
+      if (closeTimeout) clearTimeout(closeTimeout);
+      isClosing = false;
+      modal.classList.remove("is-closing");
+    }
+
+    modal.showModal();
+    document.body.classList.add("overflow-hidden");
+
+    // Eagerly focus without causing browser to jump or scroll the page
+    if (input) {
+      input.focus({ preventScroll: true });
+      if (initialQuery) {
+        input.value = initialQuery;
+      }
+    }
+
+    loadSearchIndex().then(() => {
+      if (initialQuery) {
+        performSearch(initialQuery);
+      }
+    });
+  }
+
+  function closeSearch() {
+    if (!modal || !modal.open || isClosing) return;
+    isClosing = true;
+
+    modal.classList.add("is-closing");
+
+    closeTimeout = setTimeout(() => {
+      if (!modal.open) return;
+      modal.close();
+      modal.classList.remove("is-closing");
+      document.body.classList.remove("overflow-hidden");
+      isClosing = false;
+      if (input) input.value = "";
+      if (resultsContainer) resultsContainer.innerHTML = "";
+      if (placeholder) placeholder.style.display = "flex";
+      if (matchCountSpan) matchCountSpan.textContent = "READY";
+      activeIndex = -1;
+    }, 180);
+  }
+
+  function createSnippet(content: string, query: string): string {
+    if (!content || !query) return "";
+    const lowerContent = content.toLowerCase();
+    const lowerQuery = query.toLowerCase().trim();
+    const idx = lowerContent.indexOf(lowerQuery);
+
+    if (idx === -1) {
+      return content.slice(0, 115) + "...";
+    }
+
+    const start = Math.max(0, idx - 40);
+    const end = Math.min(content.length, idx + query.length + 65);
+    const snippet = (start > 0 ? "..." : "") + content.slice(start, end) + (end < content.length ? "..." : "");
+    return snippet;
+  }
+
+  function performSearch(query: string) {
+    if (!resultsContainer || !placeholder || !matchCountSpan) return;
+
+    const trimmed = query.trim();
+    if (!trimmed) {
+      resultsContainer.innerHTML = "";
+      placeholder.style.display = "flex";
+      matchCountSpan.textContent = "READY";
+      activeIndex = -1;
+      return;
+    }
+
+    placeholder.style.display = "none";
+
+    if (!fuseInstance || !searchData) {
+      resultsContainer.innerHTML = `<div class="h-full flex items-center justify-center font-mono text-xs text-[var(--color-ink-muted)] py-8">INDEXING...</div>`;
+      return;
+    }
+
+    const results = fuseInstance.search(trimmed);
+    resultsContainer.innerHTML = "";
+    activeIndex = -1;
+
+    if (results.length === 0) {
+      matchCountSpan.textContent = "0 MATCHES";
+      resultsContainer.innerHTML = `
+        <div class="h-full flex flex-col items-center justify-center py-16 text-center select-none">
+          <span class="text-[var(--color-crimson)] text-xs mb-2 font-mono">✕</span>
+          <p class="font-mono text-xs uppercase tracking-widest text-white mb-1.5">No dispatches found</p>
+          <p class="font-serif italic text-xs text-[var(--color-ink-faint)] max-w-xs leading-relaxed">
+            No writings match "${trimmed}". Try searching by tag or broader keywords.
+          </p>
+        </div>
+      `;
+      return;
+    }
+
+    matchCountSpan.textContent = `${results.length} ${results.length === 1 ? "DISPATCH" : "DISPATCHES"}`;
+
+    results.forEach((res, idx) => {
+      const item = res.item;
+      const snippet = createSnippet(item.content, trimmed);
+
+      const card = document.createElement("a");
+      card.href = `/essays/${item.id}`;
+      card.className =
+        "search-result-item block py-4 text-left no-underline transition-all group focus:outline-none focus:bg-[var(--color-surface-hover)]";
+      card.setAttribute("data-index", String(idx));
+      card.setAttribute("role", "option");
+      card.setAttribute("aria-selected", "false");
+      card.addEventListener("click", () => {
+        closeSearch();
+      });
+
+      card.innerHTML = `
+        <div class="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-[var(--color-ink-faint)] mb-1.5">
+          <span class="text-[var(--color-crimson)] font-medium">${item.categoryTag || "Essay"}</span>
+          <time>${item.date}</time>
+        </div>
+        <h4 class="font-serif text-base sm:text-lg font-bold text-[var(--color-ink)] group-hover:text-white transition-colors mb-1 vhs-chromatic-hover">
+          ${item.title}
+        </h4>
+        <p class="font-serif text-xs sm:text-sm text-[var(--color-ink-muted)] line-clamp-2 leading-relaxed mb-2">
+          ${item.description}
+        </p>
+        ${
+          snippet
+            ? `<div class="text-[11px] font-mono text-[var(--color-ink-faint)] bg-black/60 pl-3 py-1.5 border-l-2 border-[var(--color-crimson)] my-2 line-clamp-2">
+                ${snippet}
+              </div>`
+            : ""
+        }
+        ${
+          item.tags && item.tags.length > 0
+            ? `<div class="flex items-center gap-2 mt-2">
+                ${item.tags
+                  .map(
+                    (t) =>
+                      `<span class="text-[10px] font-mono text-[var(--color-ink-faint)] group-hover:text-[var(--color-ink-muted)] transition-colors">#${t}</span>`
+                  )
+                  .join(" ")}
+              </div>`
+            : ""
+        }
+      `;
+
+      resultsContainer.appendChild(card);
+    });
+  }
+
+  function updateActiveSelection(newIndex: number) {
+    const items = resultsContainer?.querySelectorAll<HTMLElement>(".search-result-item");
+    if (!items || items.length === 0) return;
+
+    items.forEach((it) => {
+      it.classList.remove("bg-[var(--color-surface-hover)]", "pl-2", "border-l-2", "border-l-[var(--color-crimson)]");
+      it.setAttribute("aria-selected", "false");
+    });
+
+    if (newIndex >= 0 && newIndex < items.length) {
+      activeIndex = newIndex;
+      const target = items[activeIndex];
+      target.classList.add("bg-[var(--color-surface-hover)]", "pl-2", "border-l-2", "border-l-[var(--color-crimson)]");
+      target.setAttribute("aria-selected", "true");
+      target.scrollIntoView({ block: "nearest" });
+    }
+  }
+
+  // Keyboard navigation & search event listeners
+  input?.addEventListener("input", (e) => {
+    performSearch((e.target as HTMLInputElement).value);
+  });
+
+  input?.addEventListener("keydown", (e) => {
+    const items = resultsContainer?.querySelectorAll<HTMLElement>(".search-result-item");
+    if (!items || items.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const next = activeIndex + 1 < items.length ? activeIndex + 1 : 0;
+      updateActiveSelection(next);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const prev = activeIndex - 1 >= 0 ? activeIndex - 1 : items.length - 1;
+      updateActiveSelection(prev);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (activeIndex >= 0 && activeIndex < items.length) {
+        (items[activeIndex] as HTMLAnchorElement).click();
+      } else if (items.length > 0) {
+        (items[0] as HTMLAnchorElement).click();
+      }
+    }
+  });
+
+  closeBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    closeSearch();
+  });
+
+  modal?.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeSearch();
+    }
+  });
+
+  // Intercept native dialog cancel on Escape to run smooth exit transition
+  modal?.addEventListener("cancel", (e) => {
+    e.preventDefault();
+    closeSearch();
+  });
+
+  // Global hotkeys: '/' or 'Cmd+K' / 'Ctrl+K'
+  window.addEventListener("keydown", (e) => {
+    const target = e.target as HTMLElement | null;
+    const isTyping =
+      target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable);
+
+    if (e.key === "/" && !isTyping) {
+      e.preventDefault();
+      openSearch();
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      if (modal?.open) {
+        closeSearch();
+      } else {
+        openSearch();
+      }
+    } else if (e.key === "Escape" && modal?.open) {
+      closeSearch();
+    }
+  });
+
+  // Custom event trigger for buttons on the page
+  window.addEventListener("dissidentx:open-search", (e: any) => {
+    openSearch(e?.detail?.query || "");
+  });
+
+  document.addEventListener("astro:before-preparation", () => {
+    if (modal?.open) {
+      modal.close();
+      document.body.classList.remove("overflow-hidden");
+    }
+  });
+</script>

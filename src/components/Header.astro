@@ -1,0 +1,134 @@
+---
+interface Props {
+  codex?: string;
+  codexTitle?: string;
+}
+
+const { codex, codexTitle: customTitle } = Astro.props;
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
+
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/essays", label: "Essays" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+
+let codexLabel = codex;
+let codexTitle = customTitle || "";
+
+if (!codexLabel) {
+  if (pathname === "/") {
+    codexLabel = "CODEX 01";
+    codexTitle = "Codex 01 · The Hearth";
+  } else if (pathname.startsWith("/essays")) {
+    codexLabel = "CODEX 02";
+    codexTitle = "Codex 02 · Dispatches & Tracts";
+  } else if (pathname.startsWith("/about")) {
+    codexLabel = "CODEX 03";
+    codexTitle = "Codex 03 · The Desert & Manifesto";
+  } else if (pathname.startsWith("/contact")) {
+    codexLabel = "CODEX 04";
+    codexTitle = "Codex 04 · Correspondence";
+  } else {
+    codexLabel = "CODEX 00";
+    codexTitle = "Codex 00 · The Void";
+  }
+} else if (!codexTitle) {
+  if (codexLabel === "CODEX 00") {
+    codexTitle = "Codex 00 · The Void";
+  }
+}
+---
+
+<header class="border-b border-[var(--color-rule)] pb-6 mb-10 text-center">
+  <!-- Subtle VCR On-Screen Display (OSD) Bar -->
+  <div class="flex items-center justify-between text-[10px] font-mono text-[var(--color-ink-faint)] tracking-widest uppercase mb-4 pb-2 border-b border-[var(--color-rule)] select-none" aria-hidden="true">
+    <div class="flex items-center gap-1.5 text-[var(--color-ink-muted)]">
+      <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-vhs-green)] opacity-80 animate-pulse"></span>
+      <span class="font-semibold text-white/80">PLAY</span>
+      <span class="text-[var(--color-ink-faint)]">▶</span>
+      <span>SP</span>
+    </div>
+    <div class="flex items-center gap-2 text-[var(--color-ink-faint)]">
+      <span class="text-[var(--color-crimson-dark)] font-normal tracking-wider" title={codexTitle}>{codexLabel}</span>
+      <span>·</span>
+      <span id="vhs-live-clock">--:--:--</span>
+    </div>
+  </div>
+
+  <div class="max-w-xl mx-auto px-4">
+    <a href="/" class="no-underline inline-block group" aria-label="DissidentX Home">
+      <h1 class="font-serif text-2xl sm:text-3xl md:text-4xl font-black text-[var(--color-ink)] group-hover:text-white transition-colors whitespace-nowrap vhs-chromatic-hover">
+        Dissidentx<span class="text-[var(--color-crimson)]">.</span>
+      </h1>
+    </a>
+
+    <p class="font-serif font-light italic text-base sm:text-lg text-[var(--color-ink-muted)] mt-1.5 tracking-wide">
+      In pursuit of Truth.
+    </p>
+  </div>
+
+  <!-- Minimalist Navigation -->
+  <nav class="flex items-center justify-center gap-3 sm:gap-7 mt-5 sm:mt-6 text-xs font-mono tracking-widest uppercase" aria-label="Primary">
+    {
+      navLinks.map((link) => {
+        const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+        return (
+          <a
+            href={link.href}
+            class={`transition-colors py-2 px-1 min-h-[44px] inline-flex items-center vhs-chromatic-hover border-b ${
+              isActive
+                ? "text-[var(--color-crimson)] border-[var(--color-crimson)]"
+                : "text-[var(--color-ink-muted)] hover:text-white border-transparent"
+            }`}
+            aria-current={isActive ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        );
+      })
+    }
+
+    <!-- Search Trigger Button: unified sizing and stable layout to prevent flicker -->
+    <button
+      type="button"
+      id="header-search-btn"
+      class="group text-[var(--color-ink-muted)] hover:text-white transition-colors py-2 px-1.5 min-h-[44px] inline-flex items-center gap-1.5 cursor-pointer select-none vhs-chromatic-hover border-b border-transparent ml-0.5"
+      aria-label="Search essays"
+      title="Search essays (Press / to open)"
+    >
+      <span class="hidden sm:inline">Search</span>
+      <span class="font-mono text-[10px] text-[var(--color-ink-faint)] group-hover:text-white group-hover:border-[var(--color-crimson)] border border-[var(--color-rule-light)] px-1.5 py-0.5 leading-none select-none transition-colors" aria-hidden="true">/</span>
+    </button>
+  </nav>
+</header>
+
+<script>
+  let clockInterval: number | null = null;
+
+  function updateVhsClock() {
+    const clock = document.getElementById("vhs-live-clock");
+    if (!clock) return;
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, "0");
+    const m = String(now.getMinutes()).padStart(2, "0");
+    const s = String(now.getSeconds()).padStart(2, "0");
+    clock.textContent = `${h}:${m}:${s}`;
+  }
+
+  function initHeader() {
+    updateVhsClock();
+    if (clockInterval === null) {
+      clockInterval = window.setInterval(updateVhsClock, 1000);
+    }
+
+    const searchBtn = document.getElementById("header-search-btn");
+    searchBtn?.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent("dissidentx:open-search"));
+    });
+  }
+
+  initHeader();
+  document.addEventListener("astro:page-load", initHeader);
+</script>

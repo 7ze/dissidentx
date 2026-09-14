@@ -1,0 +1,298 @@
+---
+import { formatDate, type EssayEntry } from "../lib/essays";
+
+interface Props {
+  essays: EssayEntry[];
+}
+
+const { essays } = Astro.props;
+const romanNumerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
+const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
+---
+
+<div class="border border-[var(--color-rule)] bg-[var(--color-surface)] p-4 sm:p-7 my-6 min-h-[460px] flex flex-col justify-start">
+  <!-- Interactive Search & Tag Bar (Aligned with Monastic Zine Aesthetic) -->
+  <div class="mb-6 pb-5 border-b border-[var(--color-rule)] space-y-3">
+    <!-- Search Input (Single subtle focus border, zero nested red boxes) -->
+    <div class="relative flex items-center bg-black/60 border border-[var(--color-rule)] focus-within:border-[var(--color-crimson-dark)] transition-colors px-3 py-1.5">
+      <span class="text-[var(--color-crimson)] font-mono text-xs select-none flex-shrink-0 mr-2.5" aria-hidden="true">[ ? ]</span>
+      <label for="archive-search-input" class="sr-only">Filter dispatches</label>
+      <input
+        type="text"
+        id="archive-search-input"
+        placeholder="Filter dispatches by keyword, tag, or content..."
+        class="w-full bg-transparent border-none outline-none text-xs font-mono text-[var(--color-ink)] placeholder-[var(--color-ink-faint)] tracking-wide focus:outline-none focus-visible:outline-none focus:ring-0"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button
+        type="button"
+        id="archive-search-clear"
+        class="hidden text-[10px] font-mono text-[var(--color-ink-faint)] hover:text-white cursor-pointer select-none ml-2 flex-shrink-0 p-1"
+        title="Clear filter"
+        aria-label="Clear filter"
+      >
+        [ ✕ ]
+      </button>
+    </div>
+
+    <!-- Status Sub-Bar: Topics Label & Match Count -->
+    <div class="flex items-center justify-between text-[10px] font-mono text-[var(--color-ink-faint)] uppercase tracking-wider pt-0.5">
+      <div class="flex items-center gap-1.5">
+        <span class="w-1 h-1 rounded-full bg-[var(--color-crimson)]"></span>
+        <span class="tracking-widest text-[var(--color-ink-muted)]">TOPICS</span>
+      </div>
+      <span id="archive-count-text" aria-live="polite" aria-atomic="true">
+        DISPATCHES: {essays.length} OF {essays.length}
+      </span>
+    </div>
+
+    <!-- Tag Filter Pills: 3 uniform topics per row on phone, natural inline flex on desktop -->
+    <div class="grid grid-cols-3 gap-1.5 sm:flex sm:flex-wrap sm:justify-start sm:gap-x-2.5 sm:gap-y-1.5 text-xs font-mono w-full" role="toolbar" aria-label="Topic filters">
+      <button
+        type="button"
+        class="archive-tag-pill active text-[9px] min-[390px]:text-[10px] font-mono uppercase text-[var(--color-crimson)] font-bold cursor-pointer transition-colors py-1 px-1 leading-tight inline-flex items-center justify-center sm:justify-start w-full sm:w-auto text-center whitespace-nowrap tracking-tight sm:tracking-normal"
+        data-tag=""
+        aria-pressed="true"
+      >
+        [ ALL ]
+      </button>
+      {
+        allTags.map((tag) => (
+          <button
+            type="button"
+            class="archive-tag-pill text-[9px] min-[390px]:text-[10px] font-mono uppercase text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] cursor-pointer transition-colors py-1 px-1 leading-tight inline-flex items-center justify-center sm:justify-start w-full sm:w-auto text-center whitespace-nowrap tracking-tight sm:tracking-normal"
+            data-tag={tag}
+            aria-pressed="false"
+          >
+            [ #{tag} ]
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- List -->
+  <ul id="archive-essay-list" class="divide-y divide-[var(--color-rule)]">
+    {
+      essays.map((essay, idx) => (
+        <li
+          class="archive-essay-item py-5 first:pt-0 last:pb-0 group transition-opacity"
+          data-id={essay.id}
+          data-title={essay.data.title}
+          data-description={essay.data.description}
+          data-tags={(essay.data.tags || []).join(",")}
+        >
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+            <!-- Left: Numeral & Title -->
+            <div class="flex items-baseline gap-3 flex-1 min-w-0">
+              <span class="text-[var(--color-crimson)] font-mono text-xs font-bold w-8 flex-shrink-0">
+                {romanNumerals[idx] || `${idx + 1}`}.
+              </span>
+              <a
+                href={`/essays/${essay.id}`}
+                class="font-serif text-base sm:text-lg font-semibold text-[var(--color-ink)] group-hover:text-white transition-colors leading-snug"
+              >
+                {essay.data.title}
+              </a>
+            </div>
+
+            <!-- Right: Date & Tag -->
+            <div class="flex items-center gap-3 font-mono text-xs text-[var(--color-ink-faint)] self-end sm:self-auto flex-shrink-0">
+              {essay.data.tags && essay.data.tags.length > 0 && (
+                <span class="text-[10px] uppercase text-[var(--color-ink-muted)]">
+                  #{essay.data.tags[0]}
+                </span>
+              )}
+              <time datetime={essay.data.pubDate.toISOString()}>
+                {formatDate(essay.data.pubDate)}
+              </time>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="font-serif text-xs sm:text-sm text-[var(--color-ink-muted)] mt-1.5 pl-11 line-clamp-2 leading-relaxed">
+            {essay.data.description}
+          </p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <!-- Empty State -->
+  <div id="archive-no-results" class="hidden py-16 text-center select-none flex-1 flex flex-col items-center justify-center">
+    <span class="text-[var(--color-crimson)] text-xs mb-2 font-mono">✕</span>
+    <p class="font-mono text-xs uppercase tracking-widest text-white mb-1.5">No dispatches found</p>
+    <p class="font-serif italic text-xs text-[var(--color-ink-faint)] mb-4 max-w-xs leading-relaxed">
+      No writings match your criteria. Try clearing active filters or relaxing keywords.
+    </p>
+    <button
+      type="button"
+      id="archive-reset-btn"
+      class="text-xs font-mono text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] uppercase tracking-wider transition-colors cursor-pointer"
+    >
+      [ RESET FILTER ]
+    </button>
+  </div>
+</div>
+
+<script>
+  import Fuse from "fuse.js";
+
+  interface SearchIndexEntry {
+    id: string;
+    title: string;
+    description: string;
+    tags: string[];
+    categoryTag: string;
+    date: string;
+    timestamp: number;
+    content: string;
+  }
+
+  let searchIndex: SearchIndexEntry[] | null = null;
+  let fuse: Fuse<SearchIndexEntry> | null = null;
+  let currentActiveTag = "";
+
+  function setupArchive() {
+    const searchInput = document.getElementById("archive-search-input") as HTMLInputElement | null;
+    const clearBtn = document.getElementById("archive-search-clear");
+    const countText = document.getElementById("archive-count-text");
+    const noResults = document.getElementById("archive-no-results");
+    const resetBtn = document.getElementById("archive-reset-btn");
+    const tagPills = document.querySelectorAll<HTMLButtonElement>(".archive-tag-pill");
+    const essayItems = document.querySelectorAll<HTMLElement>(".archive-essay-item");
+
+    if (!searchInput || !tagPills.length) return;
+
+    async function initSearch() {
+      if (searchIndex && fuse) return;
+      try {
+        const res = await fetch("/search-index.json");
+        if (!res.ok) return;
+        searchIndex = await res.json();
+        if (searchIndex) {
+          fuse = new Fuse(searchIndex, {
+            keys: [
+              { name: "title", weight: 0.35 },
+              { name: "tags", weight: 0.30 },
+              { name: "description", weight: 0.20 },
+              { name: "content", weight: 0.15 },
+            ],
+            threshold: 0.38,
+            ignoreLocation: true,
+            minMatchCharLength: 2,
+          });
+        }
+      } catch (e) {
+        console.error("Failed to initialize archive search:", e);
+      }
+    }
+
+    function filterEssays() {
+      const query = searchInput?.value.trim() || "";
+      clearBtn?.classList.toggle("hidden", !query);
+
+      let matchingIds: Set<string> | null = null;
+
+      if (query && fuse) {
+        const searchResults = fuse.search(query);
+        matchingIds = new Set(searchResults.map((r) => r.item.id));
+      }
+
+      let visibleCount = 0;
+
+      essayItems.forEach((item) => {
+        const id = item.getAttribute("data-id") || "";
+        const itemTags = (item.getAttribute("data-tags") || "").split(",").map((t) => t.trim().toLowerCase());
+
+        const matchesQuery = matchingIds === null || matchingIds.has(id);
+        const matchesTag = !currentActiveTag || itemTags.includes(currentActiveTag.toLowerCase());
+
+        if (matchesQuery && matchesTag) {
+          item.style.display = "";
+          visibleCount++;
+        } else {
+          item.style.display = "none";
+        }
+      });
+
+      if (countText) {
+        countText.textContent = `DISPATCHES: ${visibleCount} OF ${essayItems.length}`;
+      }
+
+      if (noResults) {
+        noResults.classList.toggle("hidden", visibleCount > 0);
+      }
+    }
+
+    // Preload on focus or hover
+    searchInput.addEventListener("focus", initSearch);
+    searchInput.addEventListener("mouseenter", initSearch);
+    searchInput.addEventListener("input", () => {
+      if (!fuse) {
+        initSearch().then(filterEssays);
+      } else {
+        filterEssays();
+      }
+    });
+
+    clearBtn?.addEventListener("click", () => {
+      searchInput.value = "";
+      filterEssays();
+      searchInput.focus();
+    });
+
+    resetBtn?.addEventListener("click", () => {
+      searchInput.value = "";
+      currentActiveTag = "";
+      tagPills.forEach((p) => {
+        const isAll = p.getAttribute("data-tag") === "";
+        p.classList.toggle("active", isAll);
+        p.classList.toggle("text-[var(--color-crimson)]", isAll);
+        p.classList.toggle("font-bold", isAll);
+        p.classList.toggle("text-[var(--color-ink-muted)]", !isAll);
+        p.setAttribute("aria-pressed", String(isAll));
+      });
+      filterEssays();
+    });
+
+    tagPills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        const tag = pill.getAttribute("data-tag") || "";
+        currentActiveTag = tag;
+
+        tagPills.forEach((p) => {
+          const isActive = p === pill;
+          p.classList.toggle("active", isActive);
+          p.classList.toggle("text-[var(--color-crimson)]", isActive);
+          p.classList.toggle("font-bold", isActive);
+          p.classList.toggle("text-[var(--color-ink-muted)]", !isActive);
+          p.setAttribute("aria-pressed", String(isActive));
+        });
+
+        if (!fuse) {
+          initSearch().then(filterEssays);
+        } else {
+          filterEssays();
+        }
+      });
+    });
+
+    // Handle URL tag param if present (?tag=philosophy)
+    const urlParams = new URLSearchParams(window.location.search);
+    const tagParam = urlParams.get("tag");
+    if (tagParam) {
+      const matchedPill = Array.from(tagPills).find(
+        (p) => p.getAttribute("data-tag")?.toLowerCase() === tagParam.toLowerCase()
+      );
+      if (matchedPill) {
+        matchedPill.click();
+      }
+    }
+  }
+
+  // Setup on initial load and client navigations
+  setupArchive();
+  document.addEventListener("astro:page-load", setupArchive);
+</script>

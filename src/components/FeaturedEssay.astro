@@ -1,0 +1,55 @@
+---
+import type { EssayEntry } from "../lib/essays";
+import { formatDate } from "../lib/essays";
+
+interface Props {
+  essay: EssayEntry;
+  className?: string;
+}
+
+const { essay, className = "" } = Astro.props;
+---
+
+<article class={`border border-[var(--color-rule)] bg-[var(--color-surface)] p-6 sm:p-7 flex flex-col justify-between ${className}`}>
+  <div>
+    <!-- Category & Date -->
+    <div class="flex items-center justify-between text-xs font-mono text-[var(--color-ink-faint)] mb-4 uppercase tracking-wider">
+      <span class="text-[var(--color-crimson)] font-medium">
+        {essay.data.categoryTag || "Featured"}
+      </span>
+      <time datetime={essay.data.pubDate.toISOString()}>
+        {formatDate(essay.data.pubDate)}
+      </time>
+    </div>
+
+    <!-- Title with VHS Chromatic Hover -->
+    <a href={`/essays/${essay.id}`} class="no-underline group">
+      <h2 class="font-serif text-xl sm:text-2xl font-bold text-[var(--color-ink)] group-hover:text-white leading-tight mb-3 transition-colors vhs-chromatic-hover">
+        {essay.data.title}
+      </h2>
+    </a>
+
+    <!-- Excerpt -->
+    <p class="font-serif text-sm sm:text-base text-[var(--color-ink-muted)] leading-relaxed mb-6">
+      {essay.data.description}
+    </p>
+  </div>
+
+  <!-- Read Link -->
+  <div class="pt-4 border-t border-[var(--color-rule)] flex items-center justify-between text-xs font-mono">
+    <a
+      href={`/essays/${essay.id}`}
+      class="text-[var(--color-ink)] hover:text-[var(--color-crimson)] font-medium uppercase tracking-wider transition-colors inline-flex items-center gap-1.5 vhs-chromatic-hover py-2 min-h-[44px]"
+      aria-label={`Read essay: ${essay.data.title}`}
+    >
+      <span>Read essay</span>
+      <span>→</span>
+    </a>
+
+    {essay.data.tags && essay.data.tags.length > 0 && (
+      <span class="text-[var(--color-ink-faint)] uppercase tracking-wider">
+        #{essay.data.tags[0]}
+      </span>
+    )}
+  </div>
+</article>

@@ -1,0 +1,75 @@
+---
+import type { EssayEntry } from "../lib/essays";
+
+interface Props {
+  essays?: EssayEntry[];
+  className?: string;
+}
+
+const { essays = [], className = "" } = Astro.props;
+
+const romanNumerals = ["I", "II", "III", "IV", "V"];
+
+const collectionItems = essays.length > 0
+  ? essays.slice(0, 4).map((essay, idx) => ({
+      numeral: romanNumerals[idx] || `${idx + 1}`,
+      title: essay.data.title,
+      href: `/essays/${essay.id}`,
+      tag: essay.data.tags?.[0] || "Tract",
+    }))
+  : [
+      { numeral: "I", title: "The City as a Voluntary Desert", href: "/essays", tag: "Praxis" },
+      { numeral: "II", title: "Against the Consensus of Illusion", href: "/essays", tag: "Witness" },
+      { numeral: "III", title: "Anatomy of Modern Despondency", href: "/essays", tag: "Theology" },
+    ];
+---
+
+<div class={`border border-[var(--color-rule)] bg-[var(--color-surface)] p-6 sm:p-7 flex flex-col justify-between ${className}`}>
+  <!-- Header -->
+  <div class="flex items-center justify-between pb-3 border-b border-[var(--color-rule)] mb-5">
+    <h2 class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink)] font-semibold">
+      Collections
+    </h2>
+    <span class="font-mono text-[11px] text-[var(--color-ink-faint)] uppercase tracking-wider">
+      Index
+    </span>
+  </div>
+
+  <!-- List -->
+  <ul class="space-y-4 my-1">
+    {
+      collectionItems.map((item) => (
+        <li class="group">
+          <a
+            href={item.href}
+            class="flex items-baseline justify-between no-underline text-xs sm:text-sm font-mono text-[var(--color-ink-muted)] group-hover:text-white transition-colors gap-3 py-1"
+          >
+            <div class="flex items-baseline gap-3 min-w-0">
+              <span class="text-[var(--color-crimson)] font-mono text-xs font-bold w-8 flex-shrink-0">
+                {item.numeral}.
+              </span>
+              <span class="font-serif text-sm sm:text-base truncate group-hover:text-white transition-colors vhs-chromatic-hover">
+                {item.title}
+              </span>
+            </div>
+
+            <span class="text-[11px] text-[var(--color-ink-faint)] group-hover:text-[var(--color-crimson)] uppercase flex-shrink-0 tracking-wider transition-colors">
+              {item.tag}
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <!-- Bottom Archive Link -->
+  <div class="pt-5 mt-3 border-t border-[var(--color-rule)] flex justify-end">
+    <a
+      href="/essays"
+      class="text-xs font-mono text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] no-underline inline-flex items-center gap-1.5 uppercase tracking-wider transition-colors vhs-chromatic-hover py-2 min-h-[44px]"
+    >
+      <span>All essays</span>
+      <span>→</span>
+    </a>
+  </div>
+</div>

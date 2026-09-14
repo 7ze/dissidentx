@@ -1,21 +1,26 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import FeaturedEssay from "../components/FeaturedEssay.astro";
+import CollectionsIndex from "../components/CollectionsIndex.astro";
+import { getEssays } from "../lib/essays";
 
-const pageTitle = "Veritas";
+const pageTitle = "Home";
 const pageDescription =
-	"DissidentX: A platform for bold minds, defying conformity, and uncovering uncensored truths in history, culture, and liberty. Join the vigil at dissidentx.com.";
+  "DissidentX — In pursuit of Truth. A layman's chronicle in philosophy, theology, and monastic praxis.";
+
+const allEssays = await getEssays();
+// Find featured essay or fallback to latest
+const featuredEssay = allEssays.find((e) => e.data.isFeatured) || allEssays[0];
+// Remaining essays for the collections index
+const otherEssays = allEssays.filter((e) => e.id !== featuredEssay?.id);
 ---
 
-<Layout title={pageTitle} , description={pageDescription}>
-	<div class="grid place-items-center min-h-[80vh]">
-		<div class="prose mx-auto text-center text-white/50">
-			<div class="font-display font-black text-3xl text-white/80">
-				Pursuit of Truth.
-			</div>
+<Layout title={pageTitle} description={pageDescription}>
+  <div class="max-w-2xl mx-auto flex flex-col gap-6 sm:gap-8 my-6 sm:my-8">
+    {featuredEssay && (
+      <FeaturedEssay essay={featuredEssay} />
+    )}
 
-			<p class="font-display font-light italic text-xl mt-10">
-				Join the journey. Discover. Reflect. Become.
-			</p>
-		</div>
-	</div>
+    <CollectionsIndex essays={otherEssays} />
+  </div>
 </Layout>

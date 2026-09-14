@@ -1,15 +1,14 @@
 ---
-// fonts
 import "@fontsource-variable/inter";
 import "@fontsource-variable/playfair-display";
 import "@fontsource-variable/playfair-display/wght-italic.css";
+import "@fontsource/jetbrains-mono";
 
-// styles
+import { ClientRouter } from "astro:transitions";
+
 import "../styles/global.css";
-
-// components
-import Navigation from "../components/Navigation.astro";
-import ScrollToTop from "../components/ScrollToTop.astro";
+import VhsParticles from "../components/VhsParticles.astro";
+import SearchModal from "../components/SearchModal.astro";
 
 export interface Props {
   title: string;
@@ -18,73 +17,58 @@ export interface Props {
 
 const { title, description } = Astro.props;
 const siteTitle = "DissidentX";
-const siteDescription =
-  "DissidentX: A space for independent thought, exploring philosophy, literature and theology among other things.";
-const socialMediaTitle = "DissidentX – Pursuit of Truth.";
+const siteTagline = "In pursuit of Truth.";
+const defaultDescription =
+  "DissidentX — In pursuit of Truth. A layman's chronicle in philosophy, theology, and monastic praxis.";
+const pageTitle = title === "Home" ? `${siteTitle} | ${siteTagline}` : `${siteTitle} | ${title}`;
+const pageDescription = description ?? defaultDescription;
+const canonical = new URL(Astro.url.pathname, Astro.site || "https://dissidentx.com").href;
 ---
 
-<html data-theme="black" lang="en">
+<!doctype html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
 
-    <!-- favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href={canonical} />
 
-    <!-- sitemap -->
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="canonical" href="https://dissidentx.com/" />
-
-    <meta name="theme-color" content="#000000" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#020202" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Open Graph tags -->
-    <meta property="og:title" content={socialMediaTitle} />
-    <meta property="og:description" content={siteDescription} />
-    <meta
-      property="og:image"
-      content="https://dissidentx.com/images/dissidentx_logo.webp"
-    />
-    <meta property="og:url" content="https://dissidentx.com/" />
+    <!-- Open Graph -->
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content="https://dissidentx.com/images/og-image.jpg" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="DissidentX" />
+    <meta property="og:site_name" content={siteTitle} />
 
-    <!-- Twitter card (optional, but good) -->
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={socialMediaTitle} />
-    <meta name="twitter:description" content={siteDescription} />
-    <meta
-      name="twitter:image"
-      content="https://dissidentx.com/images/dissidentx_logo.webp"
-    />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content="https://dissidentx.com/images/og-image.jpg" />
 
-    <!-- title & description -->
-    <title>{siteTitle} | {title}</title>
-    {description && <meta name="description" content={description} />}
+    <ClientRouter />
   </head>
 
-  <body class="font-sans bg-base-100">
-    <header class="relative z-30">
-      <Navigation />
-    </header>
+  <body class="min-h-screen flex flex-col bg-[var(--color-void)] text-[var(--color-ink)] selection:bg-[var(--color-crimson)] selection:text-white relative">
+    <!-- Subtle Independent VHS Dust / Mote Particles -->
+    <VhsParticles />
 
-    <main class="relative z-20">
+    <div class="site-wrapper flex-1 flex flex-col my-6 sm:my-10 relative z-10">
       <slot />
-    </main>
+    </div>
 
-    <footer
-      class="relative z-10 mt-8 footer sm:footer-horizontal footer-center p-2 text-white/20"
-    >
-      <aside>
-        <p>
-          Copyright © {new Date().getFullYear()} - All right reserved by DissidentX.
-        </p>
-      </aside>
-    </footer>
-
-    <ScrollToTop />
+    <!-- Global Terminal Search Modal (Fuzzy: Title, Tags, Content) -->
+    <SearchModal />
   </body>
 </html>

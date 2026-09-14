@@ -1,25 +1,81 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
 const pageTitle = "Contact";
-const pageDescription = "How to contact DissidentX";
+const pageDescription = "Establish contact with DissidentX. Correspondence for seekers and thinkers.";
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-	<div class="grid place-items-center min-h-[80vh]">
-		<div class="flex flex-col space-y-4 items-center">
-			<div class="mx-auto px-4 prose text-white/60 text-center">
-				<h1 class="font-display">Get in touch!</h1>
-				<p class="text-justify">
-					If you are interested to collaborate or would like to get in
-					touch, just send me a quick mail. I'd be happy to get back
-					to you. If you like the work I do, consider supporting me.
-					To all those who believe and support this mission, my
-					heartfelt gratitude.
-				</p>
-			</div>
-			<a href="mailto:real.dissidentx@gmail.com" class="btn btn-outline"
-				>Send a mail</a
-			>
-		</div>
-	</div>
+  <div class="max-w-2xl mx-auto my-6 sm:my-10">
+    <!-- Header -->
+    <header class="border-b border-[var(--color-rule)] pb-6 mb-8">
+      <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
+        Correspondence
+      </h1>
+      <p class="font-serif font-light italic text-xl sm:text-2xl text-[var(--color-ink-muted)] mt-2">
+        A channel for quiet dialogue
+      </p>
+    </header>
+
+    <div class="prose text-[var(--color-ink)] mb-8">
+      <p>
+        If you are engaged in serious self-study, seeking honest dialogue on theological and philosophical questions, or wish to contribute a tract to this chronicle, you are welcome to reach out.
+      </p>
+    </div>
+
+    <!-- Contact details -->
+    <div class="border border-[var(--color-rule)] bg-[var(--color-surface)] p-6 sm:p-7 space-y-4 font-mono text-xs">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-2 border-b border-[var(--color-rule)]">
+        <span class="text-[var(--color-ink-faint)] uppercase tracking-wider">Email</span>
+        <div class="flex items-center gap-2.5 flex-wrap">
+          <a
+            href="mailto:real.dissidentx@gmail.com"
+            class="text-[var(--color-crimson)] font-semibold text-sm hover:underline py-1 inline-flex items-center min-h-[36px]"
+          >
+            real.dissidentx@gmail.com
+          </a>
+          <button
+            type="button"
+            id="copy-contact-email"
+            class="cursor-pointer text-[10px] font-mono text-[var(--color-ink-muted)] hover:text-white border border-[var(--color-rule-light)] bg-black px-2 py-1 transition-colors uppercase select-none"
+            aria-label="Copy email address to clipboard"
+          >
+            [ COPY ]
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 py-2 border-b border-[var(--color-rule)]">
+        <span class="text-[var(--color-ink-faint)] uppercase tracking-wider">Focus</span>
+        <span class="text-[var(--color-ink-muted)]">Philosophy, Theology, Patristics</span>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 py-2">
+        <span class="text-[var(--color-ink-faint)] uppercase tracking-wider">Status</span>
+        <span class="text-[var(--color-ink-muted)]">Independent</span>
+      </div>
+    </div>
+  </div>
 </Layout>
+
+<script>
+  function setupCopyEmail() {
+    const copyBtn = document.getElementById("copy-contact-email");
+    copyBtn?.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText("real.dissidentx@gmail.com");
+        copyBtn.textContent = "[ COPIED ✓ ]";
+        copyBtn.classList.add("text-[var(--color-vhs-green)]", "border-[var(--color-vhs-green)]");
+        setTimeout(() => {
+          copyBtn.textContent = "[ COPY ]";
+          copyBtn.classList.remove("text-[var(--color-vhs-green)]", "border-[var(--color-vhs-green)]");
+        }, 2000);
+      } catch (err) {
+        console.error("Failed to copy:", err);
+      }
+    });
+  }
+
+  setupCopyEmail();
+  document.addEventListener("astro:page-load", setupCopyEmail);
+</script>

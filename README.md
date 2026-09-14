@@ -1,34 +1,25 @@
 # DissidentX
 
-![dissidentx_logo](https://dissidentx.com/images/dissidentx_logo.webp)
+> *In pursuit of Truth.*
 
-[DissidentX](https://dissidentx.com) is a publishing platform for essays and ideas, built with AstroJS for fast, modern web performance, styled with Tailwind CSS for clean, responsive design, and enhanced with DaisyUI for streamlined UI components. It’s a space to share thought-provoking content with a focus on clarity and accessibility.
+![DissidentX](https://dissidentx.com/images/dissidentx_logo.webp)
 
-## Preview
+[DissidentX](https://dissidentx.com) is a digital publication and personal chronicle exploring philosophy, Orthodox Christian theology, and monastic praxis. 
 
-Showcasing a clean, responsive UI.
-
-![Image](https://github.com/user-attachments/assets/94c62dcc-1d3e-4d46-be76-ed9078cc7eb5)
+In an age overwhelmed by relentless noise, consumerism, and fleeting distractions, DissidentX serves as a quiet sanctuary for honest inquiry and spiritual resistance — inviting readers to withdraw into the interior desert, question prevailing consensus narratives, and anchor themselves in timeless truths that have outlasted empires.
 
 ---
 
-### Features
+### Dispatches & Collections
 
-    - 📜 Collection of essays and articles
-    - 📱 Responsive, user-friendly design
+Read essays, tracts, and reflections online at [dissidentx.com](https://dissidentx.com).
 
-### Tech Stack
+### Correspondence
 
-    - 🔮 AstroJS (static site generation)
-    - 🍃 Tailwind CSS (styling)
-    - 🌼 DaisyUI (UI components)
-    - 🖲️ Native JavaScript (interactivity)
+Open to quiet dialogue with fellow seekers, thinkers, and students engaged in serious self-study. Reach out at [real.dissidentx@gmail.com](mailto:real.dissidentx@gmail.com).
 
-## Contact
+---
 
-Reach out via [mail](mailto:shinudonney.business@gmail.com) for project inquiries.
-
-
-## License
+### License
 
 [MIT License](./LICENSE)

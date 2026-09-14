@@ -1,0 +1,46 @@
+---
+import { getCollection, render } from "astro:content";
+import Essay from "../../layouts/Essay.astro";
+
+export async function getStaticPaths() {
+  const essays = await getCollection("essays");
+  // Sort chronologically for sequential reading order
+  const sorted = essays.sort((a, b) => a.data.pubDate.getTime() - b.data.pubDate.getTime());
+
+  return sorted.map((essay, index) => {
+    const prevEssay = index > 0 ? sorted[index - 1] : null;
+    const nextEssay = index < sorted.length - 1 ? sorted[index + 1] : null;
+    const wordCount = essay.body ? essay.body.split(/\s+/).filter(Boolean).length : 0;
+    const readingTime = Math.max(1, Math.round(wordCount / 200));
+
+    return {
+      params: { slug: essay.id },
+      props: {
+        essay,
+        prevEssay,
+        nextEssay,
+        wordCount,
+        readingTime,
+      },
+    };
+  });
+}
+
+const { essay, prevEssay, nextEssay, wordCount, readingTime } = Astro.props;
+const { Content } = await render(essay);
+---
+
+<Essay
+  title={essay.data.title}
+  description={essay.data.description}
+  pubDate={essay.data.pubDate}
+  author={essay.data.author}
+  tags={essay.data.tags}
+  categoryTag={essay.data.categoryTag}
+  readingTime={readingTime}
+  wordCount={wordCount}
+  prevEssay={prevEssay}
+  nextEssay={nextEssay}
+>
+  <Content />
+</Essay>

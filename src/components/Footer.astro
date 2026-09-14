@@ -1,0 +1,21 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="mt-16 sm:mt-24 pt-8 sm:pt-12 pb-12 sm:pb-8 border-t border-[var(--color-rule)] text-center font-mono text-[var(--color-ink-faint)]">
+  <p class="font-serif italic text-sm sm:text-base text-[var(--color-ink-muted)] hover:text-white transition-colors vhs-chromatic-hover cursor-default mb-6 sm:mb-7 max-w-lg mx-auto px-6 leading-relaxed text-balance">
+    "And ye shall know the truth, and the truth shall make you free."
+  </p>
+  <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 text-[10px] sm:text-[11px] uppercase tracking-widest px-4">
+    <span class="py-0.5 hover:text-white transition-colors vhs-chromatic-hover cursor-default">DISSIDENTX © {currentYear}</span>
+    <span class="hidden sm:inline select-none text-[var(--color-ink-faint)]" aria-hidden="true">·</span>
+    <span class="text-[var(--color-ink-faint)] hover:text-white transition-colors vhs-chromatic-hover cursor-default py-0.5">A witness in the ruins</span>
+    <span class="hidden sm:inline select-none text-[var(--color-ink-faint)]" aria-hidden="true">·</span>
+    <a
+      href="/about"
+      class="text-[var(--color-ink-muted)] hover:text-white transition-colors vhs-chromatic-hover py-1.5 px-3 underline underline-offset-4 decoration-[var(--color-rule-light)] hover:decoration-white sm:no-underline"
+    >
+      Manifesto
+    </a>
+  </div>
+</footer>

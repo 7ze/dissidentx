@@ -1,31 +1,69 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-const pageTitle = "About";
-const pageDescription = "About DissidentX";
+const pageTitle = "About // Manifesto";
+const pageDescription = "Manifesto of DissidentX: A witness in the ruins, reclaiming contemplative thought against conformity.";
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-	<div class="grid place-items-center min-h-[80vh]">
-		<div class="mx-auto px-4 prose text-white/60 text-center">
-			<h1 class="font-display">What is this all about?</h1>
-			<p class="text-justify">
-				DissidentX exists as a space for honest inquiry and reflection -
-				a platform for those who value truth beyond convenience or
-				conformity. In an age marked by conformity, this project is an
-				invitation to think critically, question prevailing narratives,
-				and engage deeply with the ideas that have shaped history,
-				philosophy, and culture.
-			</p>
-			<p class="text-justify">
-				It is born from a personal commitment to serious self-study in
-				philosophy, theology, and classical literature, and a belief
-				that the challenges of our time demand vigilance—not only in
-				defense of liberty but in the cultivation of character and
-				wisdom. Here, I document an ongoing journey of learning and
-				growth, and I welcome others—young men and all seekers alike—who
-				are willing to join in this pursuit of meaning and truth.
-			</p>
-		</div>
-	</div>
+  <div class="max-w-2xl mx-auto my-6 sm:my-10">
+    <!-- Header -->
+    <header class="border-b border-[var(--color-rule)] pb-6 mb-8">
+      <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
+        The Desert & The Ruins
+      </h1>
+      <p class="font-serif font-light italic text-xl sm:text-2xl text-[var(--color-ink-muted)] mt-2">
+        A witness against the consensus of illusion
+      </p>
+    </header>
+
+    <!-- Main Manifesto Prose -->
+    <div class="prose text-[var(--color-ink)]">
+      <p>
+        DissidentX exists as a space for honest inquiry, spiritual resistance, and quiet reflection — a sanctuary for those who value truth beyond convenience or social conformity. In an age intoxicated by noise, consumerism, and fleeting distractions, this project is an invitation to withdraw into the interior desert: to think critically, question prevailing narratives, and anchor oneself in the enduring truths that have withstood the collapse of empires.
+      </p>
+
+      <blockquote class="border-l border-[var(--color-crimson)] pl-5 py-1 my-8 font-serif italic text-base sm:text-lg text-[var(--color-ink-muted)]">
+        "Orthodoxy is the last true rebellion because it demands the death of the ego, the rejection of worldly vanity, and the courage to stand alone before the Living God."
+      </blockquote>
+
+      <p>
+        It is born from a personal commitment to disciplined self-study in theology, classical philosophy, and patristic wisdom. The challenges of our time demand more than intellectual critique; they demand ascetic vigilance, character, and inner stillness. Here, I document an ongoing struggle of learning, unlearning, and seeking reality amidst the ruins.
+      </p>
+    </div>
+
+    <!-- Subscribe Section -->
+    <section id="subscribe" class="mt-14 pt-8 border-t border-[var(--color-rule)]">
+      <h2 class="font-serif text-xl sm:text-2xl font-bold text-white mb-2">
+        Subscribe
+      </h2>
+      <p class="font-serif text-sm text-[var(--color-ink-muted)] mb-6">
+        Receive essays directly when published. Infrequent dispatches on philosophy, theology, and contemplation.
+      </p>
+
+      <form
+        action="mailto:real.dissidentx@gmail.com?subject=Subscribe%20to%20DissidentX%20Dispatches"
+        method="POST"
+        enctype="text/plain"
+        class="flex flex-col sm:flex-row gap-3 max-w-md"
+      >
+        <label for="subscribe-email" class="sr-only">Email address</label>
+        <input
+          type="email"
+          id="subscribe-email"
+          name="email"
+          placeholder="your.email@domain.com"
+          required
+          autocomplete="email"
+          class="flex-1 bg-[var(--color-surface)] border border-[var(--color-rule-light)] px-4 py-2.5 font-mono text-xs text-white placeholder-[var(--color-ink-faint)] focus:outline-none focus:border-[var(--color-crimson)] min-h-[44px]"
+        />
+        <button
+          type="submit"
+          class="text-xs font-mono font-medium text-white bg-[var(--color-crimson)] hover:bg-[#a00d24] px-5 py-2.5 uppercase tracking-wider transition-colors cursor-pointer min-h-[44px] inline-flex items-center justify-center"
+        >
+          Subscribe
+        </button>
+      </form>
+    </section>
+  </div>
 </Layout>

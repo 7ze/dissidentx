@@ -1,14 +1,10 @@
 ---
-layout: "../../layouts/Essay.astro"
 title: "Why DissidentX?"
 pubDate: 2025-06-15
 description: "A call to reclaim clear thinking and intellectual freedom through disciplined study in an age of conformity."
-author: "Shinu Donney"
+author: "Byzantine Eagle"
 tags: ["Truth", "Philosophy", "Self-Study"]
 ---
-
-
-Published on: 2025-08-11 
 
 ## DissidentX: An Invitation to the Pursuit of Truth
 
