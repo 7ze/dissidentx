@@ -1,5 +1,6 @@
 ---
 import type { EssayEntry } from "../lib/essays";
+import { toRoman } from "../lib/essays";
 
 interface Props {
   essays?: EssayEntry[];
@@ -8,20 +9,12 @@ interface Props {
 
 const { essays = [], className = "" } = Astro.props;
 
-const romanNumerals = ["I", "II", "III", "IV", "V"];
-
-const collectionItems = essays.length > 0
-  ? essays.slice(0, 4).map((essay, idx) => ({
-      numeral: romanNumerals[idx] || `${idx + 1}`,
-      title: essay.data.title,
-      href: `/essays/${essay.id}`,
-      tag: essay.data.tags?.[0] || "Tract",
-    }))
-  : [
-      { numeral: "I", title: "The City as a Voluntary Desert", href: "/essays", tag: "Praxis" },
-      { numeral: "II", title: "Against the Consensus of Illusion", href: "/essays", tag: "Witness" },
-      { numeral: "III", title: "Anatomy of Modern Despondency", href: "/essays", tag: "Theology" },
-    ];
+const collectionItems = essays.map((essay, idx) => ({
+  numeral: toRoman(idx + 1),
+  title: essay.data.title,
+  href: `/essays/${essay.id}`,
+  tag: essay.data.tags?.[0] || "Tract",
+}));
 ---
 
 <div class={`border border-[var(--color-rule)] bg-[var(--color-surface)] p-6 sm:p-7 flex flex-col justify-between ${className}`}>

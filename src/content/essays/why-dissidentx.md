@@ -4,7 +4,8 @@ pubDate: 2025-06-15
 description: "A call to reclaim free thinking in an age of conformity."
 author: "Byzantine Eagle"
 categoryTag: "TRACT/01"
-isFeatured: false
+collection: true
+isFeatured: true
 tags: ["Truth", "Philosophy"]
 ---
 

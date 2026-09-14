@@ -13,6 +13,7 @@ const essays = defineCollection({
     numeral: z.string().optional(),
     isFeatured: z.boolean().optional(),
     draft: z.boolean().default(false),
+    collection: z.preprocess((val) => val === true || val === "yes" || val === "true", z.boolean()).default(false),
   }),
 });
 

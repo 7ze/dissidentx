@@ -1,12 +1,11 @@
 ---
-import { formatDate, type EssayEntry } from "../lib/essays";
+import { formatDate, toRoman, type EssayEntry } from "../lib/essays";
 
 interface Props {
   essays: EssayEntry[];
 }
 
 const { essays } = Astro.props;
-const romanNumerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
 ---
 
@@ -87,7 +86,7 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
             <!-- Left: Numeral & Title -->
             <div class="flex items-baseline gap-3 flex-1 min-w-0">
               <span class="text-[var(--color-crimson)] font-mono text-xs font-bold w-8 flex-shrink-0">
-                {romanNumerals[idx] || `${idx + 1}`}.
+                {toRoman(idx + 1)}.
               </span>
               <a
                 href={`/essays/${essay.id}`}

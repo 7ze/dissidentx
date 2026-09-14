@@ -11,8 +11,8 @@ const pageDescription =
 const allEssays = await getEssays();
 // Find featured essay or fallback to latest
 const featuredEssay = allEssays.find((e) => e.data.isFeatured) || allEssays[0];
-// Remaining essays for the collections index
-const otherEssays = allEssays.filter((e) => e.id !== featuredEssay?.id);
+// Essays explicitly marked to appear on the homepage collections (collection: true / yes)
+const collectionEssays = allEssays.filter((e) => e.data.collection && e.id !== featuredEssay?.id);
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -21,6 +21,8 @@ const otherEssays = allEssays.filter((e) => e.id !== featuredEssay?.id);
       <FeaturedEssay essay={featuredEssay} />
     )}
 
-    <CollectionsIndex essays={otherEssays} />
+    {collectionEssays.length > 0 && (
+      <CollectionsIndex essays={collectionEssays} />
+    )}
   </div>
 </Layout>
