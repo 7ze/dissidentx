@@ -4,7 +4,7 @@
 
 ![DissidentX](https://dissidentx.com/images/dissidentx_logo.webp)
 
-[DissidentX](https://dissidentx.com) is a digital publication and personal chronicle exploring philosophy, Orthodox Christian theology, and monastic praxis. 
+[DissidentX](https://dissidentx.com) is an independent chronicle of philosophy, theology, and the arts — cultural commentary in pursuit of Truth. 
 
 In an age overwhelmed by relentless noise, consumerism, and fleeting distractions, DissidentX serves as a quiet sanctuary for honest inquiry and spiritual resistance — inviting readers to withdraw into the interior desert, question prevailing consensus narratives, and anchor themselves in timeless truths that have outlasted empires.
 

@@ -19,7 +19,7 @@ const { title, description } = Astro.props;
 const siteTitle = "DissidentX";
 const siteTagline = "In pursuit of Truth.";
 const defaultDescription =
-  "DissidentX — In pursuit of Truth. A layman's chronicle in philosophy, theology, and monastic praxis.";
+  "An independent chronicle of philosophy, theology, and the arts — cultural commentary in pursuit of Truth.";
 const pageTitle = title === "Home" ? `${siteTitle} | ${siteTagline}` : `${siteTitle} | ${title}`;
 const pageDescription = description ?? defaultDescription;
 const canonical = new URL(Astro.url.pathname, Astro.site || "https://dissidentx.com").href;

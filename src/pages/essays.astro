@@ -4,7 +4,8 @@ import EssayList from "../components/EssayList.astro";
 import { getEssays } from "../lib/essays";
 
 const pageTitle = "Essays & Tracts";
-const pageDescription = "Chronicle of writings, tracts, and reflections on DissidentX.";
+const pageDescription =
+  "An independent chronicle of philosophy, theology, and the arts — cultural commentary in pursuit of Truth.";
 const essays = await getEssays();
 ---
 
@@ -16,7 +17,7 @@ const essays = await getEssays();
         Essays & Tracts
       </h1>
       <p class="font-serif font-light italic text-xl sm:text-2xl text-[var(--color-ink-muted)] mt-2">
-        A chronicle in philosophy, theology, and monastic praxis
+        An independent chronicle of philosophy, theology, and the arts — cultural commentary in pursuit of Truth
       </p>
     </header>
 
