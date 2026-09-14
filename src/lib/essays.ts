@@ -10,8 +10,10 @@ export function formatDate(date: Date) {
   }).format(date);
 }
 
-export async function getEssays(): Promise<EssayEntry[]> {
-  const essays = await getCollection("essays");
+export async function getEssays(includeDrafts = import.meta.env.DEV): Promise<EssayEntry[]> {
+  const essays = await getCollection("essays", ({ data }) => {
+    return includeDrafts ? true : !data.draft;
+  });
   return essays.sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
   );

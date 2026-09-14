@@ -16,7 +16,9 @@ function stripMarkdown(md: string): string {
 }
 
 export const GET: APIRoute = async () => {
-  const essays = await getCollection("essays");
+  const essays = await getCollection("essays", ({ data }) => {
+    return import.meta.env.DEV ? true : !data.draft;
+  });
 
   const searchIndex = essays.map((essay) => {
     const rawBody = essay.body || "";

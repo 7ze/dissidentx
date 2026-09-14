@@ -1,9 +1,11 @@
 ---
 title: "Why DissidentX?"
 pubDate: 2025-06-15
-description: "A call to reclaim clear thinking and intellectual freedom through disciplined study in an age of conformity."
+description: "A call to reclaim free thinking in an age of conformity."
 author: "Byzantine Eagle"
-tags: ["Truth", "Philosophy", "Self-Study"]
+categoryTag: "TRACT/01"
+isFeatured: false
+tags: ["Truth", "Philosophy"]
 ---
 
 ## DissidentX: An Invitation to the Pursuit of Truth

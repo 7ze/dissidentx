@@ -12,6 +12,7 @@ const essays = defineCollection({
     categoryTag: z.string().optional(),
     numeral: z.string().optional(),
     isFeatured: z.boolean().optional(),
+    draft: z.boolean().default(false),
   }),
 });
 

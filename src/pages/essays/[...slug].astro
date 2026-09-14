@@ -3,7 +3,9 @@ import { getCollection, render } from "astro:content";
 import Essay from "../../layouts/Essay.astro";
 
 export async function getStaticPaths() {
-  const essays = await getCollection("essays");
+  const essays = await getCollection("essays", ({ data }) => {
+    return import.meta.env.DEV ? true : !data.draft;
+  });
   // Sort chronologically for sequential reading order
   const sorted = essays.sort((a, b) => a.data.pubDate.getTime() - b.data.pubDate.getTime());
 

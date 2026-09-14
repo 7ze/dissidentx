@@ -4,7 +4,7 @@ pubDate: 2026-09-01
 description: "The system does not fear your outrage; it feeds on it. The only revolt that breaks the consensus is absolute stillness."
 author: "Byzantine Eagle"
 numeral: "I"
-categoryTag: "TRACT / 01"
+categoryTag: "TRACT / 02"
 isFeatured: true
 tags: ["Acedia", "Monasticism", "Quietism"]
 ---
