@@ -43,23 +43,38 @@ if (!codexLabel) {
 
 <header class="border-b border-[var(--color-rule)] pb-6 mb-10 text-center">
   <!-- Subtle VCR On-Screen Display (OSD) Bar -->
-  <div class="flex items-center justify-between text-[10px] font-mono text-[var(--color-ink-faint)] tracking-widest uppercase mb-4 pb-2 border-b border-[var(--color-rule)] select-none" aria-hidden="true">
+  <div class="flex items-center justify-between text-[10px] font-mono text-[var(--color-ink-faint)] tracking-widest uppercase mb-4 pb-2 border-b border-[var(--color-rule)] select-none">
     <div class="flex items-center gap-1.5 text-[var(--color-ink-muted)]">
       <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-vhs-green)] opacity-80 animate-pulse"></span>
-      <span class="font-semibold text-white/80">PLAY</span>
+      <span class="font-semibold text-[var(--color-ink-bright)] opacity-80">PLAY</span>
       <span class="text-[var(--color-ink-faint)]">▶</span>
       <span>SP</span>
     </div>
-    <div class="flex items-center gap-2 text-[var(--color-ink-faint)]">
+    <div class="flex items-center gap-2 text-[var(--color-ink-faint)] whitespace-nowrap">
       <span class="text-[var(--color-crimson-dark)] font-normal tracking-wider" title={codexTitle}>{codexLabel}</span>
       <span>·</span>
       <span id="vhs-live-clock">--:--:--</span>
+      <span>·</span>
+      <button
+        type="button"
+        id="vhs-theme-toggle"
+        class="cursor-pointer text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors py-1 px-1 -my-1 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider vhs-chromatic-hover"
+        aria-label="Toggle visual theme (Noir / Bone)"
+        title="Toggle visual theme (Noir / Bone)"
+      >
+        <span id="vhs-theme-toggle-label" class="inline-flex items-center gap-1">
+          <span>[</span>
+          <span id="vhs-theme-toggle-icon" class="text-[14px] leading-none select-none">◐</span>
+          <span id="vhs-theme-toggle-text">NOIR</span>
+          <span>]</span>
+        </span>
+      </button>
     </div>
   </div>
 
   <div class="max-w-xl mx-auto px-4">
     <a href="/" class="no-underline inline-block group" aria-label="DissidentX Home">
-      <h1 class="font-serif text-2xl sm:text-3xl md:text-4xl font-black text-[var(--color-ink)] group-hover:text-white transition-colors whitespace-nowrap vhs-chromatic-hover">
+      <h1 class="font-serif text-2xl sm:text-3xl md:text-4xl font-black text-[var(--color-ink)] group-hover:text-[var(--color-crimson)] transition-colors whitespace-nowrap vhs-chromatic-hover">
         Dissidentx<span class="text-[var(--color-crimson)]">.</span>
       </h1>
     </a>
@@ -80,7 +95,7 @@ if (!codexLabel) {
             class={`transition-colors py-2 px-1 min-h-[44px] inline-flex items-center vhs-chromatic-hover border-b ${
               isActive
                 ? "text-[var(--color-crimson)] border-[var(--color-crimson)]"
-                : "text-[var(--color-ink-muted)] hover:text-white border-transparent"
+                : "text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] border-transparent"
             }`}
             aria-current={isActive ? "page" : undefined}
           >
@@ -94,12 +109,12 @@ if (!codexLabel) {
     <button
       type="button"
       id="header-search-btn"
-      class="group text-[var(--color-ink-muted)] hover:text-white transition-colors py-2 px-1.5 min-h-[44px] inline-flex items-center gap-1.5 cursor-pointer select-none vhs-chromatic-hover border-b border-transparent ml-0.5"
+      class="group text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors py-2 px-1.5 min-h-[44px] inline-flex items-center gap-1.5 cursor-pointer select-none vhs-chromatic-hover border-b border-transparent ml-0.5"
       aria-label="Search essays"
       title="Search essays (Press / to open)"
     >
       <span class="hidden sm:inline">Search</span>
-      <span class="font-mono text-[10px] text-[var(--color-ink-faint)] group-hover:text-white group-hover:border-[var(--color-crimson)] border border-[var(--color-rule-light)] px-1.5 py-0.5 leading-none select-none transition-colors" aria-hidden="true">/</span>
+      <span class="font-mono text-[10px] text-[var(--color-ink-faint)] group-hover:text-[var(--color-crimson)] group-hover:border-[var(--color-crimson)] border border-[var(--color-rule-light)] px-1.5 py-0.5 leading-none select-none transition-colors" aria-hidden="true">/</span>
     </button>
   </nav>
 </header>
@@ -117,17 +132,62 @@ if (!codexLabel) {
     clock.textContent = `${h}:${m}:${s}`;
   }
 
+  function updateThemeToggleUI(theme: string) {
+    const icon = document.getElementById("vhs-theme-toggle-icon");
+    const text = document.getElementById("vhs-theme-toggle-text");
+    if (icon) {
+      icon.textContent = theme === "light" ? "◑" : "◐";
+    }
+    if (text) {
+      text.textContent = theme === "light" ? "BONE" : "NOIR";
+    }
+  }
+
   function initHeader() {
     updateVhsClock();
     if (clockInterval === null) {
       clockInterval = window.setInterval(updateVhsClock, 1000);
     }
 
+    const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+    updateThemeToggleUI(currentTheme);
+
+    const toggleBtn = document.getElementById("vhs-theme-toggle");
+    if (toggleBtn && !toggleBtn.dataset.bound) {
+      toggleBtn.dataset.bound = "true";
+      toggleBtn.addEventListener("click", () => {
+        const active = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+        const nextTheme = active === "light" ? "dark" : "light";
+
+        document.documentElement.setAttribute("data-theme", nextTheme);
+        try {
+          localStorage.setItem("theme", nextTheme);
+        } catch (_) {}
+
+        const meta = document.getElementById("meta-theme-color");
+        if (meta) {
+          meta.setAttribute("content", nextTheme === "light" ? "#faf6ee" : "#020202");
+        }
+
+        updateThemeToggleUI(nextTheme);
+        window.dispatchEvent(new CustomEvent("dissidentx:theme-change", { detail: { theme: nextTheme } }));
+      });
+    }
+
     const searchBtn = document.getElementById("header-search-btn");
-    searchBtn?.addEventListener("click", () => {
-      window.dispatchEvent(new CustomEvent("dissidentx:open-search"));
-    });
+    if (searchBtn && !searchBtn.dataset.bound) {
+      searchBtn.dataset.bound = "true";
+      searchBtn.addEventListener("click", () => {
+        window.dispatchEvent(new CustomEvent("dissidentx:open-search"));
+      });
+    }
   }
+
+  window.addEventListener("dissidentx:theme-change", (e: any) => {
+    if (e.detail?.theme) {
+      updateThemeToggleUI(e.detail.theme);
+    }
+  });
 
   initHeader();
   document.addEventListener("astro:page-load", initHeader);

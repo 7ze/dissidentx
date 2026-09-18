@@ -13,7 +13,7 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
   <!-- Interactive Search & Tag Bar (Aligned with Monastic Zine Aesthetic) -->
   <div class="mb-6 pb-5 border-b border-[var(--color-rule)] space-y-3">
     <!-- Search Input (Single subtle focus border, zero nested red boxes) -->
-    <div class="relative flex items-center bg-black/60 border border-[var(--color-rule)] focus-within:border-[var(--color-crimson-dark)] transition-colors px-3 py-1.5">
+    <div class="relative flex items-center bg-[var(--color-void)] border border-[var(--color-rule)] focus-within:border-[var(--color-crimson-dark)] transition-colors px-3 py-1.5">
       <span class="text-[var(--color-crimson)] font-mono text-xs select-none flex-shrink-0 mr-2.5" aria-hidden="true">[ ? ]</span>
       <label for="archive-search-input" class="sr-only">Filter dispatches</label>
       <input
@@ -27,7 +27,7 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
       <button
         type="button"
         id="archive-search-clear"
-        class="hidden text-[10px] font-mono text-[var(--color-ink-faint)] hover:text-white cursor-pointer select-none ml-2 flex-shrink-0 p-1"
+        class="hidden text-[10px] font-mono text-[var(--color-ink-faint)] hover:text-[var(--color-crimson)] cursor-pointer select-none ml-2 flex-shrink-0 p-1"
         title="Clear filter"
         aria-label="Clear filter"
       >
@@ -90,7 +90,7 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
               </span>
               <a
                 href={`/essays/${essay.id}`}
-                class="font-serif text-base sm:text-lg font-semibold text-[var(--color-ink)] group-hover:text-white transition-colors leading-snug"
+                class="font-serif text-base sm:text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-crimson)] transition-colors leading-snug"
               >
                 {essay.data.title}
               </a>
@@ -121,7 +121,7 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
   <!-- Empty State -->
   <div id="archive-no-results" class="hidden py-16 text-center select-none flex-1 flex flex-col items-center justify-center">
     <span class="text-[var(--color-crimson)] text-xs mb-2 font-mono">✕</span>
-    <p class="font-mono text-xs uppercase tracking-widest text-white mb-1.5">No dispatches found</p>
+    <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink-bright)] mb-1.5">No dispatches found</p>
     <p class="font-serif italic text-xs text-[var(--color-ink-faint)] mb-4 max-w-xs leading-relaxed">
       No writings match your criteria. Try clearing active filters or relaxing keywords.
     </p>

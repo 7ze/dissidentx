@@ -24,7 +24,7 @@ const { essay, className = "" } = Astro.props;
 
     <!-- Title with VHS Chromatic Hover -->
     <a href={`/essays/${essay.id}`} class="no-underline group">
-      <h2 class="font-serif text-xl sm:text-2xl font-bold text-[var(--color-ink)] group-hover:text-white leading-tight mb-3 transition-colors vhs-chromatic-hover">
+      <h2 class="font-serif text-xl sm:text-2xl font-bold text-[var(--color-ink)] group-hover:text-[var(--color-crimson)] leading-tight mb-3 transition-colors vhs-chromatic-hover">
         {essay.data.title}
       </h2>
     </a>

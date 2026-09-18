@@ -42,7 +42,7 @@ const {
     <div class="mb-8 pb-3 border-b border-[var(--color-rule)] flex items-center justify-between text-xs font-mono">
       <a
         href="/essays"
-        class="text-[var(--color-ink-muted)] hover:text-white transition-colors flex items-center gap-1.5 uppercase tracking-wider py-1 inline-flex"
+        class="text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors flex items-center gap-1.5 uppercase tracking-wider py-1 inline-flex"
       >
         <span>←</span>
         <span>Essays</span>
@@ -54,7 +54,7 @@ const {
 
     <!-- Article Header -->
     <header class="mb-10 text-center">
-      <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-4">
+      <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--color-ink-bright)] tracking-tight leading-tight mb-4">
         {title}
       </h1>
 
@@ -95,7 +95,7 @@ const {
       <button
         type="button"
         id="copy-dispatch-link"
-        class="text-[var(--color-ink-muted)] hover:text-white transition-colors cursor-pointer select-none py-1.5 px-2 border border-[var(--color-rule-light)] bg-black text-[11px] uppercase tracking-wider flex items-center gap-1.5 ml-auto vhs-chromatic-hover"
+        class="text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors cursor-pointer select-none py-1.5 px-2 border border-[var(--color-rule-light)] bg-[var(--color-surface)] text-[11px] uppercase tracking-wider flex items-center gap-1.5 ml-auto vhs-chromatic-hover"
         title="Copy dispatch link"
         aria-label="Copy dispatch link to clipboard"
       >
@@ -115,7 +115,7 @@ const {
             <span class="text-[10px] text-[var(--color-ink-faint)] uppercase tracking-wider group-hover:text-[var(--color-crimson)] transition-colors">
               ← Previous Dispatch
             </span>
-            <span class="font-serif text-sm font-semibold text-[var(--color-ink)] group-hover:text-white transition-colors line-clamp-2">
+            <span class="font-serif text-sm font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-crimson)] transition-colors line-clamp-2">
               {prevEssay.data.title}
             </span>
           </a>
@@ -129,7 +129,7 @@ const {
             <span class="text-[10px] text-[var(--color-ink-faint)] uppercase tracking-wider group-hover:text-[var(--color-crimson)] transition-colors">
               Next Dispatch →
             </span>
-            <span class="font-serif text-sm font-semibold text-[var(--color-ink)] group-hover:text-white transition-colors line-clamp-2">
+            <span class="font-serif text-sm font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-crimson)] transition-colors line-clamp-2">
               {nextEssay.data.title}
             </span>
           </a>

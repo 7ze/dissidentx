@@ -9,10 +9,10 @@
   transition:persist
 >
   <!-- VCR OSD / Monastic Terminal Top Bar -->
-  <div class="flex-shrink-0 px-4 sm:px-5 py-2.5 bg-black border-b border-[var(--color-rule)] flex items-center justify-between text-[10px] font-mono tracking-widest uppercase text-[var(--color-ink-faint)] select-none">
+  <div class="flex-shrink-0 px-4 sm:px-5 py-2.5 bg-[var(--color-surface)] border-b border-[var(--color-rule)] flex items-center justify-between text-[10px] font-mono tracking-widest uppercase text-[var(--color-ink-faint)] select-none">
     <div class="flex items-center gap-2 text-[var(--color-ink-muted)]">
       <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-vhs-green)] opacity-80 animate-pulse"></span>
-      <span class="font-semibold text-white/90">SEARCH</span>
+      <span class="font-semibold text-[var(--color-ink-bright)] opacity-90">SEARCH</span>
       <span class="text-[var(--color-ink-faint)]">·</span>
       <span>ARCHIVE DISPATCHES</span>
     </div>
@@ -22,7 +22,7 @@
       <button
         id="search-close-btn"
         type="button"
-        class="cursor-pointer text-[var(--color-ink-muted)] hover:text-white transition-colors py-1 px-1 min-h-[32px] inline-flex items-center"
+        class="cursor-pointer text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors py-1 px-1 min-h-[32px] inline-flex items-center"
         title="Press Escape to close"
         aria-label="Close search dialog"
       >
@@ -78,7 +78,7 @@
   </div>
 
   <!-- Search Footer Bar (Matching Site Colophon) -->
-  <div class="flex-shrink-0 px-4 sm:px-5 py-2.5 border-t border-[var(--color-rule)] bg-black flex items-center justify-between text-[10px] font-mono text-[var(--color-ink-faint)] select-none tracking-wider uppercase">
+  <div class="flex-shrink-0 px-4 sm:px-5 py-2.5 border-t border-[var(--color-rule)] bg-[var(--color-surface)] flex items-center justify-between text-[10px] font-mono text-[var(--color-ink-faint)] select-none tracking-wider uppercase">
     <div class="flex items-center gap-2.5 sm:gap-3">
       <span class="hidden sm:inline">[ ↑↓ ] NAVIGATE</span>
       <span class="hidden sm:inline">[ ↵ ] READ</span>
@@ -353,7 +353,7 @@
       resultsContainer.innerHTML = `
         <div class="h-full flex flex-col items-center justify-center py-16 text-center select-none">
           <span class="text-[var(--color-crimson)] text-xs mb-2 font-mono">✕</span>
-          <p class="font-mono text-xs uppercase tracking-widest text-white mb-1.5">No dispatches found</p>
+          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink-bright)] mb-1.5">No dispatches found</p>
           <p class="font-serif italic text-xs text-[var(--color-ink-faint)] max-w-xs leading-relaxed">
             No writings match "${trimmed}". Try searching by tag or broader keywords.
           </p>
@@ -384,7 +384,7 @@
           <span class="text-[var(--color-crimson)] font-medium">${item.categoryTag || "Essay"}</span>
           <time>${item.date}</time>
         </div>
-        <h4 class="font-serif text-base sm:text-lg font-bold text-[var(--color-ink)] group-hover:text-white transition-colors mb-1 vhs-chromatic-hover">
+        <h4 class="font-serif text-base sm:text-lg font-bold text-[var(--color-ink)] group-hover:text-[var(--color-crimson)] transition-colors mb-1 vhs-chromatic-hover">
           ${item.title}
         </h4>
         <p class="font-serif text-xs sm:text-sm text-[var(--color-ink-muted)] line-clamp-2 leading-relaxed mb-2">
@@ -392,7 +392,7 @@
         </p>
         ${
           snippet
-            ? `<div class="text-[11px] font-mono text-[var(--color-ink-faint)] bg-black/60 pl-3 py-1.5 border-l-2 border-[var(--color-crimson)] my-2 line-clamp-2">
+            ? `<div class="text-[11px] font-mono text-[var(--color-ink-faint)] bg-[var(--color-void)] pl-3 py-1.5 border-l-2 border-[var(--color-crimson)] my-2 line-clamp-2">
                 ${snippet}
               </div>`
             : ""

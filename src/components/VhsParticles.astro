@@ -91,27 +91,40 @@
           ? whitePathMid
           : whitePathBright;
 
-        targetPath.moveTo(p.x + p.r, p.y);
-        targetPath.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        const radius = isLight ? Math.max(p.r, 0.42) : p.r;
+        targetPath.moveTo(p.x + radius, p.y);
+        targetPath.arc(p.x, p.y, radius, 0, Math.PI * 2);
       }
 
-      // Draw batched tiers with refined soft opacities
-      ctx.fillStyle = "rgba(230, 226, 218, 0.08)";
+      // Draw batched tiers with refined soft opacities (bone-white in noir, balanced archival ink/sepia in light mode)
+      ctx.fillStyle = isLight ? "rgba(55, 45, 36, 0.12)" : "rgba(230, 226, 218, 0.08)";
       ctx.fill(whitePathFaint);
 
-      ctx.fillStyle = "rgba(230, 226, 218, 0.15)";
+      ctx.fillStyle = isLight ? "rgba(45, 36, 28, 0.22)" : "rgba(230, 226, 218, 0.15)";
       ctx.fill(whitePathMid);
 
-      ctx.fillStyle = "rgba(230, 226, 218, 0.24)";
+      ctx.fillStyle = isLight ? "rgba(35, 26, 18, 0.35)" : "rgba(230, 226, 218, 0.24)";
       ctx.fill(whitePathBright);
 
-      ctx.fillStyle = "rgba(200, 16, 46, 0.22)";
+      ctx.fillStyle = isLight ? "rgba(200, 16, 46, 0.36)" : "rgba(200, 16, 46, 0.22)";
       ctx.fill(crimsonPath);
 
       if (!prefersReducedMotion) {
         requestAnimationFrame(render);
       }
     }
+
+    let isLight = document.documentElement.getAttribute("data-theme") === "light";
+
+    window.addEventListener("dissidentx:theme-change", (e: any) => {
+      isLight = e.detail?.theme === "light";
+      if (prefersReducedMotion) render(0);
+    });
+
+    document.addEventListener("astro:after-swap", () => {
+      isLight = document.documentElement.getAttribute("data-theme") === "light";
+      if (prefersReducedMotion) render(0);
+    });
 
     if (prefersReducedMotion) {
       render(0);

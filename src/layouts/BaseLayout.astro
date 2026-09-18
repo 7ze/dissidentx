@@ -40,8 +40,35 @@ const canonical = new URL(Astro.url.pathname, Astro.site || "https://dissidentx.
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="canonical" href={canonical} />
 
-    <meta name="theme-color" content="#020202" />
+    <meta name="theme-color" id="meta-theme-color" content="#020202" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Anti-FOUC Theme Initialization -->
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem("theme");
+          const theme = stored === "light" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", theme);
+          const meta = document.getElementById("meta-theme-color");
+          if (meta) {
+            meta.setAttribute("content", theme === "light" ? "#faf6ee" : "#020202");
+          }
+        } catch (_) {}
+      })();
+
+      document.addEventListener("astro:after-swap", () => {
+        try {
+          const stored = localStorage.getItem("theme");
+          const theme = stored === "light" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", theme);
+          const meta = document.getElementById("meta-theme-color");
+          if (meta) {
+            meta.setAttribute("content", theme === "light" ? "#faf6ee" : "#020202");
+          }
+        } catch (_) {}
+      });
+    </script>
 
     <!-- Open Graph -->
     <meta property="og:title" content={pageTitle} />
@@ -60,7 +87,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site || "https://dissidentx.
     <ClientRouter />
   </head>
 
-  <body class="min-h-screen flex flex-col bg-[var(--color-void)] text-[var(--color-ink)] selection:bg-[var(--color-crimson)] selection:text-white relative">
+  <body class="min-h-screen flex flex-col bg-[var(--color-void)] text-[var(--color-ink)] relative">
     <!-- Subtle Independent VHS Dust / Mote Particles -->
     <VhsParticles />
 
