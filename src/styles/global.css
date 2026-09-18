@@ -76,18 +76,32 @@ body {
   transition: background-color 0.25s ease;
 }
 
-/* Subtle VHS RGB Chromatic Aberration on Hover */
+/* Subtle VHS RGB Chromatic Aberration on Hover & Active */
 .vhs-chromatic-hover {
   transition: text-shadow 0.2s ease, color 0.15s ease;
 }
 
-.vhs-chromatic-hover:hover {
+@media (hover: hover) and (pointer: fine) {
+  .vhs-chromatic-hover:hover {
+    text-shadow: 
+      -0.8px 0 rgba(200, 16, 46, 0.4),
+      0.8px 0 rgba(0, 220, 240, 0.25);
+  }
+
+  html[data-theme="light"] .vhs-chromatic-hover:hover {
+    text-shadow: 
+      -0.8px 0 rgba(200, 16, 46, 0.45),
+      0.8px 0 rgba(0, 140, 170, 0.35);
+  }
+}
+
+.vhs-chromatic-hover:active {
   text-shadow: 
     -0.8px 0 rgba(200, 16, 46, 0.4),
     0.8px 0 rgba(0, 220, 240, 0.25);
 }
 
-html[data-theme="light"] .vhs-chromatic-hover:hover {
+html[data-theme="light"] .vhs-chromatic-hover:active {
   text-shadow: 
     -0.8px 0 rgba(200, 16, 46, 0.45),
     0.8px 0 rgba(0, 140, 170, 0.35);

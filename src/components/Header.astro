@@ -171,6 +171,7 @@ if (!codexLabel) {
 
         updateThemeToggleUI(nextTheme);
         window.dispatchEvent(new CustomEvent("dissidentx:theme-change", { detail: { theme: nextTheme } }));
+        toggleBtn.blur();
       });
     }
 
