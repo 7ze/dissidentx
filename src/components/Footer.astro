@@ -2,7 +2,45 @@
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="mt-16 sm:mt-24 pt-8 sm:pt-12 pb-12 sm:pb-8 border-t border-[var(--color-rule)] text-center font-mono text-[var(--color-ink-faint)]">
+<footer class="mt-16 sm:mt-24 pt-10 sm:pt-14 pb-12 sm:pb-8 border-t border-[var(--color-rule)] text-center font-mono text-[var(--color-ink-faint)]">
+  <!-- Subscribe Section -->
+  <section id="subscribe" class="mb-10 sm:mb-12 max-w-md mx-auto px-4 text-center">
+    <h2 class="font-serif text-xl sm:text-2xl font-bold text-[var(--color-ink-bright)] mb-2">
+      Subscribe
+    </h2>
+    <p class="font-serif text-sm text-[var(--color-ink-muted)] mb-6 leading-relaxed text-balance">
+      Receive essays directly when published. Infrequent dispatches on philosophy, theology, and contemplation.
+    </p>
+
+    <form
+      action="mailto:real.dissidentx@gmail.com?subject=Subscribe%20to%20DissidentX%20Dispatches"
+      method="POST"
+      enctype="text/plain"
+      class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+    >
+      <label for="subscribe-email" class="sr-only">Email address</label>
+      <input
+        type="email"
+        id="subscribe-email"
+        name="email"
+        placeholder="your.email@domain.com"
+        required
+        autocomplete="email"
+        class="flex-1 bg-[var(--color-surface)] border border-[var(--color-rule-light)] px-4 py-2.5 font-mono text-xs text-[var(--color-ink)] placeholder-[var(--color-ink-faint)] focus:outline-none focus:border-[var(--color-crimson)] focus-visible:ring-1 focus-visible:ring-[var(--color-crimson)] min-h-[44px]"
+      />
+      <button
+        type="submit"
+        aria-label="Subscribe to DissidentX Dispatches"
+        class="text-xs font-mono font-medium text-white bg-[var(--color-crimson)] hover:bg-[#a00d24] px-5 py-2.5 uppercase tracking-wider transition-colors cursor-pointer min-h-[44px] inline-flex items-center justify-center focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-crimson)]"
+      >
+        Subscribe
+      </button>
+    </form>
+  </section>
+
+  <!-- Monastic Divider -->
+  <hr class="border-t border-[var(--color-rule)] w-24 mx-auto mb-8 sm:mb-10" />
+
   <p class="font-serif italic text-sm sm:text-base text-[var(--color-ink-muted)] hover:text-[var(--color-ink-bright)] transition-colors vhs-chromatic-hover cursor-default mb-6 sm:mb-7 max-w-lg mx-auto px-6 leading-relaxed text-balance">
     "And ye shall know the truth, and the truth shall make you free."
   </p>
@@ -13,7 +51,7 @@ const currentYear = new Date().getFullYear();
     <span class="hidden sm:inline select-none text-[var(--color-ink-faint)]" aria-hidden="true">·</span>
     <a
       href="/about"
-      class="text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors vhs-chromatic-hover py-1.5 px-3 underline underline-offset-4 decoration-[var(--color-rule-light)] hover:decoration-[var(--color-crimson)] sm:no-underline"
+      class="text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors vhs-chromatic-hover py-2 px-3 min-h-[44px] inline-flex items-center underline underline-offset-4 decoration-[var(--color-rule-light)] hover:decoration-[var(--color-crimson)] sm:no-underline"
     >
       Manifesto
     </a>

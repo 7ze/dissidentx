@@ -22,7 +22,7 @@
       <button
         id="search-close-btn"
         type="button"
-        class="cursor-pointer text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors py-1 px-1 min-h-[32px] inline-flex items-center"
+        class="cursor-pointer text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors py-1 px-2 min-h-[44px] min-w-[44px] inline-flex items-center justify-center"
         title="Press Escape to close"
         aria-label="Close search dialog"
       >
@@ -245,7 +245,7 @@
       const chip = document.createElement("button");
       chip.type = "button";
       chip.className =
-        "text-[10px] font-mono uppercase text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors cursor-pointer select-none py-0.5 px-1 leading-tight inline-flex items-center";
+        "text-[10px] font-mono uppercase text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors cursor-pointer select-none py-1.5 px-2 min-h-[36px] leading-tight inline-flex items-center";
       chip.textContent = `[ #${tag} ]`;
       chip.setAttribute("aria-label", `Filter by tag ${tag}`);
       chip.addEventListener("click", () => {
@@ -354,7 +354,7 @@
         <div class="h-full flex flex-col items-center justify-center py-16 text-center select-none">
           <span class="text-[var(--color-crimson)] text-xs mb-2 font-mono">✕</span>
           <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink-bright)] mb-1.5">No dispatches found</p>
-          <p class="font-serif italic text-xs text-[var(--color-ink-faint)] max-w-xs leading-relaxed">
+          <p class="font-serif italic text-xs text-[var(--color-ink-muted)] max-w-xs leading-relaxed">
             No writings match "${trimmed}". Try searching by tag or broader keywords.
           </p>
         </div>
@@ -392,7 +392,7 @@
         </p>
         ${
           snippet
-            ? `<div class="text-[11px] font-mono text-[var(--color-ink-faint)] bg-[var(--color-void)] pl-3 py-1.5 border-l-2 border-[var(--color-crimson)] my-2 line-clamp-2">
+            ? `<div class="text-[11px] font-mono text-[var(--color-ink-muted)] bg-[var(--color-void)] pl-3 py-1.5 border-l-2 border-[var(--color-crimson)] my-2 line-clamp-2">
                 ${snippet}
               </div>`
             : ""
