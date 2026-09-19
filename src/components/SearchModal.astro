@@ -32,14 +32,14 @@
   </div>
 
   <!-- Search Input Bar -->
-  <div class="flex-shrink-0 px-4 sm:px-5 py-3.5 bg-[var(--color-surface)] border-b border-[var(--color-rule)] flex items-center gap-3">
-    <span class="font-mono text-[var(--color-crimson)] text-xs font-bold select-none" aria-hidden="true">[ ? ]</span>
+  <div class="flex-shrink-0 px-4 sm:px-5 py-3.5 bg-[var(--color-surface)] border-b border-[var(--color-rule)] focus-within:border-[var(--color-crimson-subtle)] transition-colors flex items-center gap-3">
+    <span class="font-mono text-[var(--color-crimson)] opacity-75 text-xs font-normal select-none" aria-hidden="true">[ ? ]</span>
     <label for="search-input" class="sr-only">Search essays and dispatches</label>
     <input
       type="text"
       id="search-input"
       placeholder="Query by keyword, scriptural theme, tag, or text..."
-      class="flex-1 bg-transparent border-none outline-none text-xs sm:text-sm font-mono text-[var(--color-ink)] placeholder-[var(--color-ink-faint)] tracking-wide focus:ring-0"
+      class="flex-1 bg-transparent border-none outline-none text-xs sm:text-sm font-mono text-[var(--color-ink)] placeholder-[var(--color-ink-faint)] tracking-wide focus:outline-none focus-visible:outline-none focus:ring-0"
       autocomplete="off"
       spellcheck="false"
       aria-controls="search-results"
@@ -90,6 +90,14 @@
 </dialog>
 
 <style>
+  #search-input,
+  #search-input:focus,
+  #search-input:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
   #search-modal {
     top: 2.5rem;
     bottom: auto;

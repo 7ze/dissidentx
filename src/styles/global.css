@@ -16,6 +16,7 @@
   --color-rule-light: #2c2925;
   --color-crimson: #c8102e;
   --color-crimson-muted: rgba(200, 16, 46, 0.7);
+  --color-crimson-subtle: rgba(200, 16, 46, 0.35);
   --color-crimson-dark: #b82038;
   --color-vhs-green: #38df38;
 }
@@ -33,9 +34,11 @@
   --color-rule-light: #2c2925;
   --color-crimson: #c8102e;
   --color-crimson-muted: rgba(200, 16, 46, 0.7);
+  --color-crimson-subtle: rgba(200, 16, 46, 0.35);
   --color-crimson-dark: #b82038;
   --color-vhs-green: #38df38;
   --color-ink-bright: #ffffff;
+  --color-vhs-icon: #888278;
 }
 
 html[data-theme="light"] {
@@ -50,9 +53,11 @@ html[data-theme="light"] {
   --color-rule-light: #d2c9b6;
   --color-crimson: #c8102e;
   --color-crimson-muted: rgba(200, 16, 46, 0.15);
+  --color-crimson-subtle: rgba(200, 16, 46, 0.28);
   --color-crimson-dark: #8b1527;
   --color-vhs-green: #15803d;
   --color-ink-bright: #0a0908;
+  --color-vhs-icon: #625a50;
 }
 
 html {
@@ -193,6 +198,18 @@ textarea:focus-visible {
   outline-offset: 1px;
 }
 
+/* Embedded / Borderless Search Inputs: Never render a nested second focus box */
+#search-input,
+#search-input:focus,
+#search-input:focus-visible,
+#archive-search-input,
+#archive-search-input:focus,
+#archive-search-input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
 /* Windows High Contrast / Forced Colors Mode Support */
 @media (forced-colors: active) {
   :focus-visible,
@@ -206,6 +223,99 @@ textarea:focus-visible {
   button:hover {
     color: Highlight !important;
   }
+}
+
+/* Monastic VHS Tape Deck Volume Slider */
+.vhs-vol-range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--color-rule-light);
+  height: 2px;
+  border-radius: 0;
+  outline: none;
+  vertical-align: middle;
+  padding-block: 8px;
+  background-clip: content-box;
+  touch-action: manipulation;
+}
+
+.vhs-vol-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 8px;
+  height: 12px;
+  background: var(--color-crimson);
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.vhs-vol-range::-moz-range-thumb {
+  width: 8px;
+  height: 12px;
+  background: var(--color-crimson);
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.vhs-vol-range:hover::-webkit-slider-thumb,
+.vhs-vol-range:focus-visible::-webkit-slider-thumb {
+  transform: scale(1.15);
+  box-shadow: 0 0 4px var(--color-crimson);
+}
+
+.vhs-vol-range:hover::-moz-range-thumb,
+.vhs-vol-range:focus-visible::-moz-range-thumb {
+  transform: scale(1.15);
+  box-shadow: 0 0 4px var(--color-crimson);
+}
+
+@media (max-width: 640px) {
+  .vhs-vol-range::-webkit-slider-thumb {
+    width: 9px;
+    height: 13px;
+  }
+  .vhs-vol-range::-moz-range-thumb {
+    width: 9px;
+    height: 13px;
+  }
+}
+
+/* Monastic VHS Tape Deck Volume Slider Drawer */
+.vhs-vol-slider-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: max-width 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+/* PC Hover & keyboard focus within volume panel */
+@media (hover: hover) and (pointer: fine) {
+  #vhs-radio-vol-panel:hover .vhs-vol-slider-wrap,
+  #vhs-radio-vol-panel:focus-within .vhs-vol-slider-wrap {
+    max-width: 140px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* Touch / Click: expands when .is-open is toggled */
+#vhs-radio-vol-panel.is-open .vhs-vol-slider-wrap {
+  max-width: 140px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#vhs-radio-vol-panel.is-open #vhs-vol-toggle-btn {
+  color: var(--color-crimson);
 }
 
 /* Accessibility: Skip to Content Link */

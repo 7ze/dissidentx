@@ -13,8 +13,8 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
   <!-- Interactive Search & Tag Bar (Aligned with Monastic Zine Aesthetic) -->
   <div class="mb-6 pb-5 border-b border-[var(--color-rule)] space-y-3">
     <!-- Search Input (Single subtle focus border, zero nested red boxes) -->
-    <div class="relative flex items-center bg-[var(--color-void)] border border-[var(--color-rule)] focus-within:border-[var(--color-crimson)] transition-colors px-3 py-1.5">
-      <span class="text-[var(--color-crimson)] font-mono text-xs select-none flex-shrink-0 mr-2.5" aria-hidden="true">[ ? ]</span>
+    <div class="relative flex items-center bg-[var(--color-void)] border border-[var(--color-rule)] focus-within:border-[var(--color-crimson-subtle)] transition-colors px-3 py-1.5">
+      <span class="text-[var(--color-crimson)] opacity-75 font-mono text-xs select-none flex-shrink-0 mr-2.5" aria-hidden="true">[ ? ]</span>
       <label for="archive-search-input" class="sr-only">Filter dispatches</label>
       <input
         type="text"
@@ -295,3 +295,13 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
   setupArchive();
   document.addEventListener("astro:page-load", setupArchive);
 </script>
+
+<style>
+  #archive-search-input,
+  #archive-search-input:focus,
+  #archive-search-input:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+</style>

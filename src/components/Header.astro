@@ -44,21 +44,85 @@ if (!codexLabel) {
 <header class="border-b border-[var(--color-rule)] pb-6 mb-10 text-center">
   <!-- Subtle VCR On-Screen Display (OSD) Bar -->
   <div class="flex items-center justify-between text-[10px] font-mono text-[var(--color-ink-faint)] tracking-widest uppercase mb-4 pb-2 border-b border-[var(--color-rule)] select-none">
-    <div class="flex items-center gap-1.5 text-[var(--color-ink-muted)]">
-      <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-vhs-green)] opacity-80 animate-pulse"></span>
-      <span class="font-semibold text-[var(--color-ink-bright)] opacity-80">PLAY</span>
-      <span class="text-[var(--color-ink-faint)]">▶</span>
-      <span>SP</span>
+    <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
+      <button
+        type="button"
+        id="vhs-radio-btn"
+        class="cursor-pointer text-[var(--color-ink-muted)] hover:text-[var(--color-ink-bright)] transition-colors py-1 px-1.5 -ml-1.5 min-h-[36px] inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider vhs-chromatic-hover select-none focus-visible:ring-1 focus-visible:ring-[var(--color-crimson)] group flex-shrink-0"
+        aria-label="Play ambient soundscape (Opt-in)"
+        title="Toggle ambient background soundscape (Opt-in)"
+      >
+        <span
+          id="vhs-radio-led"
+          class="w-1.5 h-1.5 rounded-full bg-[var(--color-vhs-green)] opacity-40 transition-all duration-300"
+          aria-hidden="true"
+        ></span>
+        <span id="vhs-radio-action" class="font-normal text-[var(--color-ink)] group-hover:text-[var(--color-crimson)] transition-colors">PLAY</span>
+        <span id="vhs-radio-icon" class="text-[var(--color-ink)] group-hover:text-[var(--color-crimson)] transition-colors">▶</span>
+        <span id="vhs-radio-tape" class="hidden min-[420px]:inline-flex items-center gap-1 text-[var(--color-ink-muted)]">
+          <span>SP</span>
+          <span id="vhs-radio-spool" class="hidden text-[10px] text-[var(--color-vhs-green)] font-normal animate-spin select-none" style="animation-duration: 3.5s;" aria-hidden="true">◐</span>
+        </span>
+      </button>
+
+      <!-- Minimalist VHS Volume Control (Reveals ONLY when playing; collapsed by default) -->
+      <div
+        id="vhs-radio-vol-panel"
+        class="hidden items-center text-[9px] font-mono text-[var(--color-ink-muted)] pl-1 sm:pl-1.5 border-l border-[var(--color-rule-light)] flex-shrink-0"
+      >
+        <!-- Volume Icon Button (Click on phone to toggle, hover on PC) -->
+        <button
+          type="button"
+          id="vhs-vol-toggle-btn"
+          class="cursor-pointer text-[var(--color-vhs-icon)] hover:text-[var(--color-crimson)] transition-colors py-1 px-1 min-h-[36px] min-w-[26px] inline-flex items-center justify-center select-none focus-visible:ring-1 focus-visible:ring-[var(--color-crimson)]"
+          aria-label="Toggle volume slider"
+          aria-expanded="false"
+          title="Adjust volume"
+        >
+          <svg
+            id="vhs-vol-icon"
+            class="w-3.5 h-3.5 transition-colors"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M2 5.5v5h2.5L8 14V2L4.5 5.5H2z" />
+            <path id="vhs-vol-wave-1" d="M10.5 5.5 C 12 6.5, 12 9.5, 10.5 10.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" />
+            <path id="vhs-vol-wave-2" d="M12.5 3.5 C 15 5.5, 15 10.5, 12.5 12.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" />
+            <path id="vhs-vol-mute" class="hidden" d="M10.5 6 L 14.5 10 M 14.5 6 L 10.5 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" />
+          </svg>
+        </button>
+
+        <!-- Expandable Volume Slider (Reveals on PC hover or Phone click) -->
+        <div
+          id="vhs-vol-slider-wrap"
+          class="vhs-vol-slider-wrap"
+        >
+          <label for="vhs-radio-vol-slider" class="sr-only">Volume</label>
+          <input
+            type="range"
+            id="vhs-radio-vol-slider"
+            min="0"
+            max="100"
+            value="5"
+            step="1"
+            class="vhs-vol-range w-10 sm:w-14 cursor-pointer ml-0.5"
+            aria-label="Volume"
+            title="Adjust Volume"
+          />
+          <span id="vhs-radio-vol-label" class="font-mono text-[9px] text-[var(--color-ink-muted)] w-5 sm:w-6 tabular-nums select-none">5%</span>
+        </div>
+      </div>
     </div>
-    <div class="flex items-center gap-2 text-[var(--color-ink-faint)] whitespace-nowrap">
-      <span class="text-[var(--color-crimson)] font-normal tracking-wider" title={codexTitle}>{codexLabel}</span>
-      <span>·</span>
+    <div class="flex items-center gap-1.5 sm:gap-2 text-[var(--color-ink-faint)] whitespace-nowrap">
+      <span class="hidden min-[460px]:inline text-[var(--color-crimson)] font-normal tracking-wider" title={codexTitle}>{codexLabel}</span>
+      <span class="hidden min-[460px]:inline">·</span>
       <span id="vhs-live-clock">--:--:--</span>
       <span>·</span>
       <button
         type="button"
         id="vhs-theme-toggle"
-        class="cursor-pointer text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors py-1 px-2 min-h-[36px] inline-flex items-center justify-center gap-1 font-mono text-[10px] uppercase tracking-wider vhs-chromatic-hover select-none"
+        class="cursor-pointer text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors py-1 px-1.5 sm:px-2 min-h-[36px] inline-flex items-center justify-center gap-1 font-mono text-[10px] uppercase tracking-wider vhs-chromatic-hover select-none"
         aria-label="Toggle visual theme (Noir / Bone)"
         title="Toggle visual theme (Noir / Bone)"
       >
@@ -121,6 +185,7 @@ if (!codexLabel) {
 
 <script>
   let clockInterval: number | null = null;
+  let audioFadeInterval: number | null = null;
 
   function updateVhsClock() {
     const clock = document.getElementById("vhs-live-clock");
@@ -143,6 +208,139 @@ if (!codexLabel) {
     }
   }
 
+  function getSavedVolume(): number {
+    try {
+      const saved = localStorage.getItem("dissidentx:radio-vol");
+      if (saved !== null) {
+        const val = parseInt(saved, 10);
+        if (!isNaN(val) && val >= 0 && val <= 100) return val;
+      }
+    } catch (_) {}
+    return 5; // Default 5% volume as requested
+  }
+
+  function fadeAudio(audio: HTMLAudioElement, targetVolume: number, durationMs: number, onComplete?: () => void) {
+    if (audioFadeInterval !== null) {
+      clearInterval(audioFadeInterval);
+      audioFadeInterval = null;
+    }
+
+    const startVolume = audio.volume;
+    const startTime = performance.now();
+    const stepInterval = 25;
+
+    audioFadeInterval = window.setInterval(() => {
+      const elapsed = performance.now() - startTime;
+      const progress = Math.min(1, elapsed / durationMs);
+      const factor = 0.5 * (1 - Math.cos(Math.PI * progress));
+      audio.volume = Math.max(0, Math.min(1, startVolume + (targetVolume - startVolume) * factor));
+
+      if (progress >= 1) {
+        if (audioFadeInterval !== null) {
+          clearInterval(audioFadeInterval);
+          audioFadeInterval = null;
+        }
+        audio.volume = targetVolume;
+        if (onComplete) onComplete();
+      }
+    }, stepInterval);
+  }
+
+  function updateVolIcon(vol: number) {
+    const wave1 = document.getElementById("vhs-vol-wave-1");
+    const wave2 = document.getElementById("vhs-vol-wave-2");
+    const mute = document.getElementById("vhs-vol-mute");
+    const icon = document.getElementById("vhs-vol-icon");
+
+    if (vol === 0) {
+      if (wave1) wave1.classList.add("hidden");
+      if (wave2) wave2.classList.add("hidden");
+      if (mute) mute.classList.remove("hidden");
+      if (icon) icon.classList.add("text-[var(--color-crimson)]");
+    } else if (vol < 50) {
+      if (wave1) wave1.classList.remove("hidden");
+      if (wave2) wave2.classList.add("hidden");
+      if (mute) mute.classList.add("hidden");
+      if (icon) icon.classList.remove("text-[var(--color-crimson)]");
+    } else {
+      if (wave1) wave1.classList.remove("hidden");
+      if (wave2) wave2.classList.remove("hidden");
+      if (mute) mute.classList.add("hidden");
+      if (icon) icon.classList.remove("text-[var(--color-crimson)]");
+    }
+  }
+
+  function updateRadioUI(isPlaying: boolean) {
+    const radioBtn = document.getElementById("vhs-radio-btn");
+    const led = document.getElementById("vhs-radio-led");
+    const action = document.getElementById("vhs-radio-action");
+    const icon = document.getElementById("vhs-radio-icon");
+    const spool = document.getElementById("vhs-radio-spool");
+    const volPanel = document.getElementById("vhs-radio-vol-panel");
+    const slider = document.getElementById("vhs-radio-vol-slider") as HTMLInputElement | null;
+    const label = document.getElementById("vhs-radio-vol-label");
+
+    if (!radioBtn) return;
+
+    const savedVol = getSavedVolume();
+    if (slider) slider.value = String(savedVol);
+    if (label) label.textContent = `${savedVol}%`;
+    updateVolIcon(savedVol);
+
+    if (isPlaying) {
+      radioBtn.setAttribute("aria-label", "Pause ambient soundscape");
+      radioBtn.setAttribute("title", "Pause ambient background soundscape");
+      if (led) {
+        led.classList.remove("opacity-40");
+        led.classList.add("opacity-100", "animate-pulse", "shadow-[0_0_6px_var(--color-vhs-green)]");
+      }
+      if (action) action.textContent = "PAUSE";
+      if (icon) icon.textContent = "❚❚";
+      if (spool) spool.classList.remove("hidden");
+      if (volPanel) {
+        volPanel.classList.remove("hidden");
+        volPanel.classList.add("inline-flex");
+      }
+    } else {
+      radioBtn.setAttribute("aria-label", "Play ambient soundscape (Opt-in)");
+      radioBtn.setAttribute("title", "Play ambient background soundscape (Opt-in)");
+      if (led) {
+        led.classList.remove("opacity-100", "animate-pulse", "shadow-[0_0_6px_var(--color-vhs-green)]");
+        led.classList.add("opacity-40");
+      }
+      if (action) action.textContent = "PLAY";
+      if (icon) icon.textContent = "▶";
+      if (spool) spool.classList.add("hidden");
+      if (volPanel) {
+        volPanel.classList.remove("inline-flex", "is-open");
+        volPanel.classList.add("hidden");
+        const toggleBtn = document.getElementById("vhs-vol-toggle-btn");
+        if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
+      }
+    }
+  }
+
+  function toggleRadioAudio() {
+    const audio = document.getElementById("vhs-radio-player") as HTMLAudioElement | null;
+    if (!audio) return;
+
+    if (audio.paused) {
+      const targetVol = getSavedVolume() / 100;
+      audio.volume = 0;
+      audio.play().then(() => {
+        fadeAudio(audio, targetVol, 1000);
+        updateRadioUI(true);
+      }).catch((err) => {
+        console.warn("VHS playback prevented:", err);
+      });
+    } else {
+      updateRadioUI(false);
+      fadeAudio(audio, 0, 350, () => {
+        audio.pause();
+      });
+    }
+  }
+
   function initHeader() {
     updateVhsClock();
     if (clockInterval === null) {
@@ -151,6 +349,93 @@ if (!codexLabel) {
 
     const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
     updateThemeToggleUI(currentTheme);
+
+    const audio = document.getElementById("vhs-radio-player") as HTMLAudioElement | null;
+    if (audio) {
+      updateRadioUI(!audio.paused);
+      if (!audio.dataset.listenersBound) {
+        audio.dataset.listenersBound = "true";
+        audio.addEventListener("play", () => updateRadioUI(true));
+        audio.addEventListener("pause", () => updateRadioUI(false));
+      }
+    }
+
+    const radioBtn = document.getElementById("vhs-radio-btn");
+    if (radioBtn && !radioBtn.dataset.bound) {
+      radioBtn.dataset.bound = "true";
+      radioBtn.addEventListener("click", () => {
+        toggleRadioAudio();
+        radioBtn.blur();
+      });
+    }
+
+    const volToggleBtn = document.getElementById("vhs-vol-toggle-btn");
+    const volPanel = document.getElementById("vhs-radio-vol-panel");
+    if (volToggleBtn && !volToggleBtn.dataset.bound) {
+      volToggleBtn.dataset.bound = "true";
+      volToggleBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (!volPanel) return;
+        const isOpen = volPanel.classList.toggle("is-open");
+        volToggleBtn.setAttribute("aria-expanded", String(isOpen));
+      });
+    }
+
+    if (volPanel && !volPanel.dataset.hoverBound) {
+      volPanel.dataset.hoverBound = "true";
+      volPanel.addEventListener("mouseleave", () => {
+        volPanel.classList.remove("is-open");
+        if (volToggleBtn) volToggleBtn.setAttribute("aria-expanded", "false");
+      });
+    }
+
+    if (!document.documentElement.dataset.volGlobalBound) {
+      document.documentElement.dataset.volGlobalBound = "true";
+      document.addEventListener("click", (e) => {
+        const vp = document.getElementById("vhs-radio-vol-panel");
+        if (!vp || !vp.classList.contains("is-open")) return;
+        if (!vp.contains(e.target as Node)) {
+          vp.classList.remove("is-open");
+          const btn = document.getElementById("vhs-vol-toggle-btn");
+          if (btn) btn.setAttribute("aria-expanded", "false");
+        }
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          const vp = document.getElementById("vhs-radio-vol-panel");
+          if (vp && vp.classList.contains("is-open")) {
+            vp.classList.remove("is-open");
+            const btn = document.getElementById("vhs-vol-toggle-btn");
+            if (btn) btn.setAttribute("aria-expanded", "false");
+          }
+        }
+      });
+    }
+
+    const volSlider = document.getElementById("vhs-radio-vol-slider") as HTMLInputElement | null;
+    const volLabel = document.getElementById("vhs-radio-vol-label");
+    if (volSlider && !volSlider.dataset.bound) {
+      volSlider.dataset.bound = "true";
+      volSlider.value = String(getSavedVolume());
+      if (volLabel) volLabel.textContent = `${volSlider.value}%`;
+
+      volSlider.addEventListener("input", () => {
+        if (audioFadeInterval !== null) {
+          clearInterval(audioFadeInterval);
+          audioFadeInterval = null;
+        }
+        const val = parseInt(volSlider.value, 10);
+        if (volLabel) volLabel.textContent = `${val}%`;
+        updateVolIcon(val);
+        const activeAudio = document.getElementById("vhs-radio-player") as HTMLAudioElement | null;
+        if (activeAudio) {
+          activeAudio.volume = val / 100;
+        }
+        try {
+          localStorage.setItem("dissidentx:radio-vol", String(val));
+        } catch (_) {}
+      });
+    }
 
     const toggleBtn = document.getElementById("vhs-theme-toggle");
     if (toggleBtn && !toggleBtn.dataset.bound) {

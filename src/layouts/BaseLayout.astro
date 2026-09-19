@@ -97,5 +97,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site || "https://dissidentx.
 
     <!-- Global Terminal Search Modal (Fuzzy: Title, Tags, Content) -->
     <SearchModal />
+
+    <!-- Opt-in VHS Radio Player (Persistent across View Transitions) -->
+    <audio
+      id="vhs-radio-player"
+      loop
+      preload="none"
+      aria-hidden="true"
+      tabindex="-1"
+      transition:persist="vhs-radio-player"
+    >
+      <source src="/radio/vhs-radio.opus" type="audio/ogg; codecs=opus" />
+      <source src="/radio/vhs-radio.mp3" type="audio/mpeg" />
+    </audio>
   </body>
 </html>
