@@ -572,35 +572,20 @@ textarea:focus-visible {
    ========================================================================== */
 @supports ((animation-timeline: view()) and (animation-range: entry)) {
   @media (prefers-reduced-motion: no-preference) {
-    /* Subtle receding depth on Article/Page Headers */
-    .essay-header-parallax {
-      animation: headerParallax linear both;
-      animation-timeline: view();
-      animation-range: exit 0% exit 100%;
-      will-change: transform, opacity;
-    }
-
-    @keyframes headerParallax {
-      to {
-        transform: translateY(28px);
-        opacity: 0.25;
-      }
-    }
-
     /* Floating depth on illuminated monastic blockquotes */
     .prose blockquote {
       animation: blockquoteParallax linear both;
       animation-timeline: view();
-      animation-range: entry 0% exit 100%;
+      animation-range: entry 5% exit 95%;
       will-change: transform;
     }
 
     @keyframes blockquoteParallax {
       from {
-        transform: translateY(14px);
+        transform: translateY(24px);
       }
       to {
-        transform: translateY(-14px);
+        transform: translateY(-24px);
       }
     }
 
@@ -608,17 +593,17 @@ textarea:focus-visible {
     .prose hr {
       animation: asterismParallax linear both;
       animation-timeline: view();
-      animation-range: entry 0% exit 100%;
+      animation-range: entry 10% exit 90%;
       will-change: transform, opacity;
     }
 
     @keyframes asterismParallax {
       from {
-        transform: translateY(10px);
+        transform: translateY(16px) scale(0.92);
         opacity: 0.4;
       }
       to {
-        transform: translateY(-10px);
+        transform: translateY(-16px) scale(1.08);
         opacity: 1;
       }
     }

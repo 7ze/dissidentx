@@ -30,6 +30,7 @@
       pulseSpeed: number;
       phase: number;
       isCrimson: boolean;
+      depth: number;
     }
 
     const particles: Particle[] = [];
@@ -39,6 +40,7 @@
       const speedTier = Math.random();
       // Gentle, calm drift speeds across varied depth tiers
       const speedMultiplier = speedTier < 0.75 ? 0.16 : 0.26;
+      const depth = speedTier < 0.75 ? 0.08 : 0.18;
 
       particles.push({
         x: Math.random() * width,
@@ -53,8 +55,20 @@
         pulseSpeed: Math.random() * 0.0016 + 0.0008,
         phase: Math.random() * Math.PI * 2,
         isCrimson,
+        depth,
       });
     }
+
+    let lastScrollY = window.scrollY;
+    let scrollVelocity = 0;
+
+    window.addEventListener("scroll", () => {
+      if (prefersReducedMotion) return;
+      const currentY = window.scrollY;
+      const delta = currentY - lastScrollY;
+      lastScrollY = currentY;
+      scrollVelocity = Math.max(-20, Math.min(20, scrollVelocity + delta * 0.35));
+    }, { passive: true });
 
     function render(time: number) {
       if (!ctx) return;
@@ -71,7 +85,7 @@
 
         if (!prefersReducedMotion) {
           p.x += p.vx;
-          p.y += p.vy;
+          p.y += p.vy - scrollVelocity * p.depth;
 
           // Wrap smoothly across screen bounds
           if (p.x < -10) p.x = width + 10;
@@ -110,6 +124,7 @@
       ctx.fill(crimsonPath);
 
       if (!prefersReducedMotion) {
+        scrollVelocity *= 0.88;
         requestAnimationFrame(render);
       }
     }

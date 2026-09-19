@@ -46,11 +46,11 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
       </span>
     </div>
 
-    <!-- Tag Filter Pills: 3 uniform topics per row on phone, natural inline flex on desktop -->
-    <div class="grid grid-cols-3 gap-1.5 sm:flex sm:flex-wrap sm:justify-start sm:gap-x-2.5 sm:gap-y-1.5 text-xs font-mono w-full" role="toolbar" aria-label="Topic filters">
+    <!-- Tag Filter Pills: 3 uniform columns on phone with snug vertical spacing -->
+    <div class="grid grid-cols-3 gap-x-1.5 gap-y-1 sm:flex sm:flex-wrap sm:justify-start sm:gap-x-2.5 sm:gap-y-1.5 text-xs font-mono w-full pt-0.5" role="toolbar" aria-label="Topic filters">
       <button
         type="button"
-        class="archive-tag-pill active text-[9px] min-[390px]:text-[10px] font-mono uppercase text-[var(--color-crimson)] font-bold cursor-pointer transition-colors py-1.5 px-2 min-h-[36px] sm:min-h-[32px] leading-tight inline-flex items-center justify-center sm:justify-start w-full sm:w-auto text-center whitespace-nowrap tracking-tight sm:tracking-normal"
+        class="archive-tag-pill active text-[9px] min-[390px]:text-[10px] font-mono uppercase text-[var(--color-crimson)] font-bold cursor-pointer transition-colors py-1 px-1.5 min-h-[26px] sm:min-h-[28px] leading-tight inline-flex items-center justify-center sm:justify-start w-full sm:w-auto text-center whitespace-nowrap tracking-tight sm:tracking-normal"
         data-tag=""
         aria-pressed="true"
       >
@@ -60,7 +60,7 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
         allTags.map((tag) => (
           <button
             type="button"
-            class="archive-tag-pill text-[9px] min-[390px]:text-[10px] font-mono uppercase text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] cursor-pointer transition-colors py-1.5 px-2 min-h-[36px] sm:min-h-[32px] leading-tight inline-flex items-center justify-center sm:justify-start w-full sm:w-auto text-center whitespace-nowrap tracking-tight sm:tracking-normal"
+            class="archive-tag-pill text-[9px] min-[390px]:text-[10px] font-mono uppercase text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] cursor-pointer transition-colors py-1 px-1.5 min-h-[26px] sm:min-h-[28px] leading-tight inline-flex items-center justify-center sm:justify-start w-full sm:w-auto text-center whitespace-nowrap tracking-tight sm:tracking-normal"
             data-tag={tag}
             aria-pressed="false"
           >
@@ -96,8 +96,8 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
               </a>
             </div>
 
-            <!-- Right: Date & Tag -->
-            <div class="flex items-center gap-3 font-mono text-xs text-[var(--color-ink-faint)] self-end sm:self-auto flex-shrink-0">
+            <!-- Metadata: Tag on Left, Date on Right on Phone; Grouped Right on Desktop -->
+            <div class="flex items-center justify-between sm:justify-end gap-3 font-mono text-xs text-[var(--color-ink-faint)] w-full sm:w-auto pl-11 sm:pl-0 flex-shrink-0">
               {essay.data.tags && essay.data.tags.length > 0 && (
                 <span class="text-[10px] uppercase text-[var(--color-ink-muted)]">
                   #{essay.data.tags[0]}
