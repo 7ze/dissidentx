@@ -361,6 +361,28 @@ a:hover {
   line-height: 1.8;
 }
 
+.prose pre {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-rule);
+  padding: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  overflow-x: auto;
+  border-radius: 2px;
+}
+
+.prose a {
+  color: var(--color-crimson);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.15s ease;
+}
+
+.prose a:hover {
+  color: var(--color-ink-bright);
+}
+
 /* Typography & Text Wrapping */
 h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
@@ -464,7 +486,7 @@ textarea:focus-visible {
   }
 }
 
-/* Monastic VHS Tape Deck Volume Slider Drawer */
+/* Monastic VHS Tape Deck Volume Slider Drawer: Seamless, Organic Fade & Slide */
 .vhs-vol-slider-wrap {
   display: inline-flex;
   align-items: center;
@@ -472,9 +494,14 @@ textarea:focus-visible {
   overflow: hidden;
   max-width: 0;
   opacity: 0;
+  transform: translateX(-6px);
   pointer-events: none;
-  transition: max-width 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  transition: 
+    max-width 0.42s cubic-bezier(0.16, 1, 0.3, 1), 
+    opacity 0.38s ease,
+    transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
+  will-change: max-width, opacity, transform;
 }
 
 /* PC Hover & keyboard focus within volume panel */
@@ -483,6 +510,7 @@ textarea:focus-visible {
   #vhs-radio-vol-panel:focus-within .vhs-vol-slider-wrap {
     max-width: 140px;
     opacity: 1;
+    transform: translateX(0);
     pointer-events: auto;
   }
 }
@@ -491,7 +519,12 @@ textarea:focus-visible {
 #vhs-radio-vol-panel.is-open .vhs-vol-slider-wrap {
   max-width: 140px;
   opacity: 1;
+  transform: translateX(0);
   pointer-events: auto;
+  transition: 
+    max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+    opacity 0.4s ease,
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 #vhs-radio-vol-panel.is-open #vhs-vol-toggle-btn {
@@ -534,86 +567,60 @@ textarea:focus-visible {
   }
 }
 
-.prose p {
-  margin-bottom: 1.75rem;
-  text-wrap: pretty;
-}
+/* ==========================================================================
+   Compositor-Only Native Scroll-Driven Parallax (Zero CPU/Battery Tax)
+   ========================================================================== */
+@supports ((animation-timeline: view()) and (animation-range: entry)) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Subtle receding depth on Article/Page Headers */
+    .essay-header-parallax {
+      animation: headerParallax linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+      will-change: transform, opacity;
+    }
 
-.prose blockquote {
-  text-wrap: pretty;
-  border-left: 2px solid var(--color-crimson);
-  background-color: var(--color-surface);
-  padding: 1.125rem 1.5rem;
-  margin-block: 2.25rem;
-  font-style: italic;
-  color: var(--color-ink);
-}
+    @keyframes headerParallax {
+      to {
+        transform: translateY(28px);
+        opacity: 0.25;
+      }
+    }
 
-.prose blockquote p:last-of-type {
-  margin-bottom: 0;
-}
+    /* Floating depth on illuminated monastic blockquotes */
+    .prose blockquote {
+      animation: blockquoteParallax linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+      will-change: transform;
+    }
 
-.prose hr {
-  border: none;
-  text-align: center;
-  margin-block: 3rem;
-  height: auto;
-  line-height: 1;
-}
+    @keyframes blockquoteParallax {
+      from {
+        transform: translateY(14px);
+      }
+      to {
+        transform: translateY(-14px);
+      }
+    }
 
-.prose hr::after {
-  content: "· · ·";
-  font-family: var(--font-mono);
-  color: var(--color-crimson);
-  font-size: 0.875rem;
-  letter-spacing: 0.75em;
-  padding-left: 0.75em;
-  display: block;
-}
+    /* Floating depth on monastic asterism section breaks */
+    .prose hr {
+      animation: asterismParallax linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+      will-change: transform, opacity;
+    }
 
-.prose code:not(pre code) {
-  font-family: var(--font-mono);
-  font-size: 0.85em;
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-rule-light);
-  padding: 0.15em 0.35em;
-  color: var(--color-ink);
-}
-
-.prose pre {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-rule);
-  padding: 1.25rem;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  overflow-x: auto;
-}
-
-.prose a {
-  color: var(--color-crimson);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-  transition: color 0.15s ease;
-}
-
-.prose a:hover {
-  color: var(--color-ink-bright);
-}
-
-.prose p:first-of-type::first-letter {
-  font-family: var(--font-serif);
-  float: left;
-  font-size: 3rem;
-  line-height: 0.85;
-  margin-top: 0.1em;
-  margin-right: 0.12em;
-  font-weight: 700;
-  color: var(--color-crimson);
-}
-
-@media (min-width: 640px) {
-  .prose p:first-of-type::first-letter {
-    font-size: 3.5rem;
+    @keyframes asterismParallax {
+      from {
+        transform: translateY(10px);
+        opacity: 0.4;
+      }
+      to {
+        transform: translateY(-10px);
+        opacity: 1;
+      }
+    }
   }
 }

@@ -194,6 +194,32 @@ if (!codexLabel) {
 <script>
   let clockInterval: number | null = null;
   let audioFadeInterval: number | null = null;
+  let volAutoCloseTimer: number | null = null;
+
+  function clearVolAutoCloseTimer() {
+    if (volAutoCloseTimer !== null) {
+      window.clearTimeout(volAutoCloseTimer);
+      volAutoCloseTimer = null;
+    }
+  }
+
+  function closeVolPanel() {
+    clearVolAutoCloseTimer();
+    const volPanel = document.getElementById("vhs-radio-vol-panel");
+    const volToggleBtn = document.getElementById("vhs-vol-toggle-btn");
+    if (volPanel) volPanel.classList.remove("is-open");
+    if (volToggleBtn) volToggleBtn.setAttribute("aria-expanded", "false");
+  }
+
+  function resetVolAutoCloseTimer() {
+    clearVolAutoCloseTimer();
+    const volPanel = document.getElementById("vhs-radio-vol-panel");
+    if (volPanel && volPanel.classList.contains("is-open")) {
+      volAutoCloseTimer = window.setTimeout(() => {
+        closeVolPanel();
+      }, 5000);
+    }
+  }
 
   function updateVhsClock() {
     const clock = document.getElementById("vhs-live-clock");
@@ -323,10 +349,9 @@ if (!codexLabel) {
       if (pauseIcon) pauseIcon.classList.add("hidden");
       if (spool) spool.classList.add("hidden");
       if (volPanel) {
-        volPanel.classList.remove("inline-flex", "is-open");
+        volPanel.classList.remove("inline-flex");
         volPanel.classList.add("hidden");
-        const toggleBtn = document.getElementById("vhs-vol-toggle-btn");
-        if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
+        closeVolPanel();
       }
     }
   }
@@ -389,15 +414,25 @@ if (!codexLabel) {
         if (!volPanel) return;
         const isOpen = volPanel.classList.toggle("is-open");
         volToggleBtn.setAttribute("aria-expanded", String(isOpen));
+        if (isOpen) {
+          resetVolAutoCloseTimer();
+        } else {
+          clearVolAutoCloseTimer();
+        }
       });
     }
 
     if (volPanel && !volPanel.dataset.hoverBound) {
       volPanel.dataset.hoverBound = "true";
       volPanel.addEventListener("mouseleave", () => {
-        volPanel.classList.remove("is-open");
-        if (volToggleBtn) volToggleBtn.setAttribute("aria-expanded", "false");
+        closeVolPanel();
       });
+      volPanel.addEventListener("pointerdown", () => {
+        resetVolAutoCloseTimer();
+      });
+      volPanel.addEventListener("touchstart", () => {
+        resetVolAutoCloseTimer();
+      }, { passive: true });
     }
 
     if (!document.documentElement.dataset.volGlobalBound) {
@@ -406,18 +441,14 @@ if (!codexLabel) {
         const vp = document.getElementById("vhs-radio-vol-panel");
         if (!vp || !vp.classList.contains("is-open")) return;
         if (!vp.contains(e.target as Node)) {
-          vp.classList.remove("is-open");
-          const btn = document.getElementById("vhs-vol-toggle-btn");
-          if (btn) btn.setAttribute("aria-expanded", "false");
+          closeVolPanel();
         }
       });
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           const vp = document.getElementById("vhs-radio-vol-panel");
           if (vp && vp.classList.contains("is-open")) {
-            vp.classList.remove("is-open");
-            const btn = document.getElementById("vhs-vol-toggle-btn");
-            if (btn) btn.setAttribute("aria-expanded", "false");
+            closeVolPanel();
           }
         }
       });
@@ -431,6 +462,7 @@ if (!codexLabel) {
       if (volLabel) volLabel.textContent = `${volSlider.value}%`;
 
       volSlider.addEventListener("input", () => {
+        resetVolAutoCloseTimer();
         if (audioFadeInterval !== null) {
           clearInterval(audioFadeInterval);
           audioFadeInterval = null;
@@ -445,6 +477,10 @@ if (!codexLabel) {
         try {
           localStorage.setItem("dissidentx:radio-vol", String(val));
         } catch (_) {}
+      });
+
+      volSlider.addEventListener("change", () => {
+        resetVolAutoCloseTimer();
       });
     }
 
@@ -486,6 +522,7 @@ if (!codexLabel) {
     }
   });
 
+  document.addEventListener("astro:before-swap", closeVolPanel);
   initHeader();
   document.addEventListener("astro:page-load", initHeader);
 </script>
