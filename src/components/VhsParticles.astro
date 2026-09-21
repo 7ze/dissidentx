@@ -16,7 +16,7 @@
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    // Doubled density: ~1,400 particles across the screen
+    // Full atmospheric density: 1,400 particles across the screen
     const PARTICLE_COUNT = 1400;
 
     interface Particle {
@@ -25,38 +25,45 @@
       vx: number;
       vy: number;
       r: number;
-      baseAlpha: number;
-      alpha: number;
-      pulseSpeed: number;
-      phase: number;
-      isCrimson: boolean;
       depth: number;
     }
 
-    const particles: Particle[] = [];
+    // Fixed static buckets (zero allocations per frame):
+    const faintParticles: Particle[] = [];
+    const midParticles: Particle[] = [];
+    const brightParticles: Particle[] = [];
+    const crimsonParticles: Particle[] = [];
+    const allParticles: Particle[] = [];
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const isCrimson = Math.random() < 0.10;
       const speedTier = Math.random();
-      // Gentle, calm drift speeds across varied depth tiers
       const speedMultiplier = speedTier < 0.75 ? 0.16 : 0.26;
       const depth = speedTier < 0.75 ? 0.08 : 0.18;
 
-      particles.push({
+      const p: Particle = {
         x: Math.random() * width,
         y: Math.random() * height,
-        // Independent random 360-degree drift vectors
         vx: (Math.random() - 0.5) * speedMultiplier,
         vy: (Math.random() - 0.5) * speedMultiplier,
-        // Mostly micro-dust specks (0.3px - 0.65px) with occasional distinct flecks (0.7px - 1.1px)
         r: Math.random() < 0.80 ? Math.random() * 0.35 + 0.3 : Math.random() * 0.4 + 0.7,
-        baseAlpha: Math.random() * 0.16 + 0.06,
-        alpha: 0.10,
-        pulseSpeed: Math.random() * 0.0016 + 0.0008,
-        phase: Math.random() * Math.PI * 2,
-        isCrimson,
         depth,
-      });
+      };
+
+      allParticles.push(p);
+
+      if (isCrimson) {
+        crimsonParticles.push(p);
+      } else {
+        const tier = Math.random();
+        if (tier < 0.45) {
+          faintParticles.push(p);
+        } else if (tier < 0.80) {
+          midParticles.push(p);
+        } else {
+          brightParticles.push(p);
+        }
+      }
     }
 
     let lastScrollY = window.scrollY;
@@ -70,20 +77,20 @@
       scrollVelocity = Math.max(-20, Math.min(20, scrollVelocity + delta * 0.35));
     }, { passive: true });
 
-    function render(time: number) {
+    let isLight = document.documentElement.getAttribute("data-theme") === "light";
+
+    let animId: number | null = null;
+    let isLoopRunning = false;
+
+    function render(_time: number) {
       if (!ctx) return;
+
       ctx.clearRect(0, 0, width, height);
 
-      // Batched paths for extreme performance (only 4 draw calls total)
-      const whitePathFaint = new Path2D();
-      const whitePathMid = new Path2D();
-      const whitePathBright = new Path2D();
-      const crimsonPath = new Path2D();
-
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-
-        if (!prefersReducedMotion) {
+      // Update particle positions in-place
+      if (!prefersReducedMotion) {
+        for (let i = 0; i < allParticles.length; i++) {
+          const p = allParticles[i];
           p.x += p.vx;
           p.y += p.vy - scrollVelocity * p.depth;
 
@@ -92,44 +99,91 @@
           else if (p.x > width + 10) p.x = -10;
           if (p.y < -10) p.y = height + 10;
           else if (p.y > height + 10) p.y = -10;
-
-          // Subtle organic breathing & twinkling
-          p.alpha = p.baseAlpha + Math.sin(time * p.pulseSpeed + p.phase) * 0.04;
         }
-
-        const targetPath = p.isCrimson
-          ? crimsonPath
-          : p.alpha < 0.11
-          ? whitePathFaint
-          : p.alpha < 0.17
-          ? whitePathMid
-          : whitePathBright;
-
-        const radius = isLight ? Math.max(p.r, 0.42) : p.r;
-        targetPath.moveTo(p.x + radius, p.y);
-        targetPath.arc(p.x, p.y, radius, 0, Math.PI * 2);
       }
 
-      // Draw batched tiers with refined soft opacities (bone-white in noir, balanced archival ink/sepia in light mode)
+      // Draw tiers using pure immediate-mode Canvas2D (zero object allocations, zero memory leak):
+      // 1. Faint tier
       ctx.fillStyle = isLight ? "rgba(55, 45, 36, 0.12)" : "rgba(230, 226, 218, 0.08)";
-      ctx.fill(whitePathFaint);
+      ctx.beginPath();
+      for (let i = 0; i < faintParticles.length; i++) {
+        const p = faintParticles[i];
+        const radius = isLight ? Math.max(p.r, 0.42) : p.r;
+        ctx.moveTo(p.x + radius, p.y);
+        ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+      }
+      ctx.fill();
 
+      // 2. Mid tier
       ctx.fillStyle = isLight ? "rgba(45, 36, 28, 0.22)" : "rgba(230, 226, 218, 0.15)";
-      ctx.fill(whitePathMid);
+      ctx.beginPath();
+      for (let i = 0; i < midParticles.length; i++) {
+        const p = midParticles[i];
+        const radius = isLight ? Math.max(p.r, 0.42) : p.r;
+        ctx.moveTo(p.x + radius, p.y);
+        ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+      }
+      ctx.fill();
 
+      // 3. Bright tier
       ctx.fillStyle = isLight ? "rgba(35, 26, 18, 0.35)" : "rgba(230, 226, 218, 0.24)";
-      ctx.fill(whitePathBright);
+      ctx.beginPath();
+      for (let i = 0; i < brightParticles.length; i++) {
+        const p = brightParticles[i];
+        const radius = isLight ? Math.max(p.r, 0.42) : p.r;
+        ctx.moveTo(p.x + radius, p.y);
+        ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+      }
+      ctx.fill();
 
+      // 4. Crimson tier
       ctx.fillStyle = isLight ? "rgba(200, 16, 46, 0.36)" : "rgba(200, 16, 46, 0.22)";
-      ctx.fill(crimsonPath);
+      ctx.beginPath();
+      for (let i = 0; i < crimsonParticles.length; i++) {
+        const p = crimsonParticles[i];
+        const radius = isLight ? Math.max(p.r, 0.42) : p.r;
+        ctx.moveTo(p.x + radius, p.y);
+        ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+      }
+      ctx.fill();
 
       if (!prefersReducedMotion) {
         scrollVelocity *= 0.88;
-        requestAnimationFrame(render);
+        animId = requestAnimationFrame(render);
       }
     }
 
-    let isLight = document.documentElement.getAttribute("data-theme") === "light";
+    function startLoop() {
+      if (isLoopRunning || prefersReducedMotion || document.hidden) return;
+      isLoopRunning = true;
+      animId = requestAnimationFrame(render);
+    }
+
+    function stopLoop() {
+      if (animId !== null) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
+      isLoopRunning = false;
+    }
+
+    // Stop loop immediately when tab is hidden / backgrounded
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        stopLoop();
+      } else {
+        startLoop();
+      }
+    });
+
+    // Handle canvas context lost / restored (sleep mode / GPU power management)
+    canvas.addEventListener("contextlost", (e) => {
+      e.preventDefault();
+      stopLoop();
+    });
+    canvas.addEventListener("contextrestored", () => {
+      startLoop();
+    });
 
     window.addEventListener("dissidentx:theme-change", (e: any) => {
       isLight = e.detail?.theme === "light";
@@ -144,7 +198,7 @@
     if (prefersReducedMotion) {
       render(0);
     } else {
-      requestAnimationFrame(render);
+      startLoop();
     }
 
     let resizeTimer: number;

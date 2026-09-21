@@ -530,11 +530,30 @@ if (!codexLabel) {
     }
   }
 
-  function initHeader() {
-    updateVhsClock();
-    if (clockInterval === null) {
+  function startVhsClock() {
+    if (clockInterval === null && !document.hidden) {
+      updateVhsClock();
       clockInterval = window.setInterval(updateVhsClock, 1000);
     }
+  }
+
+  function stopVhsClock() {
+    if (clockInterval !== null) {
+      clearInterval(clockInterval);
+      clockInterval = null;
+    }
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopVhsClock();
+    } else {
+      startVhsClock();
+    }
+  });
+
+  function initHeader() {
+    startVhsClock();
 
     const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
     updateThemeToggleUI(currentTheme);

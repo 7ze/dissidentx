@@ -140,11 +140,21 @@ const {
 </Layout>
 
 <script>
+  let currentScrollHandler: (() => void) | null = null;
+
+  function cleanupReadingProgress() {
+    if (currentScrollHandler) {
+      window.removeEventListener("scroll", currentScrollHandler);
+      currentScrollHandler = null;
+    }
+  }
+
   function setupReadingProgress() {
+    cleanupReadingProgress();
     const bar = document.getElementById("reading-progress-bar");
     if (!bar) return;
 
-    const update = () => {
+    currentScrollHandler = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - window.innerHeight;
       if (height <= 0) {
@@ -155,14 +165,17 @@ const {
       bar.style.width = `${percent}%`;
     };
 
-    window.addEventListener("scroll", update, { passive: true });
-    update();
+    window.addEventListener("scroll", currentScrollHandler, { passive: true });
+    currentScrollHandler();
   }
 
   function setupCopyLink() {
     const copyBtn = document.getElementById("copy-dispatch-link");
     const copyText = document.getElementById("copy-dispatch-text");
-    copyBtn?.addEventListener("click", async () => {
+    if (!copyBtn || copyBtn.dataset.bound) return;
+    copyBtn.dataset.bound = "true";
+
+    copyBtn.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(window.location.href);
         if (copyText) copyText.textContent = "COPIED ✓";
@@ -177,8 +190,10 @@ const {
     });
   }
 
-  setupReadingProgress();
-  setupCopyLink();
+  // Ensure scroll listener is removed before DOM swap to avoid detached node leaks
+  document.addEventListener("astro:before-swap", cleanupReadingProgress);
+
+  // Initialize cleanly on page loads (astro:page-load fires on both initial load and transitions)
   document.addEventListener("astro:page-load", () => {
     setupReadingProgress();
     setupCopyLink();

@@ -61,7 +61,10 @@ const pageDescription = "Establish contact with DissidentX. Correspondence for s
 <script>
   function setupCopyEmail() {
     const copyBtn = document.getElementById("copy-contact-email");
-    copyBtn?.addEventListener("click", async () => {
+    if (!copyBtn || copyBtn.dataset.bound) return;
+    copyBtn.dataset.bound = "true";
+
+    copyBtn.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText("real.dissidentx@gmail.com");
         copyBtn.textContent = "[ COPIED ✓ ]";
@@ -76,6 +79,5 @@ const pageDescription = "Establish contact with DissidentX. Correspondence for s
     });
   }
 
-  setupCopyEmail();
   document.addEventListener("astro:page-load", setupCopyEmail);
 </script>
