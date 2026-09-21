@@ -39,6 +39,8 @@
   --color-crimson-subtle: rgba(200, 16, 46, 0.35);
   --color-crimson-dark: #b82038;
   --color-vhs-green: #38df38;
+  --color-vhs-green-glow: rgba(56, 223, 56, 0.4);
+  --color-vhs-green-inactive: #15803d;
   --color-ink-bright: #ffffff;
   --color-vhs-icon: #888278;
 }
@@ -58,7 +60,9 @@ html[data-theme="light"] {
   --color-crimson-muted: rgba(200, 16, 46, 0.15);
   --color-crimson-subtle: rgba(200, 16, 46, 0.28);
   --color-crimson-dark: #8b1527;
-  --color-vhs-green: #15803d;
+  --color-vhs-green: #16a34a;
+  --color-vhs-green-glow: rgba(22, 163, 74, 0.4);
+  --color-vhs-green-inactive: #166534;
   --color-ink-bright: #0a0908;
   --color-vhs-icon: #625a50;
 }
@@ -133,6 +137,43 @@ html[data-theme="light"] .group:active .vhs-chromatic-hover {
   text-shadow: 
     -0.55px 0 rgba(200, 16, 46, 0.35),
     0.55px 0 rgba(0, 140, 170, 0.22);
+}
+
+/* VHS Radio Active LED Pulse & Glow */
+@keyframes vhs-led-glow {
+  0%, 100% {
+    opacity: 0.5;
+    box-shadow: 0 0 2.5px var(--color-vhs-green);
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.95;
+    box-shadow: 0 0 5.5px var(--color-vhs-green), 0 0 9px var(--color-vhs-green-glow);
+    transform: scale(1.06);
+  }
+}
+
+.vhs-led-active {
+  background-color: var(--color-vhs-green);
+  animation: vhs-led-glow 2.6s ease-in-out infinite;
+}
+
+.vhs-led-inactive {
+  background-color: var(--color-vhs-green-inactive);
+  opacity: 0.60;
+}
+
+html[data-theme="light"] .vhs-led-inactive {
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vhs-led-active {
+    animation: none;
+    opacity: 0.85;
+    box-shadow: 0 0 4px var(--color-vhs-green);
+    transform: none;
+  }
 }
 
 /* Links */

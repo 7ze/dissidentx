@@ -163,6 +163,8 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
     const essayItems = document.querySelectorAll<HTMLElement>(".archive-essay-item");
 
     if (!searchInput || !tagPills.length) return;
+    if (searchInput.dataset.bound) return;
+    searchInput.dataset.bound = "true";
 
     async function initSearch() {
       if (searchIndex && fuse) return;
