@@ -70,7 +70,23 @@ if (!codexLabel) {
         <span id="vhs-radio-tape" class="hidden min-[420px]:inline-flex items-center gap-1 text-[var(--color-ink-muted)]">
           <span>SP</span>
           <span id="vhs-radio-spool" class="hidden text-[10px] text-[var(--color-vhs-green)] font-normal animate-spin select-none" style="animation-duration: 3.5s;" aria-hidden="true">◐</span>
+          <span id="vhs-radio-track-display" class="hidden min-[480px]:inline text-[9px] text-[var(--color-ink-faint)] select-none">1/7</span>
         </span>
+      </button>
+
+      <!-- Next Track Skip Button (Reveals when playing) -->
+      <button
+        type="button"
+        id="vhs-radio-next-btn"
+        class="hidden items-center justify-center cursor-pointer text-[var(--color-vhs-icon)] hover:text-[var(--color-crimson)] transition-colors py-1 px-1 -ml-0.5 min-h-[36px] min-w-[22px] font-mono text-[9px] uppercase tracking-wider select-none focus-visible:ring-1 focus-visible:ring-[var(--color-crimson)] flex-shrink-0"
+        aria-label="Skip to next track"
+        title="Next track"
+      >
+        <svg class="w-2.5 h-2.5 fill-current" viewBox="0 0 12 12" aria-hidden="true">
+          <polygon points="1,2 6,6 1,10" />
+          <polygon points="5.5,2 10.5,6 5.5,10" />
+          <rect x="10" y="2" width="1.2" height="8" rx="0.3" />
+        </svg>
       </button>
 
       <!-- Minimalist VHS Volume Control (Reveals ONLY when playing; collapsed by default) -->
@@ -304,6 +320,138 @@ if (!codexLabel) {
     }
   }
 
+  interface RadioTrack {
+    id: string;
+    title: string;
+    artist: string;
+    opus: string;
+    mp3: string;
+  }
+
+  const VHS_PLAYLIST: RadioTrack[] = [
+    { id: "midnight-forest", title: "Midnight Forest", artist: "Syouki Takahashi", opus: "/radio/vhs-midnight-forest.opus", mp3: "/radio/vhs-midnight-forest.mp3" },
+    { id: "belong", title: "Belong", artist: "Sought After Sounds", opus: "/radio/vhs-belong.opus", mp3: "/radio/vhs-belong.mp3" },
+    { id: "stray", title: "Stray", artist: "Sought After Sounds", opus: "/radio/vhs-stray.opus", mp3: "/radio/vhs-stray.mp3" },
+    { id: "d-minor-phrase", title: "D Minor Phrase", artist: "Evan Boyerman", opus: "/radio/vhs-d-minor-phrase.opus", mp3: "/radio/vhs-d-minor-phrase.mp3" },
+    { id: "shimmering-guitar", title: "Shimmering Guitar", artist: "Michi Jung", opus: "/radio/vhs-shimmering-guitar.opus", mp3: "/radio/vhs-shimmering-guitar.mp3" },
+    { id: "hopeful-ambience", title: "Hopeful Ambience", artist: "Evan Boyerman", opus: "/radio/vhs-hopeful-ambience.opus", mp3: "/radio/vhs-hopeful-ambience.mp3" },
+    { id: "tragic-strings", title: "Tragic Strings", artist: "Evan Boyerman", opus: "/radio/vhs-tragic-strings.opus", mp3: "/radio/vhs-tragic-strings.mp3" },
+  ];
+
+  let currentTrackIdx = 0;
+
+  function getSavedTrackIndex(): number {
+    try {
+      const saved = localStorage.getItem("dissidentx:radio-track-idx");
+      if (saved !== null) {
+        const idx = parseInt(saved, 10);
+        if (!isNaN(idx) && idx >= 0 && idx < VHS_PLAYLIST.length) return idx;
+      }
+    } catch (_) {}
+    return 0;
+  }
+
+  function saveTrackIndex(idx: number) {
+    currentTrackIdx = idx;
+    try {
+      localStorage.setItem("dissidentx:radio-track-idx", String(idx));
+    } catch (_) {}
+  }
+
+  function getTrackUrl(audio: HTMLAudioElement, track: RadioTrack): string {
+    const canPlayOpus = audio.canPlayType('audio/ogg; codecs="opus"') !== "" ||
+                        audio.canPlayType('audio/opus') !== "";
+    return canPlayOpus ? track.opus : track.mp3;
+  }
+
+  function syncTrackIdxFromAudio(audio: HTMLAudioElement) {
+    if (!audio.src) {
+      currentTrackIdx = getSavedTrackIndex();
+      return;
+    }
+    const foundIdx = VHS_PLAYLIST.findIndex(t => audio.src.includes(t.opus) || audio.src.includes(t.mp3) || audio.src.includes(t.id));
+    if (foundIdx !== -1) {
+      currentTrackIdx = foundIdx;
+    } else {
+      currentTrackIdx = getSavedTrackIndex();
+    }
+  }
+
+  function updateTrackDisplay(isPlaying: boolean) {
+    const track = VHS_PLAYLIST[currentTrackIdx];
+    const trackDisplay = document.getElementById("vhs-radio-track-display");
+    const radioBtn = document.getElementById("vhs-radio-btn");
+    const nextBtn = document.getElementById("vhs-radio-next-btn");
+
+    if (trackDisplay) {
+      trackDisplay.textContent = `${currentTrackIdx + 1}/${VHS_PLAYLIST.length}`;
+      trackDisplay.title = `${track.title} (${currentTrackIdx + 1}/${VHS_PLAYLIST.length})`;
+    }
+    if (radioBtn) {
+      const status = isPlaying ? "Playing" : "Paused";
+      radioBtn.title = `${status}: ${track.title} · ${track.artist} (${currentTrackIdx + 1}/${VHS_PLAYLIST.length})`;
+    }
+    if (nextBtn) {
+      if (isPlaying) {
+        nextBtn.classList.remove("hidden");
+        nextBtn.classList.add("inline-flex");
+        const nextIdx = (currentTrackIdx + 1) % VHS_PLAYLIST.length;
+        nextBtn.title = `Next: ${VHS_PLAYLIST[nextIdx].title}`;
+      } else {
+        nextBtn.classList.remove("inline-flex");
+        nextBtn.classList.add("hidden");
+      }
+    }
+  }
+
+  function playTrack(index: number, autoFadeIn = true) {
+    const audio = document.getElementById("vhs-radio-player") as HTMLAudioElement | null;
+    if (!audio) return;
+    saveTrackIndex(index);
+    const track = VHS_PLAYLIST[index];
+    const targetSrc = getTrackUrl(audio, track);
+
+    if (!audio.src.endsWith(targetSrc)) {
+      audio.src = targetSrc;
+      audio.load();
+    }
+
+    const targetVol = getSavedVolume() / 100;
+    if (autoFadeIn) {
+      audio.volume = 0;
+      audio.play().then(() => {
+        fadeAudio(audio, targetVol, 700);
+        updateRadioUI(true);
+      }).catch((err) => {
+        console.warn("VHS playback prevented:", err);
+      });
+    } else {
+      audio.volume = targetVol;
+      audio.play().then(() => {
+        updateRadioUI(true);
+      }).catch((err) => {
+        console.warn("VHS playback prevented:", err);
+      });
+    }
+  }
+
+  function skipToNextTrack() {
+    const audio = document.getElementById("vhs-radio-player") as HTMLAudioElement | null;
+    if (!audio) return;
+    const nextIdx = (currentTrackIdx + 1) % VHS_PLAYLIST.length;
+    if (!audio.paused) {
+      fadeAudio(audio, 0, 200, () => {
+        playTrack(nextIdx, true);
+      });
+    } else {
+      saveTrackIndex(nextIdx);
+      const track = VHS_PLAYLIST[nextIdx];
+      audio.src = getTrackUrl(audio, track);
+      audio.load();
+      updateTrackDisplay(false);
+    }
+  }
+
   function updateRadioUI(isPlaying: boolean) {
     const radioBtn = document.getElementById("vhs-radio-btn");
     const led = document.getElementById("vhs-radio-led");
@@ -321,10 +469,10 @@ if (!codexLabel) {
     if (slider) slider.value = String(savedVol);
     if (label) label.textContent = `${savedVol}%`;
     updateVolIcon(savedVol);
+    updateTrackDisplay(isPlaying);
 
     if (isPlaying) {
       radioBtn.setAttribute("aria-label", "Pause ambient soundscape");
-      radioBtn.setAttribute("title", "Pause ambient background soundscape");
       if (led) {
         led.classList.remove("opacity-40");
         led.classList.add("opacity-80", "shadow-[0_0_4px_var(--color-vhs-green)]");
@@ -339,7 +487,6 @@ if (!codexLabel) {
       }
     } else {
       radioBtn.setAttribute("aria-label", "Play ambient soundscape (Opt-in)");
-      radioBtn.setAttribute("title", "Play ambient background soundscape (Opt-in)");
       if (led) {
         led.classList.remove("opacity-80", "shadow-[0_0_4px_var(--color-vhs-green)]");
         led.classList.add("opacity-40");
@@ -361,6 +508,12 @@ if (!codexLabel) {
     if (!audio) return;
 
     if (audio.paused) {
+      const track = VHS_PLAYLIST[currentTrackIdx];
+      const targetSrc = getTrackUrl(audio, track);
+      if (!audio.src || !audio.src.endsWith(targetSrc)) {
+        audio.src = targetSrc;
+        audio.load();
+      }
       const targetVol = getSavedVolume() / 100;
       audio.volume = 0;
       audio.play().then(() => {
@@ -388,11 +541,16 @@ if (!codexLabel) {
 
     const audio = document.getElementById("vhs-radio-player") as HTMLAudioElement | null;
     if (audio) {
+      syncTrackIdxFromAudio(audio);
       updateRadioUI(!audio.paused);
       if (!audio.dataset.listenersBound) {
         audio.dataset.listenersBound = "true";
         audio.addEventListener("play", () => updateRadioUI(true));
         audio.addEventListener("pause", () => updateRadioUI(false));
+        audio.addEventListener("ended", () => {
+          const nextIdx = (currentTrackIdx + 1) % VHS_PLAYLIST.length;
+          playTrack(nextIdx, true);
+        });
       }
     }
 
@@ -402,6 +560,15 @@ if (!codexLabel) {
       radioBtn.addEventListener("click", () => {
         toggleRadioAudio();
         radioBtn.blur();
+      });
+    }
+
+    const nextBtn = document.getElementById("vhs-radio-next-btn");
+    if (nextBtn && !nextBtn.dataset.bound) {
+      nextBtn.dataset.bound = "true";
+      nextBtn.addEventListener("click", () => {
+        skipToNextTrack();
+        nextBtn.blur();
       });
     }
 

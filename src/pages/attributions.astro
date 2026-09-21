@@ -1,0 +1,239 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const pageTitle = "Attributions // Colophon";
+const pageDescription = "Archival credits, licenses, and colophon for musical soundscapes, typography, and creative works used on DissidentX.";
+
+const soundscapes = [
+  {
+    num: "00",
+    id: "midnight-forest",
+    title: "Midnight Forest",
+    artist: "Syouki Takahashi",
+    artistUrl: "https://pixabay.com/users/syouki_takahashi-3820204/",
+    platform: "Pixabay",
+    license: "Pixabay Content License",
+    licenseUrl: "https://pixabay.com/service/license-summary/",
+    sourceUrl: "https://pixabay.com/music/ambient-midnight-forest-184304/",
+    sourceId: "184304",
+    modifications: "Equal-power loop crossfade, 50 Hz sub-bass tape hum, analog tape EQ, and filtered noise floor for the VHS Radio.",
+  },
+  {
+    num: "01",
+    id: "belong",
+    title: "Film Score Soundscape - Belong",
+    artist: "Soughtaftersounds",
+    artistUrl: "https://freesound.org/people/Soughtaftersounds/",
+    platform: "Freesound",
+    license: "CC BY-NC 3.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-nc/3.0/",
+    sourceUrl: "https://freesound.org/people/Soughtaftersounds/sounds/217841/",
+    sourceId: "217841",
+    modifications: "Gain-leveled (-20 dB mean), analog tape EQ curve, 0.5 Hz wow/flutter modulation, ambient pink tape floor and 50 Hz hum bed.",
+  },
+  {
+    num: "02",
+    id: "stray",
+    title: "Film Score Soundscape - Stray",
+    artist: "Soughtaftersounds",
+    artistUrl: "https://freesound.org/people/Soughtaftersounds/",
+    platform: "Freesound",
+    license: "CC BY-NC 3.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-nc/3.0/",
+    sourceUrl: "https://freesound.org/people/Soughtaftersounds/sounds/217846/",
+    sourceId: "217846",
+    modifications: "Gain-leveled, analog tape EQ curve, 0.5 Hz tape flutter, ambient tape noise and 50 Hz ground hum bed.",
+  },
+  {
+    num: "03",
+    id: "d-minor-phrase",
+    title: "Orchestral Cinematic String Phrase (Key of D Minor)",
+    artist: "Evan Boyerman",
+    artistUrl: "https://freesound.org/people/EvanBoyerman/",
+    platform: "Freesound",
+    license: "CC BY-NC 3.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-nc/3.0/",
+    sourceUrl: "https://freesound.org/people/EvanBoyerman/sounds/561787/",
+    sourceId: "561787",
+    modifications: "Gain-leveled, analog tape EQ curve, tape flutter modulation, subtle tape floor bed and soft limiting.",
+  },
+  {
+    num: "04",
+    id: "shimmering-guitar",
+    title: "Shimmery Guitar Atmosphere",
+    artist: "Michi Jung",
+    artistUrl: "https://freesound.org/people/MichiJung/",
+    platform: "Freesound",
+    license: "CC BY 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+    sourceUrl: "https://freesound.org/people/MichiJung/sounds/719440/",
+    sourceId: "719440",
+    modifications: "Gain-leveled, analog tape EQ curve, 0.5 Hz wow/flutter, ambient tape floor and 50 Hz hum bed.",
+  },
+  {
+    num: "05",
+    id: "hopeful-ambience",
+    title: "Hopeful Piano/String Cinematic Ambience Drama",
+    artist: "Evan Boyerman",
+    artistUrl: "https://freesound.org/people/EvanBoyerman/",
+    platform: "Freesound",
+    license: "CC BY 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+    sourceUrl: "https://freesound.org/people/EvanBoyerman/sounds/798705/",
+    sourceId: "798705",
+    modifications: "Gain-leveled, analog tape EQ curve, subtle tape motor flutter, ambient tape floor bed and soft limiting.",
+  },
+  {
+    num: "06",
+    id: "tragic-strings",
+    title: "Emotional/Sad/Tragic String Orchestral BGM",
+    artist: "Evan Boyerman",
+    artistUrl: "https://freesound.org/people/EvanBoyerman/",
+    platform: "Freesound",
+    license: "CC BY 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+    sourceUrl: "https://freesound.org/people/EvanBoyerman/sounds/861539/",
+    sourceId: "861539",
+    modifications: "Gain-leveled, analog tape EQ curve, 0.5 Hz wow/flutter, ambient tape floor and 50 Hz hum bed.",
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <div class="max-w-2xl mx-auto my-6 sm:my-10">
+    <!-- Header -->
+    <header class="border-b border-[var(--color-rule)] pb-6 mb-8">
+      <div class="font-mono text-xs text-[var(--color-crimson)] uppercase tracking-widest mb-2">
+        Archive Colophon
+      </div>
+      <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--color-ink-bright)] tracking-tight leading-tight">
+        Attributions & Liner Notes
+      </h1>
+      <p class="font-serif font-light italic text-xl sm:text-2xl text-[var(--color-ink-muted)] mt-2">
+        Gratitude to the artists whose soundscapes illuminate the desert
+      </p>
+    </header>
+
+    <!-- Introductory Prose -->
+    <div class="prose text-[var(--color-ink-soft)] mb-10">
+      <p>
+        DissidentX is indebted to independent sound artists and open-culture creators whose musical textures accompany this sanctuary. In fidelity to intellectual honesty and Creative Commons guidelines, all audio works broadcast on the VHS Radio are credited below with their authors, source origins, licenses, and analog tape mastering specifications.
+      </p>
+    </div>
+
+    <!-- Audio Works Section -->
+    <section class="mb-12">
+      <div class="flex items-center justify-between border-b border-[var(--color-rule)] pb-2 mb-6">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink-bright)] flex items-center gap-2">
+          <span class="text-[var(--color-vhs-green)]">●</span>
+          <span>VHS Radio Soundscape Ledger</span>
+        </h2>
+        <span class="font-mono text-[10px] text-[var(--color-ink-faint)] uppercase">
+          7 Recorded Tracks
+        </span>
+      </div>
+
+      <div class="space-y-6">
+        {soundscapes.map((track) => (
+          <article class="border border-[var(--color-rule)] bg-[var(--color-surface)] p-5 sm:p-6 transition-colors hover:border-[var(--color-rule-light)]">
+            <div class="flex items-start justify-between gap-4 mb-3">
+              <div>
+                <div class="font-mono text-[10px] text-[var(--color-crimson)] uppercase tracking-wider mb-1">
+                  Track {track.num} // {track.id}
+                </div>
+                <h3 class="font-serif text-lg sm:text-xl font-bold text-[var(--color-ink-bright)] leading-snug">
+                  {track.title}
+                </h3>
+              </div>
+              <a
+                href={track.licenseUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-mono text-[9px] uppercase tracking-wider px-2 py-0.5 border border-[var(--color-rule-light)] text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] hover:border-[var(--color-crimson)] transition-colors whitespace-nowrap flex-shrink-0"
+                title={`Licensed under ${track.license}`}
+              >
+                {track.license}
+              </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono border-t border-[var(--color-rule-light)] pt-3 mb-3">
+              <div>
+                <span class="text-[var(--color-ink-faint)] uppercase text-[10px]">Artist:</span>{" "}
+                {track.artistUrl.startsWith("http") ? (
+                  <a
+                    href={track.artistUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-[var(--color-ink)] hover:text-[var(--color-crimson)] transition-colors underline decoration-[var(--color-rule-light)]"
+                  >
+                    {track.artist} ↗
+                  </a>
+                ) : (
+                  <span class="text-[var(--color-ink)]">{track.artist}</span>
+                )}
+              </div>
+
+              <div>
+                <span class="text-[var(--color-ink-faint)] uppercase text-[10px]">Source:</span>{" "}
+                {track.sourceUrl.startsWith("http") ? (
+                  <a
+                    href={track.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] transition-colors underline decoration-[var(--color-rule-light)]"
+                  >
+                    {track.platform} #{track.sourceId} ↗
+                  </a>
+                ) : (
+                  <span class="text-[var(--color-ink-muted)]">{track.sourceId}</span>
+                )}
+              </div>
+            </div>
+
+            <div class="text-[11px] font-mono text-[var(--color-ink-muted)] leading-relaxed bg-[var(--color-void)]/40 p-2.5 border-l-2 border-[var(--color-rule-light)]">
+              <span class="text-[var(--color-ink-faint)] uppercase text-[9px] block mb-0.5">VHS Tape Master Treatment:</span>
+              {track.modifications}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Typography & Colophon Section -->
+    <section class="border-t border-[var(--color-rule)] pt-8 mb-10">
+      <h2 class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink-bright)] mb-4 flex items-center gap-2">
+        <span class="text-[var(--color-crimson)]">§</span>
+        <span>Typography & Infrastructure</span>
+      </h2>
+
+      <div class="border border-[var(--color-rule)] bg-[var(--color-surface)] p-5 sm:p-6 space-y-4 font-mono text-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 py-1.5 border-b border-[var(--color-rule-light)]">
+          <span class="text-[var(--color-ink-faint)] uppercase text-[10px]">Display & Body Serif</span>
+          <span class="text-[var(--color-ink)] font-serif text-sm">Cormorant Garamond (Christian Robertson)</span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 py-1.5 border-b border-[var(--color-rule-light)]">
+          <span class="text-[var(--color-ink-faint)] uppercase text-[10px]">Technical Monospace</span>
+          <span class="text-[var(--color-ink)]">JetBrains Mono (JetBrains)</span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 py-1.5 border-b border-[var(--color-rule-light)]">
+          <span class="text-[var(--color-ink-faint)] uppercase text-[10px]">Static Site Engine</span>
+          <span class="text-[var(--color-ink)]">Astro v5 (Edge HTML / Island Architecture)</span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 py-1.5">
+          <span class="text-[var(--color-ink-faint)] uppercase text-[10px]">Design System</span>
+          <span class="text-[var(--color-ink)]">Custom Monastic VHS Palettes (Noir & Bone)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Licensing Notice -->
+    <div class="text-center font-mono text-xs text-[var(--color-ink-faint)] border-t border-[var(--color-rule)] pt-6">
+      <p>
+        DissidentX written chronicles are released under contemplative fair witness. All third-party trademarks, sound recordings, and fonts remain the property of their respective creators.
+      </p>
+    </div>
+  </div>
+</Layout>
