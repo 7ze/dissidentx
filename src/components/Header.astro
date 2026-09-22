@@ -7,6 +7,8 @@ interface Props {
 const { codex, codexTitle: customTitle } = Astro.props;
 const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
 
+const DEFAULT_RADIO_VOLUME = 20;
+
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/essays", label: "Essays" },
@@ -127,13 +129,13 @@ if (!codexLabel) {
             id="vhs-radio-vol-slider"
             min="0"
             max="100"
-            value="5"
+            value={DEFAULT_RADIO_VOLUME}
             step="1"
             class="vhs-vol-range w-10 sm:w-14 cursor-pointer ml-0.5"
             aria-label="Volume"
             title="Adjust Volume"
           />
-          <span id="vhs-radio-vol-label" class="font-mono text-[9px] text-[var(--color-ink-muted)] w-5 sm:w-6 tabular-nums select-none">5%</span>
+          <span id="vhs-radio-vol-label" class="font-mono text-[9px] text-[var(--color-ink-muted)] w-5 sm:w-6 tabular-nums select-none">{DEFAULT_RADIO_VOLUME}%</span>
         </div>
       </div>
     </div>
@@ -257,15 +259,18 @@ if (!codexLabel) {
     }
   }
 
+  const DEFAULT_RADIO_VOLUME = 20;
+  const RADIO_VOLUME_STORAGE_KEY = "dissidentx:radio-vol";
+
   function getSavedVolume(): number {
     try {
-      const saved = localStorage.getItem("dissidentx:radio-vol");
+      const saved = localStorage.getItem(RADIO_VOLUME_STORAGE_KEY);
       if (saved !== null) {
         const val = parseInt(saved, 10);
         if (!isNaN(val) && val >= 0 && val <= 100) return val;
       }
     } catch (_) {}
-    return 5; // Default 5% volume as requested
+    return DEFAULT_RADIO_VOLUME;
   }
 
   function fadeAudio(audio: HTMLAudioElement, targetVolume: number, durationMs: number, onComplete?: () => void) {
@@ -657,7 +662,7 @@ if (!codexLabel) {
           activeAudio.volume = val / 100;
         }
         try {
-          localStorage.setItem("dissidentx:radio-vol", String(val));
+          localStorage.setItem(RADIO_VOLUME_STORAGE_KEY, String(val));
         } catch (_) {}
       });
 
