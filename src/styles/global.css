@@ -27,6 +27,7 @@
   color-scheme: dark;
   --color-void: #020202;
   --color-surface: #070707;
+  --color-surface-translucent: rgba(7, 7, 7, 0.78);
   --color-surface-hover: #141311;
   --color-ink: #dedad2;
   --color-ink-soft: #cac5bb;
@@ -43,12 +44,20 @@
   --color-vhs-green-inactive: #15803d;
   --color-ink-bright: #ffffff;
   --color-vhs-icon: #888278;
+  --color-ornament-line: #dedad2;
+  --color-ornament-line-subtle: rgba(222, 218, 210, 0.45);
+  --color-ornament-gold: #d4af37;
+  --color-ornament-crimson: #e0314b;
+  --color-ornament-sage: #689666;
+  --color-wallpaper: #48433d;
+  --wallpaper-opacity: 0.03;
 }
 
 html[data-theme="light"] {
   color-scheme: light;
   --color-void: #faf6ee;
   --color-surface: #f2ede2;
+  --color-surface-translucent: rgba(242, 237, 226, 0.82);
   --color-surface-hover: #e7dfce;
   --color-ink: #181614;
   --color-ink-soft: #23201d;
@@ -65,6 +74,13 @@ html[data-theme="light"] {
   --color-vhs-green-inactive: #166534;
   --color-ink-bright: #0a0908;
   --color-vhs-icon: #625a50;
+  --color-ornament-line: #221e1a;
+  --color-ornament-line-subtle: rgba(34, 30, 26, 0.48);
+  --color-ornament-gold: #b8860b;
+  --color-ornament-crimson: #b8122d;
+  --color-ornament-sage: #3a5a40;
+  --color-wallpaper: #221e1a;
+  --wallpaper-opacity: 0.025;
 }
 
 html {

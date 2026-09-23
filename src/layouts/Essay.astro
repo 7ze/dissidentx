@@ -1,6 +1,8 @@
 ---
 import Layout from "./Layout.astro";
 import { formatDate, type EssayEntry } from "../lib/essays";
+import TympanumHeadpiece from "../components/TympanumHeadpiece.astro";
+import SectionDivider from "../components/SectionDivider.astro";
 
 export interface Props {
   title: string;
@@ -37,7 +39,7 @@ const {
     aria-hidden="true"
   ></div>
 
-  <article class="max-w-2xl mx-auto my-6 sm:my-10">
+  <article class="max-w-2xl mx-auto my-6 sm:my-10 relative z-10">
     <!-- Back to Essays Button -->
     <div class="mb-8 pb-3 border-b border-[var(--color-rule)] flex items-center justify-between text-xs font-mono">
       <a
@@ -54,6 +56,9 @@ const {
 
     <!-- Article Header -->
     <header class="mb-10 text-center">
+      <!-- Sacred Tympanum Arch Headpiece -->
+      <TympanumHeadpiece class="mb-4 sm:mb-6" />
+
       <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--color-ink-bright)] tracking-tight leading-tight mb-4">
         {title}
       </h1>
@@ -70,12 +75,13 @@ const {
         )}
       </div>
 
-      <hr class="my-8 border-[var(--color-rule)] w-24 mx-auto" />
+      <SectionDivider class="my-4" />
     </header>
 
     <!-- Prose Content -->
     <div class="prose text-[var(--color-ink-soft)]">
       <slot />
+      <SectionDivider class="my-10" />
     </div>
 
     <!-- Article Footer / Tags & Copy Link -->

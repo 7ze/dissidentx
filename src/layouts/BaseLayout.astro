@@ -8,6 +8,7 @@ import { ClientRouter } from "astro:transitions";
 
 import "../styles/global.css";
 import VhsParticles from "../components/VhsParticles.astro";
+import Background from "../components/Background.astro";
 import SearchModal from "../components/SearchModal.astro";
 
 export interface Props {
@@ -90,6 +91,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site || "https://dissidentx.
   <body class="min-h-screen flex flex-col bg-[var(--color-void)] text-[var(--color-ink)] relative">
     <!-- Subtle Independent VHS Dust / Mote Particles -->
     <VhsParticles />
+
+    <!-- Stately Christian Damask Fixed Vector Wallpaper -->
+    <Background />
 
     <div class="site-wrapper flex-1 flex flex-col my-6 sm:my-10 relative z-10">
       <slot />

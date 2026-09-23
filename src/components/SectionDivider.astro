@@ -1,0 +1,54 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<div class={`w-full max-w-lg mx-auto py-8 overflow-hidden pointer-events-none select-none ${className}`} aria-hidden="true">
+  <svg
+    viewBox="0 0 560 90"
+    class="w-full h-auto text-[var(--color-ornament-line)] opacity-80 transition-opacity duration-300"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <!-- Center Mini Grail -->
+    <g id="mini-grail" transform="translate(280, 45)" stroke="currentColor" fill="none">
+      <circle cx="0" cy="0" r="22" stroke="var(--color-ornament-gold)" stroke-width="0.6" stroke-dasharray="2 3" />
+      <ellipse cx="0" cy="-14" rx="10" ry="2.5" stroke-width="1.2" />
+      <path d="M -10,-14 C -10,0 0,6 0,6 C 0,6 10,0 10,-14" stroke-width="1.3" />
+      <line x1="-5" y1="-12" x2="0" y2="6" stroke-width="0.7" />
+      <line x1="5" y1="-12" x2="0" y2="6" stroke-width="0.7" />
+      <line x1="0" y1="6" x2="0" y2="18" stroke-width="1.3" />
+      <circle cx="0" cy="12" r="2" fill="var(--color-ornament-crimson)" stroke="none" />
+      <path d="M -9,22 C -6,18 0,18 0,18 C 0,18 6,18 9,22" stroke-width="1.3" />
+      <line x1="-11" y1="22" x2="11" y2="22" stroke-width="1.4" />
+    </g>
+
+    <!-- Left Calligraphic Flourish -->
+    <g id="divider-left" stroke="currentColor" fill="none">
+      <line x1="20" y1="45" x2="180" y2="45" stroke-width="0.9" />
+      <circle cx="20" cy="45" r="2.5" fill="currentColor" />
+      <path d="M 20,45 C 28,40 32,32 30,26 C 26,24 22,30 20,45 Z" stroke-width="0.8" />
+      <path d="M 20,45 C 28,50 32,58 30,64 C 26,66 22,60 20,45 Z" stroke-width="0.8" />
+
+      <path d="M 180,45 C 210,45 228,24 246,38 C 240,54 220,54 205,46 C 190,62 210,72 230,66" stroke-width="1.2" />
+      <circle cx="244" cy="38" r="2" fill="var(--color-ornament-gold)" stroke="none" />
+      <circle cx="218" cy="42" r="1.5" fill="var(--color-ornament-crimson)" stroke="none" />
+      <path d="M 195,36 C 185,22 170,26 160,38 C 172,42 188,40 195,36 Z" stroke-width="1.0" />
+    </g>
+
+    <!-- Right Calligraphic Flourish -->
+    <g id="divider-right" stroke="currentColor" fill="none">
+      <line x1="380" y1="45" x2="540" y2="45" stroke-width="0.9" />
+      <circle cx="540" cy="45" r="2.5" fill="currentColor" />
+      <path d="M 540,45 C 532,40 528,32 530,26 C 534,24 538,30 540,45 Z" stroke-width="0.8" />
+      <path d="M 540,45 C 532,50 528,58 530,64 C 534,66 538,60 540,45 Z" stroke-width="0.8" />
+
+      <path d="M 380,45 C 350,45 332,24 314,38 C 320,54 340,54 355,46 C 370,62 350,72 330,66" stroke-width="1.2" />
+      <circle cx="316" cy="38" r="2" fill="var(--color-ornament-gold)" stroke="none" />
+      <circle cx="342" cy="42" r="1.5" fill="var(--color-ornament-crimson)" stroke="none" />
+      <path d="M 365,36 C 375,22 390,26 400,38 C 388,42 372,40 365,36 Z" stroke-width="1.0" />
+    </g>
+  </svg>
+</div>

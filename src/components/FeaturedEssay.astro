@@ -10,7 +10,7 @@ interface Props {
 const { essay, className = "" } = Astro.props;
 ---
 
-<article class={`border border-[var(--color-rule)] bg-[var(--color-surface)] p-6 sm:p-7 flex flex-col justify-between ${className}`}>
+<article class={`border border-[var(--color-rule)] bg-[var(--color-surface-translucent)] backdrop-blur-[2px] p-6 sm:p-7 flex flex-col justify-between ${className}`}>
   <div>
     <!-- Category & Date -->
     <div class="flex items-center justify-between text-xs font-mono text-[var(--color-ink-faint)] mb-4 uppercase tracking-wider">
