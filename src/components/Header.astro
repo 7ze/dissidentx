@@ -142,7 +142,18 @@ if (!codexLabel) {
     <div class="flex items-center gap-1.5 sm:gap-2 text-[var(--color-ink-faint)] whitespace-nowrap">
       <span class="hidden min-[460px]:inline text-[var(--color-crimson)] font-normal tracking-wider" title={codexTitle}>{codexLabel}</span>
       <span class="hidden min-[460px]:inline">·</span>
-      <span id="vhs-live-clock">--:--:--</span>
+      <span id="vhs-live-clock" transition:persist="vhs-live-clock">--:--:--</span>
+      <script is:inline>
+        (() => {
+          try {
+            const el = document.getElementById("vhs-live-clock");
+            if (el && (!el.textContent || el.textContent === "--:--:--")) {
+              const now = new Date();
+              el.textContent = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}`;
+            }
+          } catch (_) {}
+        })();
+      </script>
       <span>·</span>
       <button
         type="button"
@@ -709,7 +720,17 @@ if (!codexLabel) {
     }
   });
 
-  document.addEventListener("astro:before-swap", closeVolPanel);
+  document.addEventListener("astro:before-swap", (e: any) => {
+    closeVolPanel();
+    const currentClock = document.getElementById("vhs-live-clock");
+    if (currentClock && e.newDocument) {
+      const newClock = e.newDocument.getElementById("vhs-live-clock");
+      if (newClock && currentClock.textContent && currentClock.textContent !== "--:--:--") {
+        newClock.textContent = currentClock.textContent;
+      }
+    }
+  });
+  document.addEventListener("astro:after-swap", updateVhsClock);
   initHeader();
   document.addEventListener("astro:page-load", initHeader);
 </script>

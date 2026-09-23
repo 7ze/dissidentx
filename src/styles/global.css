@@ -49,8 +49,16 @@
   --color-ornament-gold: #d4af37;
   --color-ornament-crimson: #e0314b;
   --color-ornament-sage: #689666;
-  --color-wallpaper: #48433d;
-  --wallpaper-opacity: 0.03;
+  --color-wallpaper: #111111;
+  --wallpaper-opacity: 0.19;
+  --wallpaper-tile-size: 500px;
+  /* Slanted Fade Gradient: Controls the slant angle & where the linework dissolves into the void */
+  --wallpaper-fade: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 25%, rgba(0, 0, 0, 0.25) 55%, transparent 99%);
+  /* Gilded Ornamental Sunray Gradient (Dark Mode: Soft, atmospheric gilded radiance) */
+  --wallpaper-sunray-start: #dfb743;
+  --wallpaper-sunray-gold: #a88428;
+  --wallpaper-sunray-bronze: #66501a;
+  --wallpaper-sunray-end: #2e2a24;
 }
 
 html[data-theme="light"] {
@@ -80,7 +88,14 @@ html[data-theme="light"] {
   --color-ornament-crimson: #b8122d;
   --color-ornament-sage: #3a5a40;
   --color-wallpaper: #221e1a;
-  --wallpaper-opacity: 0.025;
+  --wallpaper-opacity: 0.15;
+  /* Slanted Fade Gradient (Light Mode): Controls the slant angle & where the linework dissolves into the parchment */
+  --wallpaper-fade: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 25%, rgba(0, 0, 0, 0.25) 55%, transparent 99%);
+  /* Gilded Ornamental Sunray Gradient (Light Mode: Warm illuminated amber to monastic ink) */
+  --wallpaper-sunray-start: #8f6515;
+  --wallpaper-sunray-gold: #73500d;
+  --wallpaper-sunray-bronze: #543907;
+  --wallpaper-sunray-end: #281d0c;
 }
 
 html {
@@ -317,25 +332,47 @@ a:hover {
   margin-bottom: 0.75em;
 }
 
-/* Monastic Section Breaks (Spaced Asterisms) */
+/* Illuminated Monastic Section Breaks (Alternating Wild Strawberry & Twin Cherries) */
 .prose hr {
   border: none;
   text-align: center;
-  margin: 3em auto;
-  height: auto;
+  margin: 2.75em auto;
+  height: 20px;
+  width: 100%;
+  max-width: 135px;
   overflow: visible;
-  line-height: 1;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.88;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  /* Default / Odd: Petite Fluid Wild Strawberry (Dark Mode) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 170 24' fill='none'%3E%3Cg stroke='%235f855d' stroke-width='1.1' stroke-linecap='round' fill='none'%3E%3Cpath d='M77 11 C68 10 63 14.5 55 15 C45 15.5 39 9.5 29 11 C20 12.5 14 17 7 14.5 C4 13 3 9.5 5.5 8 C7.5 6.5 10 8 9.5 10 C9 11.5 6.5 12.5 5 11.5'/%3E%3Cpath d='M93 11 C102 10 107 14.5 115 15 C125 15.5 131 9.5 141 11 C150 12.5 156 17 163 14.5 C166 13 167 9.5 164.5 8 C162.5 6.5 160 8 160.5 10 C161 11.5 163.5 12.5 165 11.5'/%3E%3Cpath d='M85 7.5 C84.5 4.5 85.5 4.5 85 3' stroke-width='1'/%3E%3C/g%3E%3Cg stroke='%234f734d' stroke-linecap='round' fill='none'%3E%3Cpath d='M64 11.5 C59 6.5 49 5.5 41 7.5 C33 9.5 27 6.5 19 6.5 C15 6.5 12 8.5 10 11' stroke-width='0.9'/%3E%3Cpath d='M41 7.5 C39 4.5 34 4 33 6 C32 8 35 9.5 37 9' stroke-width='0.8'/%3E%3Cpath d='M106 11.5 C111 6.5 121 5.5 129 7.5 C137 9.5 143 6.5 151 6.5 C155 6.5 158 8.5 160 11' stroke-width='0.9'/%3E%3Cpath d='M129 7.5 C131 4.5 136 4 137 6 C138 8 135 9.5 133 9' stroke-width='0.8'/%3E%3C/g%3E%3Cg fill='%237fa87d'%3E%3Cpath d='M52 7 C50 3 43 3.5 42 7 C45 8.5 49 8.5 52 7 Z'/%3E%3Cpath d='M35 13.5 C34 18 27 19 25 16 C27 13 31 12.5 35 13.5 Z'/%3E%3Cpath d='M21 7 C19 3.5 14 4 13 7 C16 8.5 19 8 21 7 Z' opacity='0.85'/%3E%3Cpath d='M14 15.5 C12 18.5 8 17.5 7.5 15.5 C9.5 14 12 14.5 14 15.5 Z' opacity='0.8'/%3E%3Cpath d='M83 8 C80 6 77 7 76 5 C78 7 81 8 83 8 Z'/%3E%3Cpath d='M87 8 C90 6 93 7 94 5 C92 7 89 8 87 8 Z'/%3E%3Cpath d='M118 7 C120 3 127 3.5 128 7 C125 8.5 121 8.5 118 7 Z'/%3E%3Cpath d='M135 13.5 C136 18 143 19 145 16 C143 13 139 12.5 135 13.5 Z'/%3E%3Cpath d='M149 7 C151 3.5 156 4 157 7 C154 8.5 151 8 149 7 Z' opacity='0.85'/%3E%3Cpath d='M156 15.5 C158 18.5 162 17.5 162.5 15.5 C160.5 14 158 14.5 156 15.5 Z' opacity='0.8'/%3E%3C/g%3E%3Cg fill='%23e0314b'%3E%3Cpath d='M85 20.5 C79.5 19.5 78 14.5 79 11 C80 8.5 82.5 7.5 85 7.5 C87.5 7.5 90 8.5 91 11 C92 14.5 90.5 19.5 85 20.5 Z' stroke='%239c0c22' stroke-width='0.7'/%3E%3Ccircle cx='48' cy='4.5' r='1.4'/%3E%3Ccircle cx='122' cy='4.5' r='1.4'/%3E%3C/g%3E%3Cg fill='%23dfb743'%3E%3Ccircle cx='82.5' cy='11.5' r='0.55'/%3E%3Ccircle cx='87.5' cy='11.5' r='0.55'/%3E%3Ccircle cx='83.5' cy='14.5' r='0.55'/%3E%3Ccircle cx='86.5' cy='14.5' r='0.55'/%3E%3Ccircle cx='85' cy='17.5' r='0.5'/%3E%3Ccircle cx='18' cy='5.5' r='1.1'/%3E%3Ccircle cx='152' cy='5.5' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Even: Petite Fluid Twin Cherries (Dark Mode) */
+.prose hr:nth-of-type(even) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 170 24' fill='none'%3E%3Cg stroke='%235f855d' stroke-width='1.1' stroke-linecap='round' fill='none'%3E%3Cpath d='M76 11 C67 10 62 14.5 54 15 C44 15.5 38 9.5 28 11 C19 12.5 13 17 6 14.5 C3 13 2 9.5 4.5 8 C6.5 6.5 9 8 8.5 10 C8 11.5 5.5 12.5 4 11.5'/%3E%3Cpath d='M94 11 C103 10 108 14.5 116 15 C126 15.5 132 9.5 142 11 C151 12.5 157 17 164 14.5 C167 13 168 9.5 165.5 8 C163.5 6.5 161 8 161.5 10 C162 11.5 164.5 12.5 166 11.5'/%3E%3Cpath d='M85 4.5 C82 7.5 80 10.5 80 13.5'/%3E%3Cpath d='M85 4.5 C87 7.5 89 11.5 89 14.5'/%3E%3C/g%3E%3Cg stroke='%234f734d' stroke-linecap='round' fill='none'%3E%3Cpath d='M63 11.5 C58 6.5 48 5.5 40 7.5 C32 9.5 26 6.5 18 6.5 C14 6.5 11 8.5 9 11' stroke-width='0.9'/%3E%3Cpath d='M40 7.5 C38 4.5 33 4 32 6 C31 8 34 9.5 36 9' stroke-width='0.8'/%3E%3Cpath d='M107 11.5 C112 6.5 122 5.5 130 7.5 C138 9.5 144 6.5 152 6.5 C156 6.5 159 8.5 161 11' stroke-width='0.9'/%3E%3Cpath d='M130 7.5 C132 4.5 137 4 138 6 C139 8 136 9.5 134 9' stroke-width='0.8'/%3E%3C/g%3E%3Cg fill='%237fa87d'%3E%3Cpath d='M51 7 C49 3 42 3.5 41 7 C44 8.5 48 8.5 51 7 Z'/%3E%3Cpath d='M34 13.5 C33 18 26 19 24 16 C26 13 30 12.5 34 13.5 Z'/%3E%3Cpath d='M20 7 C18 3.5 13 4 12 7 C15 8.5 18 8 20 7 Z' opacity='0.85'/%3E%3Cpath d='M13 15.5 C11 18.5 7 17.5 6.5 15.5 C8.5 14 11 14.5 13 15.5 Z' opacity='0.8'/%3E%3Cpath d='M85 4.5 C83 1.5 88 1.5 86.5 4 Z'/%3E%3Cpath d='M119 7 C121 3 128 3.5 129 7 C126 8.5 122 8.5 119 7 Z'/%3E%3Cpath d='M136 13.5 C137 18 144 19 146 16 C144 13 140 12.5 136 13.5 Z'/%3E%3Cpath d='M150 7 C152 3.5 157 4 158 7 C155 8.5 152 8 150 7 Z' opacity='0.85'/%3E%3Cpath d='M157 15.5 C159 18.5 163 17.5 163.5 15.5 C161.5 14 159 14.5 157 15.5 Z' opacity='0.8'/%3E%3C/g%3E%3Cg%3E%3Ccircle cx='79' cy='16' r='3.6' fill='%23e0314b' stroke='%239c0c22' stroke-width='0.6'/%3E%3Cpath d='M77.5 14 A1.8 1.8 0 0 1 79.5 13.5' stroke='%23ffffff' stroke-width='0.6' stroke-linecap='round' opacity='0.65'/%3E%3Ccircle cx='89' cy='17' r='3.4' fill='%23b81d35' stroke='%23800b1d' stroke-width='0.6'/%3E%3Cpath d='M87.5 15 A1.6 1.6 0 0 1 89.5 14.5' stroke='%23ffffff' stroke-width='0.6' stroke-linecap='round' opacity='0.55'/%3E%3C/g%3E%3Cg fill='%23dfb743'%3E%3Ccircle cx='85' cy='4.5' r='1.1'/%3E%3Ccircle cx='17' cy='5.5' r='1.1'/%3E%3Ccircle cx='153' cy='5.5' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 .prose hr::before {
-  content: "· · ·";
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 1.25rem;
-  letter-spacing: 0.85em;
-  padding-left: 0.85em;
-  color: var(--color-ink-faint);
-  line-height: 1;
+  content: "";
+  display: none;
+}
+
+.prose hr:hover {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+/* Odd: Petite Fluid Wild Strawberry (Light Mode) */
+html[data-theme="light"] .prose hr {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 170 24' fill='none'%3E%3Cg stroke='%232f4f2f' stroke-width='1.1' stroke-linecap='round' fill='none'%3E%3Cpath d='M77 11 C68 10 63 14.5 55 15 C45 15.5 39 9.5 29 11 C20 12.5 14 17 7 14.5 C4 13 3 9.5 5.5 8 C7.5 6.5 10 8 9.5 10 C9 11.5 6.5 12.5 5 11.5'/%3E%3Cpath d='M93 11 C102 10 107 14.5 115 15 C125 15.5 131 9.5 141 11 C150 12.5 156 17 163 14.5 C166 13 167 9.5 164.5 8 C162.5 6.5 160 8 160.5 10 C161 11.5 163.5 12.5 165 11.5'/%3E%3Cpath d='M85 7.5 C84.5 4.5 85.5 4.5 85 3' stroke-width='1'/%3E%3C/g%3E%3Cg stroke='%23244024' stroke-linecap='round' fill='none'%3E%3Cpath d='M64 11.5 C59 6.5 49 5.5 41 7.5 C33 9.5 27 6.5 19 6.5 C15 6.5 12 8.5 10 11' stroke-width='0.9'/%3E%3Cpath d='M41 7.5 C39 4.5 34 4 33 6 C32 8 35 9.5 37 9' stroke-width='0.8'/%3E%3Cpath d='M106 11.5 C111 6.5 121 5.5 129 7.5 C137 9.5 143 6.5 151 6.5 C155 6.5 158 8.5 160 11' stroke-width='0.9'/%3E%3Cpath d='M129 7.5 C131 4.5 136 4 137 6 C138 8 135 9.5 133 9' stroke-width='0.8'/%3E%3C/g%3E%3Cg fill='%233a5e3a'%3E%3Cpath d='M52 7 C50 3 43 3.5 42 7 C45 8.5 49 8.5 52 7 Z'/%3E%3Cpath d='M35 13.5 C34 18 27 19 25 16 C27 13 31 12.5 35 13.5 Z'/%3E%3Cpath d='M21 7 C19 3.5 14 4 13 7 C16 8.5 19 8 21 7 Z' opacity='0.85'/%3E%3Cpath d='M14 15.5 C12 18.5 8 17.5 7.5 15.5 C9.5 14 12 14.5 14 15.5 Z' opacity='0.8'/%3E%3Cpath d='M83 8 C80 6 77 7 76 5 C78 7 81 8 83 8 Z'/%3E%3Cpath d='M87 8 C90 6 93 7 94 5 C92 7 89 8 87 8 Z'/%3E%3Cpath d='M118 7 C120 3 127 3.5 128 7 C125 8.5 121 8.5 118 7 Z'/%3E%3Cpath d='M135 13.5 C136 18 143 19 145 16 C143 13 139 12.5 135 13.5 Z'/%3E%3Cpath d='M149 7 C151 3.5 156 4 157 7 C154 8.5 151 8 149 7 Z' opacity='0.85'/%3E%3Cpath d='M156 15.5 C158 18.5 162 17.5 162.5 15.5 C160.5 14 158 14.5 156 15.5 Z' opacity='0.8'/%3E%3C/g%3E%3Cg fill='%23b8122d'%3E%3Cpath d='M85 20.5 C79.5 19.5 78 14.5 79 11 C80 8.5 82.5 7.5 85 7.5 C87.5 7.5 90 8.5 91 11 C92 14.5 90.5 19.5 85 20.5 Z' stroke='%23780c1d' stroke-width='0.7'/%3E%3Ccircle cx='48' cy='4.5' r='1.4'/%3E%3Ccircle cx='122' cy='4.5' r='1.4'/%3E%3C/g%3E%3Cg fill='%23b8860b'%3E%3Ccircle cx='82.5' cy='11.5' r='0.55'/%3E%3Ccircle cx='87.5' cy='11.5' r='0.55'/%3E%3Ccircle cx='83.5' cy='14.5' r='0.55'/%3E%3Ccircle cx='86.5' cy='14.5' r='0.55'/%3E%3Ccircle cx='85' cy='17.5' r='0.5'/%3E%3Ccircle cx='18' cy='5.5' r='1.1'/%3E%3Ccircle cx='152' cy='5.5' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Even: Petite Fluid Twin Cherries (Light Mode) */
+html[data-theme="light"] .prose hr:nth-of-type(even) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 170 24' fill='none'%3E%3Cg stroke='%232f4f2f' stroke-width='1.1' stroke-linecap='round' fill='none'%3E%3Cpath d='M76 11 C67 10 62 14.5 54 15 C44 15.5 38 9.5 28 11 C19 12.5 13 17 6 14.5 C3 13 2 9.5 4.5 8 C6.5 6.5 9 8 8.5 10 C8 11.5 5.5 12.5 4 11.5'/%3E%3Cpath d='M94 11 C103 10 108 14.5 116 15 C126 15.5 132 9.5 142 11 C151 12.5 157 17 164 14.5 C167 13 168 9.5 165.5 8 C163.5 6.5 161 8 161.5 10 C162 11.5 164.5 12.5 166 11.5'/%3E%3Cpath d='M85 4.5 C82 7.5 80 10.5 80 13.5'/%3E%3Cpath d='M85 4.5 C87 7.5 89 11.5 89 14.5'/%3E%3C/g%3E%3Cg stroke='%23244024' stroke-linecap='round' fill='none'%3E%3Cpath d='M63 11.5 C58 6.5 48 5.5 40 7.5 C32 9.5 26 6.5 18 6.5 C14 6.5 11 8.5 9 11' stroke-width='0.9'/%3E%3Cpath d='M40 7.5 C38 4.5 33 4 32 6 C31 8 34 9.5 36 9' stroke-width='0.8'/%3E%3Cpath d='M107 11.5 C112 6.5 122 5.5 130 7.5 C138 9.5 144 6.5 152 6.5 C156 6.5 159 8.5 161 11' stroke-width='0.9'/%3E%3Cpath d='M130 7.5 C132 4.5 137 4 138 6 C139 8 136 9.5 134 9' stroke-width='0.8'/%3E%3C/g%3E%3Cg fill='%233a5e3a'%3E%3Cpath d='M51 7 C49 3 42 3.5 41 7 C44 8.5 48 8.5 51 7 Z'/%3E%3Cpath d='M34 13.5 C33 18 26 19 24 16 C26 13 30 12.5 34 13.5 Z'/%3E%3Cpath d='M20 7 C18 3.5 13 4 12 7 C15 8.5 18 8 20 7 Z' opacity='0.85'/%3E%3Cpath d='M13 15.5 C11 18.5 7 17.5 6.5 15.5 C8.5 14 11 14.5 13 15.5 Z' opacity='0.8'/%3E%3Cpath d='M85 4.5 C83 1.5 88 1.5 86.5 4 Z'/%3E%3Cpath d='M119 7 C121 3 128 3.5 129 7 C126 8.5 122 8.5 119 7 Z'/%3E%3Cpath d='M136 13.5 C137 18 144 19 146 16 C144 13 140 12.5 136 13.5 Z'/%3E%3Cpath d='M150 7 C152 3.5 157 4 158 7 C155 8.5 152 8 150 7 Z' opacity='0.85'/%3E%3Cpath d='M157 15.5 C159 18.5 163 17.5 163.5 15.5 C161.5 14 159 14.5 157 15.5 Z' opacity='0.8'/%3E%3C/g%3E%3Cg%3E%3Ccircle cx='79' cy='16' r='3.6' fill='%23b8122d' stroke='%23780c1d' stroke-width='0.6'/%3E%3Cpath d='M77.5 14 A1.8 1.8 0 0 1 79.5 13.5' stroke='%23ffffff' stroke-width='0.6' stroke-linecap='round' opacity='0.65'/%3E%3Ccircle cx='89' cy='17' r='3.4' fill='%23990f25' stroke='%23660a19' stroke-width='0.6'/%3E%3Cpath d='M87.5 15 A1.6 1.6 0 0 1 89.5 14.5' stroke='%23ffffff' stroke-width='0.6' stroke-linecap='round' opacity='0.55'/%3E%3C/g%3E%3Cg fill='%23b8860b'%3E%3Ccircle cx='85' cy='4.5' r='1.1'/%3E%3Ccircle cx='17' cy='5.5' r='1.1'/%3E%3Ccircle cx='153' cy='5.5' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* Illuminated Monastic Blockquotes */
@@ -451,13 +488,28 @@ h1, h2, h3, h4, h5, h6 {
   outline-offset: 3px;
 }
 
-input:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid var(--color-crimson);
-  outline-offset: 1px;
+/* Uniform Text Input Focus: Single subtle hairline border without thick outer outlines */
+input[type="text"],
+input[type="email"],
+input[type="search"],
+textarea {
+  outline: none;
 }
 
-/* Embedded / Borderless Search Inputs: Never render a nested second focus box */
+input[type="text"]:focus,
+input[type="text"]:focus-visible,
+input[type="email"]:focus,
+input[type="email"]:focus-visible,
+input[type="search"]:focus,
+input[type="search"]:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: var(--color-crimson-subtle) !important;
+}
+
+/* Embedded Borderless Search Inputs: Never render a nested second focus box */
 #search-input,
 #search-input:focus,
 #search-input:focus-visible,
