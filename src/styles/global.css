@@ -50,8 +50,8 @@
   --color-ornament-crimson: #e0314b;
   --color-ornament-sage: #689666;
   --color-wallpaper: #111111;
-  --wallpaper-opacity: 0.19;
-  --wallpaper-tile-size: 500px;
+  --wallpaper-opacity: 0.1;
+  --wallpaper-tile-size: 300px;
   /* Slanted Fade Gradient: Controls the slant angle & where the linework dissolves into the void */
   --wallpaper-fade: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 25%, rgba(0, 0, 0, 0.25) 55%, transparent 99%);
   /* Gilded Ornamental Sunray Gradient (Dark Mode: Soft, atmospheric gilded radiance) */
@@ -88,7 +88,7 @@ html[data-theme="light"] {
   --color-ornament-crimson: #b8122d;
   --color-ornament-sage: #3a5a40;
   --color-wallpaper: #221e1a;
-  --wallpaper-opacity: 0.15;
+  --wallpaper-opacity: 0.1;
   /* Slanted Fade Gradient (Light Mode): Controls the slant angle & where the linework dissolves into the parchment */
   --wallpaper-fade: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 25%, rgba(0, 0, 0, 0.25) 55%, transparent 99%);
   /* Gilded Ornamental Sunray Gradient (Light Mode: Warm illuminated amber to monastic ink) */
@@ -104,6 +104,24 @@ html {
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
   transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Sacred Wallpaper Tapestry */
+.wallpaper-container {
+  contain: strict;
+  transform: translateZ(0);
+  -webkit-mask-image: var(--wallpaper-fade);
+  mask-image: var(--wallpaper-fade);
+}
+
+.wallpaper-svg {
+  color: var(--color-wallpaper, #363636);
+}
+
+.wallpaper-mesh {
+  opacity: var(--wallpaper-opacity, 0.05);
+  transition: opacity 0.4s ease;
+  will-change: opacity;
 }
 
 body {

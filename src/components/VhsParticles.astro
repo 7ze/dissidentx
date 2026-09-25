@@ -16,8 +16,8 @@
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    // Full atmospheric density: 1,400 particles across the screen
-    const PARTICLE_COUNT = 1400;
+    // Adaptive atmospheric density: Higher density on mobile (~750) and elevated on wide desktop (up to 2,500)
+    const PARTICLE_COUNT = Math.min(2500, Math.max(750, Math.floor((width * height) / 520)));
 
     interface Particle {
       x: number;

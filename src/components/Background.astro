@@ -1370,32 +1370,18 @@ const { class: className = "" } = Astro.props;
     }
 
     syncWallpaper();
-    window.addEventListener("resize", syncWallpaper, { passive: true });
+    let resizeTicking = false;
+    window.addEventListener("resize", () => {
+      if (!resizeTicking) {
+        resizeTicking = true;
+        requestAnimationFrame(() => {
+          syncWallpaper();
+          resizeTicking = false;
+        });
+      }
+    }, { passive: true });
     document.addEventListener("astro:page-load", syncWallpaper);
     document.addEventListener("astro:after-swap", syncWallpaper);
   })();
 </script>
 
-<style>
-  .wallpaper-container {
-    contain: strict;
-    -webkit-mask-image: var(
-      --wallpaper-fade,
-      linear-gradient(135deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 25%, rgba(0, 0, 0, 0.25) 55%, transparent 80%)
-    );
-    mask-image: var(
-      --wallpaper-fade,
-      linear-gradient(135deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 25%, rgba(0, 0, 0, 0.25) 55%, transparent 80%)
-    );
-  }
-
-  .wallpaper-svg {
-    color: var(--color-wallpaper, #363636);
-  }
-
-  .wallpaper-mesh {
-    opacity: var(--wallpaper-opacity, 0.05);
-    transition: opacity 0.4s ease;
-    will-change: opacity;
-  }
-</style>

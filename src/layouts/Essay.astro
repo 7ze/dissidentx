@@ -160,15 +160,22 @@ const {
     const bar = document.getElementById("reading-progress-bar");
     if (!bar) return;
 
+    let ticking = false;
     currentScrollHandler = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - window.innerHeight;
-      if (height <= 0) {
-        bar.style.width = "0%";
-        return;
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY || document.documentElement.scrollTop;
+          const height = document.documentElement.scrollHeight - window.innerHeight;
+          if (height <= 0) {
+            bar.style.width = "0%";
+          } else {
+            const percent = Math.min(100, Math.max(0, (scrollY / height) * 100));
+            bar.style.width = `${percent}%`;
+          }
+          ticking = false;
+        });
       }
-      const percent = Math.min(100, Math.max(0, (scrollY / height) * 100));
-      bar.style.width = `${percent}%`;
     };
 
     window.addEventListener("scroll", currentScrollHandler, { passive: true });
