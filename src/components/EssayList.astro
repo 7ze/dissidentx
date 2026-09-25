@@ -12,28 +12,40 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
 <div class="border border-[var(--color-rule)] bg-[var(--color-surface)] p-4 sm:p-7 my-6 min-h-[460px] flex flex-col justify-start">
   <!-- Interactive Search & Tag Bar (Aligned with Monastic Zine Aesthetic) -->
   <div class="mb-6 pb-5 border-b border-[var(--color-rule)] space-y-3">
-    <!-- Search Input (Single subtle focus border, zero nested red boxes) -->
-    <div class="relative flex items-center bg-[var(--color-void)] border border-[var(--color-rule)] focus-within:border-[var(--color-crimson-subtle)] transition-colors px-3 py-1.5">
-      <span class="text-[var(--color-crimson)] opacity-75 font-mono text-xs select-none flex-shrink-0 mr-2.5" aria-hidden="true">[ ? ]</span>
-      <label for="archive-search-input" class="sr-only">Filter dispatches</label>
-      <input
-        type="text"
-        id="archive-search-input"
-        placeholder="Filter dispatches by keyword, tag, or content..."
-        class="w-full bg-transparent border-none outline-none text-xs font-mono text-[var(--color-ink)] placeholder-[var(--color-ink-faint)] tracking-wide focus:outline-none focus-visible:outline-none focus:ring-0"
-        autocomplete="off"
-        spellcheck="false"
-      />
+    <!-- Search Input Form with explicit [ SEARCH ↵ ] button -->
+    <form id="archive-search-form" role="search" class="flex items-center gap-2 sm:gap-2.5">
+      <div class="flex-1 relative flex items-center bg-[var(--color-void)] border border-[var(--color-rule)] focus-within:border-[var(--color-crimson-subtle)] transition-colors px-3 h-10 min-h-[40px]">
+        <span class="text-[var(--color-crimson)] opacity-75 font-mono text-xs select-none flex-shrink-0 mr-2.5" aria-hidden="true">[ ? ]</span>
+        <label for="archive-search-input" class="sr-only">Filter dispatches</label>
+        <input
+          type="text"
+          id="archive-search-input"
+          placeholder="Filter dispatches by keyword, tag, or content..."
+          class="w-full bg-transparent border-none outline-none text-xs font-mono text-[var(--color-ink)] placeholder-[var(--color-ink-faint)] tracking-wide focus:outline-none focus-visible:outline-none focus:ring-0"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button
+          type="button"
+          id="archive-search-clear"
+          class="hidden text-[10px] font-mono text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] cursor-pointer select-none ml-1.5 flex-shrink-0 p-1 min-h-[28px] min-w-[28px] inline-flex items-center justify-center transition-colors"
+          title="Clear filter"
+          aria-label="Clear filter"
+        >
+          [ ✕ ]
+        </button>
+      </div>
       <button
-        type="button"
-        id="archive-search-clear"
-        class="hidden text-[10px] font-mono text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] cursor-pointer select-none ml-2 flex-shrink-0 p-1.5 min-h-[36px] min-w-[36px] inline-flex items-center justify-center"
-        title="Clear filter"
-        aria-label="Clear filter"
+        type="submit"
+        id="archive-search-submit"
+        class="flex-shrink-0 font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] hover:border-[var(--color-crimson-subtle)] focus-visible:border-[var(--color-crimson-subtle)] focus-visible:text-[var(--color-crimson)] border border-[var(--color-rule)] bg-[var(--color-void)] px-3 sm:px-3.5 h-10 min-h-[40px] cursor-pointer transition-colors select-none inline-flex items-center justify-center gap-1.5 outline-none focus:outline-none focus:ring-0 active:scale-[0.98]"
+        title="Execute search"
+        aria-label="Execute search"
       >
-        [ ✕ ]
+        <span class="hidden sm:inline">SEARCH</span>
+        <span class="text-[var(--color-crimson)] font-bold text-xs select-none">↵</span>
       </button>
-    </div>
+    </form>
 
     <!-- Status Sub-Bar: Topics Label & Match Count -->
     <div class="flex items-center justify-between text-[10px] font-mono text-[var(--color-ink-faint)] uppercase tracking-wider pt-0.5">
@@ -90,7 +102,7 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
               </span>
               <a
                 href={`/essays/${essay.id}`}
-                class="font-serif text-base sm:text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-crimson)] transition-colors leading-snug"
+                class="archive-essay-title font-serif text-base sm:text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-crimson)] transition-colors leading-snug"
               >
                 {essay.data.title}
               </a>
@@ -110,9 +122,13 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
           </div>
 
           <!-- Description -->
-          <p class="font-serif text-xs sm:text-sm text-[var(--color-ink-muted)] mt-1.5 pl-11 line-clamp-2 leading-relaxed">
+          <p class="archive-essay-desc font-serif text-xs sm:text-sm text-[var(--color-ink-muted)] mt-1.5 pl-11 line-clamp-2 leading-relaxed">
             {essay.data.description}
           </p>
+
+          <!-- Dynamic Contextual Snippet (Revealed when search matches body content) -->
+          <div class="archive-essay-snippet hidden text-[11px] font-mono text-[var(--color-ink-muted)] bg-[var(--color-void)] ml-11 mt-2.5 px-3 py-1.5 border-l-2 border-[var(--color-highlight-border)] line-clamp-2 leading-relaxed">
+          </div>
         </li>
       ))
     }
@@ -136,8 +152,6 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
 </div>
 
 <script>
-  import Fuse from "fuse.js";
-
   interface SearchIndexEntry {
     id: string;
     title: string;
@@ -149,12 +163,90 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
     content: string;
   }
 
+  interface MatchInfo {
+    doc: SearchIndexEntry;
+    matchedInBody: boolean;
+    tokens: string[];
+  }
+
   let searchIndex: SearchIndexEntry[] | null = null;
-  let fuse: Fuse<SearchIndexEntry> | null = null;
   let currentActiveTag = "";
 
+  function escapeHtml(str: string): string {
+    if (!str) return "";
+    return str.replace(/[&<>"']/g, (m) => {
+      switch (m) {
+        case "&": return "&amp;";
+        case "<": return "&lt;";
+        case ">": return "&gt;";
+        case '"': return "&quot;";
+        case "'": return "&#39;";
+        default: return m;
+      }
+    });
+  }
+
+  function highlightTerms(text: string, tokens: string[]): string {
+    if (!tokens || tokens.length === 0) return escapeHtml(text);
+    const escapedTokens = tokens
+      .filter(Boolean)
+      .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+      .sort((a, b) => b.length - a.length);
+    if (escapedTokens.length === 0) return escapeHtml(text);
+
+    const regex = new RegExp(`(${escapedTokens.join("|")})`, "gi");
+    const safeText = escapeHtml(text);
+    return safeText.replace(
+      regex,
+      '<mark class="bg-[var(--color-highlight-bg)] text-[var(--color-highlight-text)] font-semibold px-0.5 rounded-none">$1</mark>'
+    );
+  }
+
+  function extractSnippet(content: string, tokens: string[], maxChars = 140): string {
+    if (!content) return "";
+    const lowerContent = content.toLowerCase();
+
+    let bestIdx = -1;
+    let matchedTok = "";
+    for (const tok of tokens) {
+      const idx = lowerContent.indexOf(tok);
+      if (idx !== -1 && (bestIdx === -1 || idx < bestIdx)) {
+        bestIdx = idx;
+        matchedTok = tok;
+      }
+    }
+
+    if (bestIdx === -1) {
+      const slice = content.slice(0, maxChars);
+      return highlightTerms(slice + (content.length > maxChars ? "..." : ""), tokens);
+    }
+
+    const start = Math.max(0, bestIdx - 45);
+    const end = Math.min(content.length, bestIdx + matchedTok.length + 80);
+    let snippet = content.slice(start, end);
+
+    if (start > 0) {
+      const firstSpace = snippet.indexOf(" ");
+      if (firstSpace !== -1 && firstSpace < 15) {
+        snippet = snippet.slice(firstSpace + 1);
+      }
+      snippet = "..." + snippet;
+    }
+    if (end < content.length) {
+      const lastSpace = snippet.lastIndexOf(" ");
+      if (lastSpace !== -1 && lastSpace > snippet.length - 15) {
+        snippet = snippet.slice(0, lastSpace);
+      }
+      snippet = snippet + "...";
+    }
+
+    return highlightTerms(snippet, tokens);
+  }
+
   function setupArchive() {
+    const searchForm = document.getElementById("archive-search-form") as HTMLFormElement | null;
     const searchInput = document.getElementById("archive-search-input") as HTMLInputElement | null;
+    const submitBtn = document.getElementById("archive-search-submit") as HTMLButtonElement | null;
     const clearBtn = document.getElementById("archive-search-clear");
     const countText = document.getElementById("archive-count-text");
     const noResults = document.getElementById("archive-no-results");
@@ -163,42 +255,82 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
     const essayItems = document.querySelectorAll<HTMLElement>(".archive-essay-item");
 
     if (!searchInput || !tagPills.length) return;
-    if (searchInput.dataset.bound) return;
+    if (searchInput.dataset.bound) {
+      (window as any).__dissidentx_loadArchiveUrl?.();
+      return;
+    }
     searchInput.dataset.bound = "true";
 
+    // Cache original titles and descriptions to allow clean highlight toggling
+    essayItems.forEach((item) => {
+      const titleLink = item.querySelector<HTMLAnchorElement>(".archive-essay-title");
+      const descEl = item.querySelector<HTMLElement>(".archive-essay-desc");
+      if (titleLink && !item.dataset.originalTitle) {
+        item.dataset.originalTitle = titleLink.textContent?.trim() || "";
+      }
+      if (descEl && !item.dataset.originalDesc) {
+        item.dataset.originalDesc = descEl.textContent?.trim() || "";
+      }
+    });
+
     async function initSearch() {
-      if (searchIndex && fuse) return;
+      if (searchIndex) return;
       try {
         const res = await fetch("/search-index.json");
         if (!res.ok) return;
         searchIndex = await res.json();
-        if (searchIndex) {
-          fuse = new Fuse(searchIndex, {
-            keys: [
-              { name: "title", weight: 0.35 },
-              { name: "tags", weight: 0.30 },
-              { name: "description", weight: 0.20 },
-              { name: "content", weight: 0.15 },
-            ],
-            threshold: 0.38,
-            ignoreLocation: true,
-            minMatchCharLength: 2,
-          });
-        }
       } catch (e) {
-        console.error("Failed to initialize archive search:", e);
+        console.error("Failed to initialize archive search index:", e);
       }
     }
 
     function filterEssays() {
       const query = searchInput?.value.trim() || "";
+      const tokens = query.toLowerCase().split(/\s+/).filter(Boolean);
       clearBtn?.classList.toggle("hidden", !query);
 
-      let matchingIds: Set<string> | null = null;
+      let matchedMap: Map<string, MatchInfo> | null = null;
+      let fallbackMatchedIds: Set<string> | null = null;
 
-      if (query && fuse) {
-        const searchResults = fuse.search(query);
-        matchingIds = new Set(searchResults.map((r) => r.item.id));
+      if (tokens.length > 0) {
+        if (searchIndex) {
+          matchedMap = new Map();
+          for (const doc of searchIndex) {
+            const titleLower = (doc.title || "").toLowerCase();
+            const descLower = (doc.description || "").toLowerCase();
+            const tagsLower = (doc.tags || []).map((t) => t.toLowerCase());
+            const contentLower = (doc.content || "").toLowerCase();
+
+            // Strict AND evaluation across all fields
+            const matchesAll = tokens.every(
+              (tok) =>
+                titleLower.includes(tok) ||
+                descLower.includes(tok) ||
+                tagsLower.some((t) => t.includes(tok)) ||
+                contentLower.includes(tok)
+            );
+
+            if (matchesAll) {
+              const matchedInBody = tokens.some((tok) => contentLower.includes(tok));
+              matchedMap.set(doc.id, { doc, matchedInBody, tokens });
+            }
+          }
+        } else {
+          // Instant synchronous DOM fallback matching before async fetch finishes
+          fallbackMatchedIds = new Set();
+          essayItems.forEach((item) => {
+            const id = item.getAttribute("data-id") || "";
+            const title = (item.getAttribute("data-title") || "").toLowerCase();
+            const desc = (item.getAttribute("data-description") || "").toLowerCase();
+            const tags = (item.getAttribute("data-tags") || "").toLowerCase();
+            const matchesAll = tokens.every(
+              (tok) => title.includes(tok) || desc.includes(tok) || tags.includes(tok)
+            );
+            if (matchesAll) {
+              fallbackMatchedIds?.add(id);
+            }
+          });
+        }
       }
 
       let visibleCount = 0;
@@ -206,20 +338,62 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
       essayItems.forEach((item) => {
         const id = item.getAttribute("data-id") || "";
         const itemTags = (item.getAttribute("data-tags") || "").split(",").map((t) => t.trim().toLowerCase());
+        const originalTitle = item.dataset.originalTitle || item.getAttribute("data-title") || "";
+        const originalDesc = item.dataset.originalDesc || item.getAttribute("data-description") || "";
 
-        const matchesQuery = matchingIds === null || matchingIds.has(id);
+        const titleLink = item.querySelector<HTMLAnchorElement>(".archive-essay-title");
+        const descEl = item.querySelector<HTMLElement>(".archive-essay-desc");
+        const snippetEl = item.querySelector<HTMLElement>(".archive-essay-snippet");
+
+        const matchesQuery =
+          tokens.length === 0 ||
+          (matchedMap ? matchedMap.has(id) : fallbackMatchedIds?.has(id) ?? false);
+
         const matchesTag = !currentActiveTag || itemTags.includes(currentActiveTag.toLowerCase());
 
         if (matchesQuery && matchesTag) {
           item.style.display = "";
           visibleCount++;
+
+          if (tokens.length > 0) {
+            if (titleLink) titleLink.innerHTML = highlightTerms(originalTitle, tokens);
+            if (descEl) descEl.innerHTML = highlightTerms(originalDesc, tokens);
+
+            const matchInfo = matchedMap?.get(id);
+            if (matchInfo && snippetEl) {
+              const snippet = extractSnippet(matchInfo.doc.content, tokens);
+              if (snippet) {
+                snippetEl.innerHTML = `<span class="text-[9px] uppercase tracking-wider text-[var(--color-ink-faint)] block mb-0.5 select-none font-sans">MATCHED IN CONTENT:</span>${snippet}`;
+                snippetEl.classList.remove("hidden");
+              } else {
+                snippetEl.classList.add("hidden");
+              }
+            } else if (snippetEl) {
+              snippetEl.classList.add("hidden");
+            }
+          } else {
+            if (titleLink) titleLink.textContent = originalTitle;
+            if (descEl) descEl.textContent = originalDesc;
+            if (snippetEl) snippetEl.classList.add("hidden");
+          }
         } else {
           item.style.display = "none";
+          if (titleLink) titleLink.textContent = originalTitle;
+          if (descEl) descEl.textContent = originalDesc;
+          if (snippetEl) snippetEl.classList.add("hidden");
         }
       });
 
       if (countText) {
-        countText.textContent = `DISPATCHES: ${visibleCount} OF ${essayItems.length}`;
+        if (query && currentActiveTag) {
+          countText.textContent = `FILTERED: "${query}" (#${currentActiveTag.toUpperCase()}) · ${visibleCount} OF ${essayItems.length}`;
+        } else if (query) {
+          countText.textContent = `FILTERED BY: "${query}" · ${visibleCount} OF ${essayItems.length}`;
+        } else if (currentActiveTag) {
+          countText.textContent = `TOPIC: #${currentActiveTag.toUpperCase()} · ${visibleCount} OF ${essayItems.length}`;
+        } else {
+          countText.textContent = `DISPATCHES: ${essayItems.length} OF ${essayItems.length}`;
+        }
       }
 
       if (noResults) {
@@ -227,11 +401,91 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
       }
     }
 
+    function syncUrl(push = false) {
+      const query = searchInput?.value.trim() || "";
+      const params = new URLSearchParams();
+      if (query) params.set("q", query);
+      if (currentActiveTag) params.set("tag", currentActiveTag);
+
+      const queryString = params.toString();
+      const newRelativePath = queryString ? `${window.location.pathname}?${queryString}` : window.location.pathname;
+
+      if (window.location.pathname + window.location.search !== newRelativePath) {
+        if (push) {
+          window.history.pushState({ q: query, tag: currentActiveTag }, "", newRelativePath);
+        } else {
+          window.history.replaceState({ q: query, tag: currentActiveTag }, "", newRelativePath);
+        }
+      }
+    }
+
+    function loadFromUrl() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const qParam = urlParams.get("q") || urlParams.get("search") || "";
+      const tagParam = urlParams.get("tag") || "";
+
+      if (searchInput) {
+        searchInput.value = qParam;
+      }
+
+      currentActiveTag = tagParam;
+      tagPills.forEach((p) => {
+        const pillTag = p.getAttribute("data-tag") || "";
+        const isActive = tagParam ? pillTag.toLowerCase() === tagParam.toLowerCase() : pillTag === "";
+        p.classList.toggle("active", isActive);
+        p.classList.toggle("text-[var(--color-crimson)]", isActive);
+        p.classList.toggle("font-bold", isActive);
+        p.classList.toggle("text-[var(--color-ink-muted)]", !isActive);
+        p.setAttribute("aria-pressed", String(isActive));
+      });
+
+      // Filter immediately with synchronous DOM fallback
+      filterEssays();
+
+      // Deepen search when index loads
+      if (qParam) {
+        initSearch().then(filterEssays);
+      }
+    }
+
+    (window as any).__dissidentx_loadArchiveUrl = loadFromUrl;
+
     // Preload on focus or hover
     searchInput.addEventListener("focus", initSearch);
     searchInput.addEventListener("mouseenter", initSearch);
+
+    let debounceTimer: number | undefined;
     searchInput.addEventListener("input", () => {
-      if (!fuse) {
+      window.clearTimeout(debounceTimer);
+      if (!searchIndex) {
+        initSearch().then(() => {
+          filterEssays();
+          syncUrl(false);
+        });
+      } else {
+        filterEssays();
+        debounceTimer = window.setTimeout(() => {
+          syncUrl(false);
+        }, 150);
+      }
+    });
+
+    // Seamlessly fade button into inactive state after clicking/tapping
+    const handleButtonRelease = () => {
+      setTimeout(() => {
+        submitBtn?.blur();
+      }, 80);
+    };
+
+    submitBtn?.addEventListener("pointerup", handleButtonRelease);
+    submitBtn?.addEventListener("touchend", handleButtonRelease);
+
+    // Form submit via [ SEARCH ↵ ] or pressing Enter
+    searchForm?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      handleButtonRelease();
+      syncUrl(true);
+      if (!searchIndex) {
         initSearch().then(filterEssays);
       } else {
         filterEssays();
@@ -241,6 +495,7 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
     clearBtn?.addEventListener("click", () => {
       searchInput.value = "";
       filterEssays();
+      syncUrl(true);
       searchInput.focus();
     });
 
@@ -256,6 +511,7 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
         p.setAttribute("aria-pressed", String(isAll));
       });
       filterEssays();
+      syncUrl(true);
     });
 
     tagPills.forEach((pill) => {
@@ -272,25 +528,25 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
           p.setAttribute("aria-pressed", String(isActive));
         });
 
-        if (!fuse) {
-          initSearch().then(filterEssays);
+        if (!searchIndex) {
+          initSearch().then(() => {
+            filterEssays();
+            syncUrl(true);
+          });
         } else {
           filterEssays();
+          syncUrl(true);
         }
       });
     });
 
-    // Handle URL tag param if present (?tag=philosophy)
-    const urlParams = new URLSearchParams(window.location.search);
-    const tagParam = urlParams.get("tag");
-    if (tagParam) {
-      const matchedPill = Array.from(tagPills).find(
-        (p) => p.getAttribute("data-tag")?.toLowerCase() === tagParam.toLowerCase()
-      );
-      if (matchedPill) {
-        matchedPill.click();
-      }
-    }
+    // Apply URL params on page load
+    loadFromUrl();
+
+    // Re-apply if user presses browser Back/Forward
+    window.addEventListener("popstate", () => {
+      loadFromUrl();
+    });
   }
 
   // Setup on initial load and client navigations
@@ -305,5 +561,12 @@ const allTags = Array.from(new Set(essays.flatMap((e) => e.data.tags || [])));
     outline: none !important;
     box-shadow: none !important;
     border: none !important;
+  }
+
+  #archive-search-submit,
+  #archive-search-submit:focus,
+  #archive-search-submit:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
   }
 </style>

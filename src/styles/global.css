@@ -53,12 +53,15 @@
   --wallpaper-opacity: 0.1;
   --wallpaper-tile-size: 300px;
   /* Slanted Fade Gradient: Controls the slant angle & where the linework dissolves into the void */
-  --wallpaper-fade: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 25%, rgba(0, 0, 0, 0.25) 55%, transparent 99%);
+  --wallpaper-fade: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 25%, rgba(0, 0, 0, 0.25) 75%, transparent 99%);
   /* Gilded Ornamental Sunray Gradient (Dark Mode: Soft, atmospheric gilded radiance) */
   --wallpaper-sunray-start: #dfb743;
   --wallpaper-sunray-gold: #a88428;
   --wallpaper-sunray-bronze: #66501a;
   --wallpaper-sunray-end: #2e2a24;
+  --color-highlight-bg: rgba(74, 222, 128, 0.18);
+  --color-highlight-text: #4ade80;
+  --color-highlight-border: rgba(74, 222, 128, 0.35);
 }
 
 html[data-theme="light"] {
@@ -88,22 +91,102 @@ html[data-theme="light"] {
   --color-ornament-crimson: #b8122d;
   --color-ornament-sage: #3a5a40;
   --color-wallpaper: #221e1a;
-  --wallpaper-opacity: 0.1;
+  --wallpaper-opacity: 0.15;
   /* Slanted Fade Gradient (Light Mode): Controls the slant angle & where the linework dissolves into the parchment */
-  --wallpaper-fade: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 25%, rgba(0, 0, 0, 0.25) 55%, transparent 99%);
+  --wallpaper-fade: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 25%, rgba(0, 0, 0, 0.25) 75%, transparent 99%);
   /* Gilded Ornamental Sunray Gradient (Light Mode: Warm illuminated amber to monastic ink) */
   --wallpaper-sunray-start: #8f6515;
   --wallpaper-sunray-gold: #73500d;
   --wallpaper-sunray-bronze: #543907;
   --wallpaper-sunray-end: #281d0c;
+  --color-highlight-bg: rgba(22, 163, 74, 0.16);
+  --color-highlight-text: #15803d;
+  --color-highlight-border: rgba(22, 163, 74, 0.35);
 }
 
 html {
   background-color: var(--color-void);
   color: var(--color-ink);
-  scroll-behavior: smooth;
   scrollbar-gutter: stable;
   transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.astro-transitioning) {
+    scroll-behavior: smooth;
+  }
+}
+
+html.astro-transitioning,
+html.astro-transitioning *,
+html.astro-transitioning body {
+  scroll-behavior: auto !important;
+  transition: none !important;
+}
+
+/* Seamless View Transitions (Zero Jitter, Zero Layout Shift, Zero Glitch) */
+::view-transition-group(root),
+::view-transition-group(site-header),
+::view-transition-group(site-footer),
+::view-transition-group(main-content) {
+  animation: none !important;
+}
+
+/* Ensure crossfading snapshots are anchored 1:1 at the top and never stretched or distorted */
+::view-transition-old(main-content),
+::view-transition-new(main-content),
+::view-transition-old(root),
+::view-transition-new(root) {
+  height: 100%;
+  object-fit: none;
+  object-position: top center;
+}
+
+/* Site Header: Stays rock-solid; zero fading, zero blinking, zero luminance dip */
+::view-transition-old(site-header),
+::view-transition-new(site-header) {
+  animation: none !important;
+}
+
+/* Site Footer: Instant positioning at bottom without flying across viewport */
+::view-transition-old(site-footer),
+::view-transition-new(site-footer) {
+  animation: none !important;
+}
+
+/* Main Content: Quiet, symmetrical pure opacity crossfade */
+::view-transition-old(main-content) {
+  animation: vh-fade-out 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+::view-transition-new(main-content) {
+  animation: vh-fade-in 0.15s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@keyframes vh-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vh-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
 
 /* Sacred Wallpaper Tapestry */
@@ -500,10 +583,10 @@ h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
 }
 
-/* Accessible High-Contrast Focus Visible */
+/* Uniform Monastic Focus Indicator: Refined 1px hairline matching subtle crimson theme */
 :focus-visible {
-  outline: 2px solid var(--color-crimson);
-  outline-offset: 3px;
+  outline: 1px solid var(--color-crimson-subtle);
+  outline-offset: 2px;
 }
 
 /* Uniform Text Input Focus: Single subtle hairline border without thick outer outlines */
@@ -537,6 +620,51 @@ textarea:focus-visible {
   outline: none !important;
   box-shadow: none !important;
   border: none !important;
+}
+
+/* Seamless Button State Fade: Never remain in a stuck clicked state */
+#search-submit-btn,
+#archive-search-submit {
+  transition: color 0.2s ease-out, border-color 0.2s ease-out, background-color 0.2s ease-out, transform 0.12s ease-out;
+  border-width: 1px !important;
+}
+
+#search-submit-btn:focus,
+#archive-search-submit:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+#search-submit-btn:focus:not(:focus-visible),
+#archive-search-submit:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: var(--color-rule) !important;
+  color: var(--color-ink-muted) !important;
+}
+
+#search-submit-btn:focus-visible,
+#archive-search-submit:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: var(--color-crimson-subtle) !important;
+  color: var(--color-crimson) !important;
+}
+
+#search-submit-btn:active,
+#archive-search-submit:active {
+  transform: scale(0.98);
+  border-color: var(--color-crimson-subtle) !important;
+  color: var(--color-crimson) !important;
+}
+
+/* On touch devices, prevent sticky hover so button returns to inactive immediately after tap */
+@media (hover: none) {
+  #search-submit-btn:hover:not(:active),
+  #archive-search-submit:hover:not(:active) {
+    color: var(--color-ink-muted) !important;
+    border-color: var(--color-rule) !important;
+  }
 }
 
 /* Windows High Contrast / Forced Colors Mode Support */
@@ -593,13 +721,13 @@ textarea:focus-visible {
 .vhs-vol-range:hover::-webkit-slider-thumb,
 .vhs-vol-range:focus-visible::-webkit-slider-thumb {
   transform: scale(1.15);
-  box-shadow: 0 0 4px var(--color-crimson);
+  box-shadow: 0 0 4px var(--color-crimson-subtle);
 }
 
 .vhs-vol-range:hover::-moz-range-thumb,
 .vhs-vol-range:focus-visible::-moz-range-thumb {
   transform: scale(1.15);
-  box-shadow: 0 0 4px var(--color-crimson);
+  box-shadow: 0 0 4px var(--color-crimson-subtle);
 }
 
 @media (max-width: 640px) {

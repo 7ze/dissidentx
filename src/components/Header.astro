@@ -43,14 +43,14 @@ if (!codexLabel) {
 }
 ---
 
-<header class="border-b border-[var(--color-rule)] pb-6 mb-10 text-center">
+<header class="border-b border-[var(--color-rule)] pb-6 mb-10 text-center" transition:name="site-header">
   <!-- Subtle VCR On-Screen Display (OSD) Bar -->
   <div class="flex items-center justify-between text-[10px] font-mono text-[var(--color-ink-faint)] tracking-widest uppercase mb-4 pb-2 border-b border-[var(--color-rule)] select-none">
     <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
       <button
         type="button"
         id="vhs-radio-btn"
-        class="cursor-pointer text-[var(--color-ink-muted)] hover:text-[var(--color-ink-bright)] transition-colors py-1 px-1.5 -ml-1.5 min-h-[36px] inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider vhs-chromatic-hover select-none focus-visible:ring-1 focus-visible:ring-[var(--color-crimson)] group flex-shrink-0"
+        class="cursor-pointer text-[var(--color-ink-muted)] hover:text-[var(--color-ink-bright)] transition-colors py-1 px-1.5 -ml-1.5 min-h-[36px] inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider vhs-chromatic-hover select-none group flex-shrink-0"
         aria-label="Play ambient soundscape (Opt-in)"
         title="Toggle ambient background soundscape (Opt-in)"
       >
@@ -79,7 +79,7 @@ if (!codexLabel) {
       <button
         type="button"
         id="vhs-radio-next-btn"
-        class="hidden items-center justify-center cursor-pointer text-[var(--color-vhs-icon)] hover:text-[var(--color-crimson)] transition-colors py-1 px-1 -ml-0.5 min-h-[36px] min-w-[22px] font-mono text-[9px] uppercase tracking-wider select-none focus-visible:ring-1 focus-visible:ring-[var(--color-crimson)] flex-shrink-0"
+        class="hidden items-center justify-center cursor-pointer text-[var(--color-vhs-icon)] hover:text-[var(--color-crimson)] transition-colors py-1 px-1 -ml-0.5 min-h-[36px] min-w-[22px] font-mono text-[9px] uppercase tracking-wider select-none flex-shrink-0"
         aria-label="Skip to next track"
         title="Next track"
       >
@@ -99,7 +99,7 @@ if (!codexLabel) {
         <button
           type="button"
           id="vhs-vol-toggle-btn"
-          class="cursor-pointer text-[var(--color-vhs-icon)] hover:text-[var(--color-crimson)] transition-colors py-1 px-1 min-h-[36px] min-w-[26px] inline-flex items-center justify-center select-none focus-visible:ring-1 focus-visible:ring-[var(--color-crimson)]"
+          class="cursor-pointer text-[var(--color-vhs-icon)] hover:text-[var(--color-crimson)] transition-colors py-1 px-1 min-h-[36px] min-w-[26px] inline-flex items-center justify-center select-none"
           aria-label="Toggle volume slider"
           aria-expanded="false"
           title="Adjust volume"
@@ -142,7 +142,7 @@ if (!codexLabel) {
     <div class="flex items-center gap-1.5 sm:gap-2 text-[var(--color-ink-faint)] whitespace-nowrap">
       <span class="hidden min-[460px]:inline text-[var(--color-crimson)] font-normal tracking-wider" title={codexTitle}>{codexLabel}</span>
       <span class="hidden min-[460px]:inline">·</span>
-      <span id="vhs-live-clock" transition:persist="vhs-live-clock">--:--:--</span>
+      <span id="vhs-live-clock">--:--:--</span>
       <script is:inline>
         (() => {
           try {

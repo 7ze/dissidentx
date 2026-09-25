@@ -4,7 +4,7 @@
 
 <dialog
   id="search-modal"
-  class="fixed top-12 sm:top-20 inset-x-0 bottom-auto mx-auto w-[92vw] max-w-2xl h-[520px] max-h-[82vh] bg-[var(--color-surface)] border border-[var(--color-rule-light)] text-[var(--color-ink)] p-0 z-50 shadow-2xl rounded-none outline-none"
+  class="fixed inset-0 m-auto w-[92vw] max-w-2xl h-[520px] max-h-[82vh] bg-[var(--color-surface)] border border-[var(--color-rule-light)] text-[var(--color-ink)] p-0 z-50 shadow-2xl rounded-none outline-none"
   aria-label="Search DissidentX Essays"
   transition:persist
 >
@@ -31,20 +31,46 @@
     </div>
   </div>
 
-  <!-- Search Input Bar -->
-  <div class="flex-shrink-0 px-4 sm:px-5 py-3.5 bg-[var(--color-surface)] border-b border-[var(--color-rule)] focus-within:border-[var(--color-crimson-subtle)] transition-colors flex items-center gap-3">
-    <span class="font-mono text-[var(--color-crimson)] opacity-75 text-xs font-normal select-none" aria-hidden="true">[ ? ]</span>
+  <!-- Search Input Bar (Accessible form with explicit execute button and clear affordance) -->
+  <form
+    id="search-form"
+    role="search"
+    action="/essays"
+    method="GET"
+    class="flex-shrink-0 px-4 sm:px-5 py-3 bg-[var(--color-surface)] border-b border-[var(--color-rule)] focus-within:border-[var(--color-crimson-subtle)] transition-colors flex items-center gap-2 sm:gap-3"
+  >
+    <span class="font-mono text-[var(--color-crimson)] opacity-75 text-xs font-normal select-none flex-shrink-0" aria-hidden="true">[ ? ]</span>
     <label for="search-input" class="sr-only">Search essays and dispatches</label>
     <input
       type="text"
       id="search-input"
-      placeholder="Query by keyword, scriptural theme, tag, or text..."
-      class="flex-1 bg-transparent border-none outline-none text-xs sm:text-sm font-mono text-[var(--color-ink)] placeholder-[var(--color-ink-faint)] tracking-wide focus:outline-none focus-visible:outline-none focus:ring-0"
+      name="q"
+      placeholder="Type query by keyword, tag, or phrase..."
+      class="flex-1 min-w-0 bg-transparent border-none outline-none text-xs sm:text-sm font-mono text-[var(--color-ink)] placeholder-[var(--color-ink-faint)] tracking-wide focus:outline-none focus-visible:outline-none focus:ring-0"
       autocomplete="off"
       spellcheck="false"
       aria-controls="search-results"
     />
-  </div>
+    <button
+      type="button"
+      id="search-clear-btn"
+      class="hidden text-[10px] font-mono text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] cursor-pointer select-none flex-shrink-0 py-1 px-1.5 min-h-[34px] min-w-[34px] inline-flex items-center justify-center transition-colors"
+      title="Clear search text"
+      aria-label="Clear search input"
+    >
+      [ ✕ ]
+    </button>
+    <button
+      type="submit"
+      id="search-submit-btn"
+      class="flex-shrink-0 font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-[var(--color-ink-muted)] hover:text-[var(--color-crimson)] hover:border-[var(--color-crimson-subtle)] focus-visible:border-[var(--color-crimson-subtle)] focus-visible:text-[var(--color-crimson)] border border-[var(--color-rule)] bg-[var(--color-void)] px-2.5 sm:px-3 py-1.5 min-h-[34px] cursor-pointer transition-colors select-none inline-flex items-center justify-center gap-1.5 outline-none focus:outline-none focus:ring-0 active:scale-[0.98]"
+      title="Execute search"
+      aria-label="Execute search"
+    >
+      <span class="hidden sm:inline">SEARCH</span>
+      <span class="text-[var(--color-crimson)] font-bold text-xs select-none">↵</span>
+    </button>
+  </form>
 
   <!-- Tag Filter Strip (Zine Typewriter Brackets) -->
   <div class="flex-shrink-0 px-4 sm:px-5 py-2 bg-[var(--color-void)] border-b border-[var(--color-rule)] flex items-center gap-x-2 gap-y-1 overflow-x-auto text-[11px] font-mono scrollbar-none" role="toolbar" aria-label="Popular topics">
@@ -85,7 +111,18 @@
       <span>[ ESC ] CLOSE</span>
       <span class="sm:hidden text-[var(--color-ink-muted)]">· TAP TO READ</span>
     </div>
-    <span class="hidden sm:inline text-[var(--color-ink-faint)]">A WITNESS IN THE RUINS</span>
+    <div class="flex items-center gap-2">
+      <a
+        id="search-view-all-link"
+        href="/essays"
+        class="hidden text-[var(--color-crimson)] hover:underline flex items-center gap-1 font-medium transition-colors cursor-pointer"
+        title="Open full results in Essays archive"
+      >
+        <span>OPEN IN ARCHIVE</span>
+        <span>→</span>
+      </a>
+      <span id="search-colophon-text" class="hidden sm:inline text-[var(--color-ink-faint)]">A WITNESS IN THE RUINS</span>
+    </div>
   </div>
 </dialog>
 
@@ -98,11 +135,17 @@
     border: none !important;
   }
 
+  #search-submit-btn,
+  #search-submit-btn:focus,
+  #search-submit-btn:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
   #search-modal {
-    top: 2.5rem;
-    bottom: auto;
-    margin-inline: auto;
-    margin-block: 0;
+    /* Vertical positioning: centered on mobile, optical center on desktop */
+    inset: 0;
+    margin: auto;
     opacity: 0;
     transform: translateY(-8px) scale(0.985);
     display: none;
@@ -184,14 +227,14 @@
 
   @media (min-width: 640px) {
     #search-modal {
-      top: 5rem;
+      /* Slightly to the top of middle on desktop screens */
+      top: max(3.5rem, calc(46vh - 240px));
+      bottom: auto;
     }
   }
 </style>
 
 <script>
-  import Fuse from "fuse.js";
-
   interface SearchItem {
     id: string;
     title: string;
@@ -203,40 +246,186 @@
     content: string;
   }
 
+  interface SearchResult {
+    item: SearchItem;
+    score: number;
+    matchLocations: string[];
+    tokens: string[];
+  }
+
   let searchData: SearchItem[] | null = null;
-  let fuseInstance: Fuse<SearchItem> | null = null;
   let activeIndex = -1;
 
   const modal = document.getElementById("search-modal") as HTMLDialogElement | null;
+  const searchForm = document.getElementById("search-form") as HTMLFormElement | null;
   const input = document.getElementById("search-input") as HTMLInputElement | null;
+  const submitBtn = document.getElementById("search-submit-btn") as HTMLButtonElement | null;
+  const clearBtn = document.getElementById("search-clear-btn");
   const closeBtn = document.getElementById("search-close-btn");
   const placeholder = document.getElementById("search-placeholder");
   const resultsContainer = document.getElementById("search-items-list");
   const tagChipsContainer = document.getElementById("search-tag-chips");
   const matchCountSpan = document.getElementById("search-match-count");
+  const viewAllLink = document.getElementById("search-view-all-link") as HTMLAnchorElement | null;
+  const colophonText = document.getElementById("search-colophon-text");
+
+  function escapeHtml(str: string): string {
+    if (!str) return "";
+    return str.replace(/[&<>"']/g, (m) => {
+      switch (m) {
+        case "&": return "&amp;";
+        case "<": return "&lt;";
+        case ">": return "&gt;";
+        case '"': return "&quot;";
+        case "'": return "&#39;";
+        default: return m;
+      }
+    });
+  }
+
+  function highlightTerms(text: string, tokens: string[]): string {
+    if (!tokens || tokens.length === 0) return escapeHtml(text);
+    const escapedTokens = tokens
+      .filter(Boolean)
+      .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+      .sort((a, b) => b.length - a.length);
+    if (escapedTokens.length === 0) return escapeHtml(text);
+
+    const regex = new RegExp(`(${escapedTokens.join("|")})`, "gi");
+    const safeText = escapeHtml(text);
+    return safeText.replace(
+      regex,
+      '<mark class="bg-[var(--color-highlight-bg)] text-[var(--color-highlight-text)] font-semibold px-0.5 rounded-none">$1</mark>'
+    );
+  }
+
+  function extractSnippet(content: string, tokens: string[], maxChars = 140): string {
+    if (!content) return "";
+    const lowerContent = content.toLowerCase();
+
+    let bestIdx = -1;
+    let matchedTok = "";
+    for (const tok of tokens) {
+      const idx = lowerContent.indexOf(tok);
+      if (idx !== -1 && (bestIdx === -1 || idx < bestIdx)) {
+        bestIdx = idx;
+        matchedTok = tok;
+      }
+    }
+
+    if (bestIdx === -1) {
+      const slice = content.slice(0, maxChars);
+      return highlightTerms(slice + (content.length > maxChars ? "..." : ""), tokens);
+    }
+
+    const start = Math.max(0, bestIdx - 45);
+    const end = Math.min(content.length, bestIdx + matchedTok.length + 80);
+    let snippet = content.slice(start, end);
+
+    if (start > 0) {
+      const firstSpace = snippet.indexOf(" ");
+      if (firstSpace !== -1 && firstSpace < 15) {
+        snippet = snippet.slice(firstSpace + 1);
+      }
+      snippet = "..." + snippet;
+    }
+    if (end < content.length) {
+      const lastSpace = snippet.lastIndexOf(" ");
+      if (lastSpace !== -1 && lastSpace > snippet.length - 15) {
+        snippet = snippet.slice(0, lastSpace);
+      }
+      snippet = snippet + "...";
+    }
+
+    return highlightTerms(snippet, tokens);
+  }
+
+  function searchDocuments(docs: SearchItem[], query: string): SearchResult[] {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    const tokens = q.split(/\s+/).filter(Boolean);
+    if (tokens.length === 0) return [];
+
+    const results: SearchResult[] = [];
+
+    for (const doc of docs) {
+      const titleLower = (doc.title || "").toLowerCase();
+      const descLower = (doc.description || "").toLowerCase();
+      const tagsLower = (doc.tags || []).map((t) => t.toLowerCase());
+      const contentLower = (doc.content || "").toLowerCase();
+
+      // Strict AND evaluation: every token must exist in the essay
+      const matchesAll = tokens.every(
+        (tok) =>
+          titleLower.includes(tok) ||
+          descLower.includes(tok) ||
+          tagsLower.some((t) => t.includes(tok)) ||
+          contentLower.includes(tok)
+      );
+
+      if (!matchesAll) continue;
+
+      let score = 0;
+      const matchLocations = new Set<string>();
+
+      // Full query match bonuses
+      if (titleLower.includes(q)) {
+        score += 100;
+        matchLocations.add("TITLE");
+      }
+      if (tagsLower.some((t) => t.includes(q))) {
+        score += 60;
+        matchLocations.add("TOPICS");
+      }
+      if (descLower.includes(q)) {
+        score += 40;
+        matchLocations.add("EXCERPT");
+      }
+      if (contentLower.includes(q)) {
+        score += 20;
+        matchLocations.add("BODY TEXT");
+      }
+
+      // Individual token scoring
+      tokens.forEach((tok) => {
+        if (titleLower.includes(tok)) {
+          score += 30;
+          matchLocations.add("TITLE");
+        }
+        if (tagsLower.some((t) => t.includes(tok))) {
+          score += 20;
+          matchLocations.add("TOPICS");
+        }
+        if (descLower.includes(tok)) {
+          score += 15;
+          matchLocations.add("EXCERPT");
+        }
+        if (contentLower.includes(tok)) {
+          score += 5;
+          matchLocations.add("BODY TEXT");
+        }
+      });
+
+      results.push({
+        item: doc,
+        score,
+        matchLocations: Array.from(matchLocations),
+        tokens,
+      });
+    }
+
+    return results.sort((a, b) => b.score - a.score);
+  }
 
   // Load index data lazily
   async function loadSearchIndex() {
-    if (searchData && fuseInstance) return;
+    if (searchData) return;
     try {
       const res = await fetch("/search-index.json");
       if (!res.ok) throw new Error("Failed to load search index");
       searchData = await res.json();
 
       if (searchData) {
-        fuseInstance = new Fuse(searchData, {
-          keys: [
-            { name: "title", weight: 0.35 },
-            { name: "tags", weight: 0.30 },
-            { name: "description", weight: 0.20 },
-            { name: "content", weight: 0.15 },
-          ],
-          threshold: 0.38,
-          ignoreLocation: true,
-          includeMatches: true,
-          minMatchCharLength: 2,
-        });
-
         populateTagChips(searchData);
       }
     } catch (err) {
@@ -310,76 +499,82 @@
       document.body.classList.remove("overflow-hidden");
       isClosing = false;
       if (input) input.value = "";
+      if (clearBtn) clearBtn.classList.add("hidden");
       if (resultsContainer) resultsContainer.innerHTML = "";
       if (placeholder) placeholder.style.display = "flex";
       if (matchCountSpan) matchCountSpan.textContent = "READY";
+      if (viewAllLink) viewAllLink.classList.add("hidden");
+      if (colophonText) colophonText.classList.remove("hidden");
       activeIndex = -1;
     }, 180);
-  }
-
-  function createSnippet(content: string, query: string): string {
-    if (!content || !query) return "";
-    const lowerContent = content.toLowerCase();
-    const lowerQuery = query.toLowerCase().trim();
-    const idx = lowerContent.indexOf(lowerQuery);
-
-    if (idx === -1) {
-      return content.slice(0, 115) + "...";
-    }
-
-    const start = Math.max(0, idx - 40);
-    const end = Math.min(content.length, idx + query.length + 65);
-    const snippet = (start > 0 ? "..." : "") + content.slice(start, end) + (end < content.length ? "..." : "");
-    return snippet;
   }
 
   function performSearch(query: string) {
     if (!resultsContainer || !placeholder || !matchCountSpan) return;
 
     const trimmed = query.trim();
+    if (clearBtn) {
+      clearBtn.classList.toggle("hidden", !trimmed);
+    }
+
     if (!trimmed) {
       resultsContainer.innerHTML = "";
       placeholder.style.display = "flex";
       matchCountSpan.textContent = "READY";
       activeIndex = -1;
+      if (viewAllLink) viewAllLink.classList.add("hidden");
+      if (colophonText) colophonText.classList.remove("hidden");
       return;
     }
 
     placeholder.style.display = "none";
+    if (viewAllLink) {
+      viewAllLink.href = `/essays?q=${encodeURIComponent(trimmed)}`;
+      viewAllLink.classList.remove("hidden");
+      if (colophonText) colophonText.classList.add("hidden");
+    }
 
-    if (!fuseInstance || !searchData) {
-      resultsContainer.innerHTML = `<div class="h-full flex items-center justify-center font-mono text-xs text-[var(--color-ink-muted)] py-8">INDEXING...</div>`;
+    if (!searchData) {
+      resultsContainer.innerHTML = `<div class="h-full flex items-center justify-center font-mono text-xs text-[var(--color-ink-muted)] py-8">INDEXING ARCHIVE...</div>`;
       return;
     }
 
-    const results = fuseInstance.search(trimmed);
+    const results = searchDocuments(searchData, trimmed);
     resultsContainer.innerHTML = "";
     activeIndex = -1;
 
     if (results.length === 0) {
-      matchCountSpan.textContent = "0 MATCHES";
+      matchCountSpan.textContent = "0 MATCHES FOUND";
       resultsContainer.innerHTML = `
         <div class="h-full flex flex-col items-center justify-center py-16 text-center select-none">
           <span class="text-[var(--color-crimson)] text-xs mb-2 font-mono">✕</span>
           <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink-bright)] mb-1.5">No dispatches found</p>
-          <p class="font-serif italic text-xs text-[var(--color-ink-muted)] max-w-xs leading-relaxed">
-            No writings match "${trimmed}". Try searching by tag or broader keywords.
+          <p class="font-serif italic text-xs text-[var(--color-ink-muted)] max-w-xs leading-relaxed mb-4">
+            No writings match "${escapeHtml(trimmed)}". Try searching by tag or broader keywords.
           </p>
+          <a
+            href="/essays?q=${encodeURIComponent(trimmed)}"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--color-rule)] text-[var(--color-crimson)] hover:border-[var(--color-crimson)] font-mono text-xs uppercase tracking-wider transition-colors no-underline cursor-pointer"
+          >
+            Open in Essays Archive →
+          </a>
         </div>
       `;
       return;
     }
 
-    matchCountSpan.textContent = `${results.length} ${results.length === 1 ? "DISPATCH" : "DISPATCHES"}`;
+    matchCountSpan.textContent = `FOUND ${results.length} ${results.length === 1 ? "DISPATCH" : "DISPATCHES"}`;
 
     results.forEach((res, idx) => {
       const item = res.item;
-      const snippet = createSnippet(item.content, trimmed);
+      const highlightedTitle = highlightTerms(item.title, res.tokens);
+      const highlightedDesc = highlightTerms(item.description, res.tokens);
+      const snippet = extractSnippet(item.content, res.tokens);
 
       const card = document.createElement("a");
       card.href = `/essays/${item.id}`;
       card.className =
-        "search-result-item block py-4 text-left no-underline transition-all group focus:outline-none focus:bg-[var(--color-surface-hover)]";
+        "search-result-item block py-3.5 px-3 -mx-3 border-b border-[var(--color-rule)] text-left no-underline transition-all group hover:bg-[var(--color-surface-hover)] focus:outline-none focus:bg-[var(--color-surface-hover)]";
       card.setAttribute("data-index", String(idx));
       card.setAttribute("role", "option");
       card.setAttribute("aria-selected", "false");
@@ -387,20 +582,29 @@
         closeSearch();
       });
 
+      const locationBadge = res.matchLocations.length > 0
+        ? `<span class="text-[9px] font-mono tracking-wider uppercase text-[var(--color-highlight-text)] bg-[var(--color-highlight-bg)] px-1.5 py-0.5 border border-[var(--color-highlight-border)]">MATCHED IN: ${res.matchLocations.join(" & ")}</span>`
+        : "";
+
       card.innerHTML = `
         <div class="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-[var(--color-ink-faint)] mb-1.5">
-          <span class="text-[var(--color-crimson)] font-medium">${item.categoryTag || "Essay"}</span>
-          <time>${item.date}</time>
+          <div class="flex items-center gap-2">
+            <span class="text-[var(--color-crimson)] font-medium">${item.categoryTag || "Essay"}</span>
+            <span class="text-[var(--color-ink-faint)]">·</span>
+            <time>${item.date}</time>
+          </div>
+          ${locationBadge}
         </div>
         <h4 class="font-serif text-base sm:text-lg font-bold text-[var(--color-ink)] group-hover:text-[var(--color-crimson)] transition-colors mb-1 vhs-chromatic-hover">
-          ${item.title}
+          ${highlightedTitle}
         </h4>
         <p class="font-serif text-xs sm:text-sm text-[var(--color-ink-muted)] line-clamp-2 leading-relaxed mb-2">
-          ${item.description}
+          ${highlightedDesc}
         </p>
         ${
           snippet
-            ? `<div class="text-[11px] font-mono text-[var(--color-ink-muted)] bg-[var(--color-void)] pl-3 py-1.5 border-l-2 border-[var(--color-crimson)] my-2 line-clamp-2">
+            ? `<div class="text-[11px] font-mono text-[var(--color-ink-muted)] bg-[var(--color-void)] pl-3 pr-2 py-1.5 border-l-2 border-[var(--color-highlight-border)] my-2 line-clamp-2 leading-relaxed">
+                <span class="text-[9px] uppercase tracking-wider text-[var(--color-ink-faint)] block mb-0.5 select-none font-sans">EXCERPT:</span>
                 ${snippet}
               </div>`
             : ""
@@ -411,7 +615,7 @@
                 ${item.tags
                   .map(
                     (t) =>
-                      `<span class="text-[10px] font-mono text-[var(--color-ink-faint)] group-hover:text-[var(--color-ink-muted)] transition-colors">#${t}</span>`
+                      `<span class="text-[10px] font-mono text-[var(--color-ink-faint)] group-hover:text-[var(--color-ink-muted)] transition-colors">#${highlightTerms(t, res.tokens)}</span>`
                   )
                   .join(" ")}
               </div>`
@@ -421,6 +625,24 @@
 
       resultsContainer.appendChild(card);
     });
+
+    // Deep link row to open full archive query
+    const archiveRow = document.createElement("a");
+    archiveRow.href = `/essays?q=${encodeURIComponent(trimmed)}`;
+    archiveRow.className =
+      "search-result-item block py-3.5 my-2 text-center no-underline border border-[var(--color-rule)] bg-[var(--color-void)] hover:border-[var(--color-crimson)] transition-colors group focus:outline-none focus:bg-[var(--color-surface-hover)]";
+    archiveRow.setAttribute("data-index", String(results.length));
+    archiveRow.setAttribute("role", "option");
+    archiveRow.setAttribute("aria-selected", "false");
+    archiveRow.addEventListener("click", () => {
+      closeSearch();
+    });
+    archiveRow.innerHTML = `
+      <span class="text-xs font-mono tracking-wider text-[var(--color-crimson)] group-hover:underline">
+        [ ↵ VIEW ALL ${results.length} ${results.length === 1 ? "RESULT" : "RESULTS"} IN ARCHIVE → ]
+      </span>
+    `;
+    resultsContainer.appendChild(archiveRow);
   }
 
   function updateActiveSelection(newIndex: number) {
@@ -441,30 +663,57 @@
     }
   }
 
-  // Keyboard navigation & search event listeners
+  // Live filtering on input
   input?.addEventListener("input", (e) => {
     performSearch((e.target as HTMLInputElement).value);
   });
 
+  // Seamlessly fade button into inactive state after clicking/tapping
+  const handleButtonRelease = () => {
+    setTimeout(() => {
+      submitBtn?.blur();
+    }, 80);
+  };
+
+  submitBtn?.addEventListener("pointerup", handleButtonRelease);
+  submitBtn?.addEventListener("touchend", handleButtonRelease);
+
+  // Explicit form submission via [ SEARCH ↵ ] or pressing Enter
+  searchForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    handleButtonRelease();
+    const items = resultsContainer?.querySelectorAll<HTMLElement>(".search-result-item");
+    if (items && activeIndex >= 0 && activeIndex < items.length) {
+      (items[activeIndex] as HTMLAnchorElement).click();
+      return;
+    }
+    const query = input?.value.trim();
+    if (query) {
+      closeSearch();
+      window.location.href = `/essays?q=${encodeURIComponent(query)}`;
+    }
+  });
+
+  // Clear button resets search
+  clearBtn?.addEventListener("click", () => {
+    if (!input) return;
+    input.value = "";
+    performSearch("");
+    input.focus();
+  });
+
+  // Arrow key navigation
   input?.addEventListener("keydown", (e) => {
     const items = resultsContainer?.querySelectorAll<HTMLElement>(".search-result-item");
-    if (!items || items.length === 0) return;
 
-    if (e.key === "ArrowDown") {
+    if (e.key === "ArrowDown" && items && items.length > 0) {
       e.preventDefault();
       const next = activeIndex + 1 < items.length ? activeIndex + 1 : 0;
       updateActiveSelection(next);
-    } else if (e.key === "ArrowUp") {
+    } else if (e.key === "ArrowUp" && items && items.length > 0) {
       e.preventDefault();
       const prev = activeIndex - 1 >= 0 ? activeIndex - 1 : items.length - 1;
       updateActiveSelection(prev);
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (activeIndex >= 0 && activeIndex < items.length) {
-        (items[activeIndex] as HTMLAnchorElement).click();
-      } else if (items.length > 0) {
-        (items[0] as HTMLAnchorElement).click();
-      }
     }
   });
 

@@ -16,7 +16,7 @@ const { title, description, codex } = Astro.props;
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <Header codex={codex} />
   
-  <main id="main-content" tabindex="-1" class="flex-1 outline-none">
+  <main id="main-content" tabindex="-1" class="flex-1 outline-none" transition:name="main-content">
     <slot />
   </main>
 

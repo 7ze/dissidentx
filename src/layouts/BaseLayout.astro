@@ -58,6 +58,41 @@ const canonical = new URL(Astro.url.pathname, Astro.site || "https://dissidentx.
         } catch (_) {}
       })();
 
+      document.addEventListener("astro:before-swap", (e) => {
+        try {
+          const stored = localStorage.getItem("theme");
+          const theme = stored === "light" ? "light" : "dark";
+          if (e.newDocument) {
+            e.newDocument.documentElement.setAttribute("data-theme", theme);
+          }
+          document.documentElement.setAttribute("data-theme", theme);
+          const meta = document.getElementById("meta-theme-color");
+          if (meta) {
+            meta.setAttribute("content", theme === "light" ? "#faf6ee" : "#020202");
+          }
+        } catch (_) {}
+
+        // Persist dev and runtime stylesheet elements across swaps so Astro's swapHeadElements
+        // does not tear them down and recreate them, eliminating the dev-mode FOUC / re-parse flash.
+        if (e.newDocument) {
+          const currentStyles = Array.from(document.head.querySelectorAll("style"));
+          const newStyles = Array.from(e.newDocument.head.querySelectorAll("style"));
+
+          currentStyles.forEach((style, idx) => {
+            const devId = style.getAttribute("data-vite-dev-id");
+            const key = devId || `style-persist-${idx}`;
+            style.setAttribute("data-astro-transition-persist", key);
+
+            const matchingNew = devId
+              ? newStyles.find((s) => s.getAttribute("data-vite-dev-id") === devId)
+              : newStyles[idx];
+            if (matchingNew) {
+              matchingNew.setAttribute("data-astro-transition-persist", key);
+            }
+          });
+        }
+      });
+
       document.addEventListener("astro:after-swap", () => {
         try {
           const stored = localStorage.getItem("theme");

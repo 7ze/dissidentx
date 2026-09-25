@@ -1,0 +1,22 @@
+---
+// src/pages/search.astro
+// Canonical search redirect: seamlessly forwards /search and /search?q=... to /essays
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search | DissidentX</title>
+    <script is:inline>
+      const query = window.location.search || "";
+      window.location.replace(`/essays${query}`);
+    </script>
+    <noscript>
+      <meta http-equiv="refresh" content="0;url=/essays" />
+    </noscript>
+  </head>
+  <body style="background: #020202; color: #fff; font-family: monospace; padding: 2rem;">
+    <p>Redirecting to <a href="/essays" style="color: #b8122d;">DissidentX Essays Archive</a>...</p>
+  </body>
+</html>

@@ -2,7 +2,7 @@
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="mt-16 sm:mt-24 pt-10 sm:pt-14 pb-12 sm:pb-8 border-t border-[var(--color-rule)] text-center font-mono text-[var(--color-ink-faint)]">
+<footer class="mt-16 sm:mt-24 pt-10 sm:pt-14 pb-12 sm:pb-8 border-t border-[var(--color-rule)] text-center font-mono text-[var(--color-ink-faint)]" transition:name="site-footer">
   <!-- Subscribe Section -->
   <section id="subscribe" class="mb-10 sm:mb-12 max-w-md mx-auto px-4 text-center">
     <h2 class="font-serif text-xl sm:text-2xl font-bold text-[var(--color-ink-bright)] mb-2">
@@ -31,7 +31,7 @@ const currentYear = new Date().getFullYear();
       <button
         type="submit"
         aria-label="Subscribe to DissidentX Dispatches"
-        class="text-xs font-mono font-medium text-white bg-[var(--color-crimson)] hover:bg-[#a00d24] px-5 py-2.5 uppercase tracking-wider transition-colors cursor-pointer min-h-[44px] inline-flex items-center justify-center focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-crimson)]"
+        class="text-xs font-mono font-medium text-white bg-[var(--color-crimson)] hover:bg-[#a00d24] px-5 py-2.5 uppercase tracking-wider transition-colors cursor-pointer min-h-[44px] inline-flex items-center justify-center"
       >
         Subscribe
       </button>
